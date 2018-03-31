@@ -9,7 +9,9 @@ html, body {
 	height: 100%;
     width: 100%;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+	-moz-osx-font-smoothing: grayscale;
+	background-color: $background-color;
+	color:$white;
 }
 
 h1, h2, h3, h4, h5, h6 {
