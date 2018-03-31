@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-     <canvas id="js-background-noise" ref="backgroundCanvas" class="noise"></canvas>
+    <canvas id="js-background-noise" ref="backgroundCanvas" class="noise"></canvas>
 
     <div class="background-grid">
       <div class="background-grid-vertical">
@@ -26,6 +26,12 @@
     </div>
 
     <router-view/>
+
+    <div class="scroll-fill">
+      <div class="scroll-fill-1">scroll</div>
+      <div class="scroll-fill-line"></div>
+      <div class="scroll-fill-2">down</div>
+    </div>
   </div>
 </template>
 
@@ -145,6 +151,9 @@ export default {
   width: 100vw;
   display: flex;
   align-items: flex-end;
+  justify-content: space-between;
+  position: fixed;
+  top:32px;
   a{
       color:$white;
       font-family: $title-font;
@@ -165,10 +174,7 @@ export default {
     }
 
   .header-logo{
-    position: fixed;
-    top:32px;
-    left:7%;
-
+    margin-left:7%;
     a{
       left:10px;
       &::before{
@@ -178,16 +184,41 @@ export default {
   }
 
   .header-about{
-    position: fixed;
-    top:32px;
-    right:7%;
-
+    margin-right: 7%;
     a{
       right:10px;
       &::before{
         right:-10px;
       }
     }
+  }
+}
+
+.scroll-fill{
+  position:fixed;
+  bottom: 20px;
+  color:$grey;
+  height: 27px;
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  justify-content: center;
+
+  div:nth-child(odd){
+    margin: 0 12px;
+  }
+
+  .scroll-fill-line{
+    height: 27px;
+    width: 1px;
+    background-color: $white;
+    display: inline-block;
+    position: fixed;
+    left:50%;
+    animation: scroll-fill 1.2s cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
+    animation-direction: reverse;
+    will-change: transform;
+
   }
 }
 </style>
