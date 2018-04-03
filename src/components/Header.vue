@@ -16,16 +16,16 @@
 
 <script>
 import { TweenMax } from 'gsap';
-import { ease } from '@/services/utils';
+import { easeDefault } from '@/services/utils';
 
 export default {
   name: 'Header',
   methods: {
     enterAnimation() {
-      TweenMax.to(this.$refs.header, 1, {
+      TweenMax.to(this.$refs.header, 0.25, {
         y: '0%',
-        ease: ease,
-        delay: 1
+        ease: easeDefault,
+        delay: 0.7
       });
     }
   },

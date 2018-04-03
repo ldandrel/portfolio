@@ -212,6 +212,7 @@ export default {
   align-items: center;
   width: 100vw;
   justify-content: center;
+  opacity: 0;
 
   div:nth-child(odd){
     margin: 0 12px;
