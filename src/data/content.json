@@ -1,0 +1,14 @@
+{
+    "title": "Luc Dandrel",
+    "email": "luc.dandrel@gmail.com",
+    "texts": {
+        "scroll": [
+            "scroll",
+            "down"
+        ],
+        "return": "return home"
+    }, 
+    "assets": [
+        "/static/projects/movie-wallpaper/282460.jpg"
+    ]
+}
