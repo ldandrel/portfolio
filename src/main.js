@@ -5,9 +5,14 @@ import Vuex from 'vuex';
 import App from './App';
 import router from './router';
 import store from './store';
+import { pad } from '@/services/utils';
 
 Vue.use(Vuex);
 Vue.config.productionTip = false;
+
+Vue.filter('pad', value => {
+  return pad(value, 2);
+});
 
 /* eslint-disable no-new */
 new Vue({

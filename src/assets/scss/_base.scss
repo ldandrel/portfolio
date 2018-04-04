@@ -43,6 +43,30 @@ a {
 	color:$white;
 }
 
+a.link {
+    color:$white;
+    position:relative;
+    
+    &::after{
+      content:"";
+      width: 20px;
+      height: 1px;
+      position: absolute;
+      background-color:$white;
+      bottom:2px;
+      margin-left:12px;
+      transform-origin: right;
+      will-change: transform;
+    }
+}
+
+a.link:hover{
+	&::after{
+	  transform: scaleX(6);
+	  transition: all 1s ease;
+	}
+}
+
 input:focus {
 	outline: none;
 }

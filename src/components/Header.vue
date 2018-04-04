@@ -5,7 +5,7 @@
               <router-link tag="a" to="/">Luc <br> Dandrel</router-link>
           </div>
           <div class="header-return" v-if="$route.name == 'project-single'">
-              <router-link tag="a" to="/">return home</router-link>
+              <router-link class="link" tag="a" to="/">return home</router-link>
           </div>
           <div class="header-about">
               <router-link tag="a" to="/">About</router-link>
@@ -76,27 +76,7 @@ export default {
   }
 
   .header-return a{
-    color:$white;
-    position:relative;
     margin-left:-12px;
-    &::after{
-      content:"";
-      width: 20px;
-      height: 1px;
-      position: absolute;
-      background-color:$white;
-      bottom:2px;
-      margin-left:12px;
-      transform-origin: right;
-      will-change: transform;
-    }
-  }
-
-  .header-return:hover{
-      a::after{
-        transform: scaleX(6);
-        transition: all 1s ease;
-      }
   }
 
   .header-logo{

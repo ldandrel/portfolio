@@ -8,6 +8,15 @@
         ],
         "return": "return home"
     },
+    "projects": [
+      {
+        "index": 1,
+        "title": "My Movie Desktop",
+        "type": "personnal project",
+        "job": "developper front & back",
+        "illustration": "/static/projects/movie-wallpaper/movie-wallpaper.jpg"
+      }
+    ],
     "about": {
         "subhead": "Hello,",
         "head": "I'm Luc",
