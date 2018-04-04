@@ -50,6 +50,7 @@ export default {
   position: fixed;
   top:32px;
   overflow: hidden;
+  z-index: $zindex-header;
   .header-wrapper{
     display: flex;
     align-items: flex-end;

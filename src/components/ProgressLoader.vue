@@ -36,7 +36,7 @@ export default {
         onComplete() {
           TweenMax.set(progressLoader, {
             css: {
-              'pointer-events': 'none'
+              'display': 'none'
             }
           });
         }
