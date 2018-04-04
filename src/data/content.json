@@ -7,7 +7,47 @@
             "down"
         ],
         "return": "return home"
-    }, 
+    },
+    "about": {
+        "subhead": "Hello,",
+        "head": "I'm Luc",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "description2": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labor",
+        "socials": [
+          {
+            "icon": "fa-github",
+            "link": "https://github.com/lucdandrel"
+          },
+          {
+            "icon": "fa-twitter",
+            "link": "https://twitter.com/lucdandrel"
+          },
+          {
+            "icon": "fa-linkedin-in",
+            "link": "https://www.linkedin.com/in/luc-dandrel"
+          }
+        ],
+        "skills": {
+          "title": "Skills",
+          "items": [
+            "Node.js",
+            "Vue.js",
+            "Symfony"
+          ]
+        },
+        "contact": {
+          "email": "luc.dandrel@gmail.com"
+        },
+        "credits": {
+          "text": "Thanks to my dolphins friend",
+          "text2": "for designing this beautiful portfolio",
+          "gif": "https://media.giphy.com/media/dpSrm4cwUmCeQ/giphy.gif",
+          "evie": {
+            "title": "Evie Bauland",
+            "link": "https://dribbble.com/EvieBauland"
+          }
+        }
+      },
     "assets": [
         "/static/projects/movie-wallpaper/282460.jpg"
     ]

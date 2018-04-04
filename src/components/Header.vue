@@ -4,7 +4,7 @@
           <div class="header-logo">
               <router-link tag="a" to="/">Luc <br> Dandrel</router-link>
           </div>
-          <div class="header-return" v-if="$route.name == 'project'">
+          <div class="header-return" v-if="$route.name == 'project-single'">
               <router-link tag="a" to="/">return home</router-link>
           </div>
           <div class="header-about">
