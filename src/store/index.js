@@ -6,6 +6,8 @@ import {
   LOAD_ASSETS_PROGRESS,
   LOAD_ASSETS_LOADED,
   LOAD_WEBSITE,
+  SWITCH_CURRENT_PROJECT,
+  TRANSITIONING,
   SWITCH_MOBILE
 } from '@/store/types';
 import ProgressLoaderService from '@/services/ProgressLoaderService';
@@ -17,6 +19,9 @@ const state = {
   assetsLoadingProgress: 0,
   assetsLoaded: false,
   websiteReady: false,
+  currentProject: false,
+  transitioning: false,
+  darkMode: false,
   isMobile: false
 };
 
@@ -29,6 +34,12 @@ const mutations = {
   },
   [LOAD_WEBSITE](state) {
     state.websiteReady = true;
+  },
+  [SWITCH_CURRENT_PROJECT](state, id) {
+    state.currentProject = id;
+  },
+  [TRANSITIONING](state, value) {
+    state.transitioning = value;
   },
   [SWITCH_MOBILE](state, boolean) {
     state.isMobile = boolean;
@@ -47,7 +58,7 @@ const actions = {
       commit(LOAD_ASSETS_LOADED);
       setTimeout(() => {
         commit(LOAD_WEBSITE);
-      }, 1500);
+      }, 4500);
     });
   }
 };

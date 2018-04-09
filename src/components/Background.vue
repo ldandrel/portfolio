@@ -27,7 +27,9 @@ export default {
   name: 'Background',
   data () {
     return {
-      backgroundToggle: true
+      backgroundToggle: true,
+      currentScroll: 0,
+      documentHeight: 0
     }
   },
   methods: {
@@ -67,6 +69,9 @@ export default {
           scaleX: 1,
           ease: ease
         }, '-=1')
+    },
+    handleScroll() {
+      console.log('test')
     }
   },
   computed: {
@@ -77,6 +82,28 @@ export default {
   mounted () {
     this.$store.dispatch(LOAD_ASSETS);
 
+    window.addEventListener('scroll', this.handleScroll);
+    if (this.$route.name === 'project') {
+      let height = document.body.scrollHeight;
+      console.log(height);
+      var ticking = false;
+
+      const faitQuelquechose = (scroll) => {
+        console.log(scroll)
+      }
+
+      window.addEventListener('scroll', function(e) {
+        console.log('test')
+        let currentScroll = window.scrollY;
+        if (!ticking) {
+          window.requestAnimationFrame(function() {
+            faitQuelquechose(currentScroll);
+            ticking = false;
+          });
+        }
+        ticking = true;
+      });
+    }
     if (this.websiteReady === true) {
       this.enterAnimation();
     }
@@ -161,6 +188,16 @@ export default {
 
   .background-line-horizontal-2 {
     bottom:25%;
+  }
+
+  .background-line-vertical:nth-child(even)::before {
+      content:"";
+      width: 100%;
+      height: 100%;
+      background:$white;
+      position: absolute;
+      transform: scaleY(0);
+      transform-origin: top;
   }
 }
 </style>

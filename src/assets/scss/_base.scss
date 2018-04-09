@@ -45,8 +45,8 @@ a {
 
 a.link {
     color:$white;
-    position:relative;
-    
+	position:relative;
+	padding-right: 32px;
     &::after{
       content:"";
       width: 20px;
