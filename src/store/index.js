@@ -58,7 +58,7 @@ const actions = {
       commit(LOAD_ASSETS_LOADED);
       setTimeout(() => {
         commit(LOAD_WEBSITE);
-      }, 4500);
+      }, 1000);
     });
   }
 };
