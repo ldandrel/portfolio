@@ -163,31 +163,31 @@ export default {
   }
 
   .background-line-vertical-1 {
-    left:7%;
+    left:$vertical-line-1;
   }
 
   .background-line-vertical-2 {
-    left:13%;
+    left:$vertical-line-2;
   }
 
   .background-line-vertical-3 {
-    left:50%;
+    left:$vertical-line-3;
   }
 
   .background-line-vertical-4 {
-    right:13%;
+    right:$vertical-line-2;
   }
 
   .background-line-vertical-5 {
-    right:7%;
+    right:$vertical-line-1;
   }
 
   .background-line-horizontal-1 {
-    top:25%;
+    top:$horizontal-line-1;
   }
 
   .background-line-horizontal-2 {
-    bottom:25%;
+    bottom:$horizontal-line-1;
   }
 
   .background-line-vertical:nth-child(even)::before {

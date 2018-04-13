@@ -36,6 +36,35 @@ $md: 960px;
 $lg: 1140px;
 $xl: 1400px;
 
+// lines
+$vertical-line-1: 7%;
+$vertical-line-2: 13%;
+$vertical-line-3: 50%;
+
+$horizontal-line-1: 25%;
+
+
+
+
+
 // Z-index
 $zindex-progress-loader: 20;
 $zindex-header: 20;
+
+
+
+$zindex-home-backgrounds: -1;
+$zindex-home-backgrounds-current: 0;
+$zindex-home-illustrations: -1;
+$zindex-home-illustrations-current: 1;
+$zindex-home-illustrations-previous: 0;
+
+$zindex-home-index: 2;
+$zindex-home-title: 2;
+$zindex-home-links: 2;
+$zindex-home-details: 2;
+$zindex-home-scroll: 2;
+$zindex-progress-loader: 20;
+$zindex-transition-mask: 18;
+$zindex-header: 10;
+

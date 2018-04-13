@@ -8,7 +8,7 @@
 
       <router-view/>
 
-      <div class="scroll-fill" v-if="$route.name !== 'about'">
+      <div class="scroll-fill" v-if="$route.name !== 'about'" ref="scroll">
         <div class="scroll-fill-1">scroll</div>
         <div class="scroll-fill-line"></div>
         <div class="scroll-fill-2">down</div>
@@ -22,8 +22,9 @@ import GlobalHeader from '@/components/Header';
 import ProgressLoader from '@/components/ProgressLoader';
 import Background from '@/components/Background';
 import Responsive from '@/components/Responsive';
-import { isMobile } from '@/services/utils';
+import { isMobile, ease } from '@/services/utils';
 import { LOAD_ASSETS, SWITCH_MOBILE } from '@/store/types';
+import { TweenMax } from 'gsap';
 
 export default {
   name: 'App',
@@ -37,6 +38,19 @@ export default {
     return {
       isMobile: false,
       breakpoint: 900
+    }
+  },
+  computed: {
+    websiteReady() {
+      return this.$store.state.websiteReady;
+    }
+  },
+  methods: {
+    scrollOpacity() {
+      TweenMax.to(this.$refs.scroll, 1, {
+        opacity: 1,
+        ease: ease
+      });
     }
   },
   mounted() {
@@ -56,6 +70,13 @@ export default {
       this.isMobile = true;
       this.$store.commit(SWITCH_MOBILE, true);
     }
+  },
+  watch: {
+    websiteReady(boolean) {
+      if (boolean === true) {
+        this.scrollOpacity();
+      }
+    }
   }
 }
 </script>
@@ -72,6 +93,7 @@ export default {
   align-items: center;
   width: 100vw;
   justify-content: center;
+  opacity: 0;
 
   div:nth-child(odd){
     margin: 0 12px;

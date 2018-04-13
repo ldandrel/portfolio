@@ -43,10 +43,12 @@ a {
 	color:$white;
 }
 
-a.link {
+a.link,
+div.link {
     color:$white;
 	position:relative;
 	padding-right: 32px;
+	cursor:pointer;
     &::after{
       content:"";
       width: 20px;
@@ -60,7 +62,8 @@ a.link {
     }
 }
 
-a.link:hover{
+a.link:hover,
+div.link:hover {
 	&::after{
 	  transform: scaleX(6);
 	  transition: all 1s ease;
