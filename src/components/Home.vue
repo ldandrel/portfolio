@@ -302,7 +302,7 @@ export default {
         .fromTo(this.$refs.typeValue[this.previousProject].querySelector('.home__details-type-value'), 0.6, {
           y: '0%'
         }, {
-          y: '-100%',
+          y: '-105%',
           ease: ease
         }, '-=1.3')
         .fromTo(this.$refs.typeValue[this.currentProject].querySelector('.home__details-type-value'), 0.6, {
@@ -314,7 +314,7 @@ export default {
         .fromTo(this.$refs.jobValue[this.previousProject].querySelector('.home__details-job-value'), 0.6, {
           y: '0%'
         }, {
-          y: '-100%',
+          y: '-105%',
           ease: ease
         }, '-=1.3')
         .fromTo(this.$refs.jobValue[this.currentProject].querySelector('.home__details-job-value'), 0.6, {
