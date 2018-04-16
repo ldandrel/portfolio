@@ -4,8 +4,10 @@
           <div class="header-logo">
               <router-link tag="a" to="/">Luc <br> Dandrel</router-link>
           </div>
-          <div class="header-return" v-if="$route.name == 'project-single'">
-              <router-link class="link" tag="a" to="/">return home</router-link>
+          <div class="header__return" v-if="['About', 'single-project'].indexOf($route.name) > -1">
+            <div class="header__return-wrapper">
+              <div ref="return" class="link" v-on:click="goHome">return home</div>
+            </div>
           </div>
           <div class="header-about">
               <router-link tag="a" to="/">About</router-link>
@@ -16,7 +18,8 @@
 
 <script>
 import { TweenMax } from 'gsap';
-import { easeDefault } from '@/services/utils';
+import { easeDefault, ease } from '@/services/utils';
+import { RETURN_HOME } from '@/store/types';
 
 export default {
   name: 'Header',
@@ -27,6 +30,9 @@ export default {
         ease: easeDefault,
         delay: 0.7
       });
+    },
+    goHome() {
+      this.$store.commit(RETURN_HOME, true);
     }
   },
   watch: {
@@ -34,11 +40,23 @@ export default {
       if (boolean === true) {
         this.enterAnimation();
       }
+    },
+    returnHome(boolean) {
+      if (boolean === true) {
+        TweenMax.to(this.$refs.return, 0.6, {
+          y: '-100%',
+          ease: ease,
+          delay: 0.2
+        });
+      }
     }
   },
   computed: {
     websiteReady() {
       return this.$store.state.websiteReady;
+    },
+    returnHome() {
+      return this.$store.state.returnHome;
     }
   }
 }
@@ -76,7 +94,7 @@ export default {
     }
   }
 
-  .header-return a{
+  .header__return a{
     margin-left:-12px;
   }
 
@@ -99,5 +117,9 @@ export default {
       }
     }
   }
+}
+
+.header__return-wrapper{
+  overflow: hidden;
 }
 </style>

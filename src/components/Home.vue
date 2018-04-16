@@ -76,6 +76,7 @@ import { TimelineMax } from 'gsap';
 import { Lethargy } from 'lethargy';
 import { ease } from '@/services/utils';
 import PictureEffect from '@/services/PicturesEffect';
+import { RETURN_HOME } from '@/store/types';
 
 export default {
   name: 'Home',
@@ -109,6 +110,10 @@ export default {
 
     websiteReady() {
       return this.$store.state.websiteReady;
+    },
+
+    returnHome() {
+      return this.$store.state.returnHome;
     }
   },
   mounted() {
@@ -121,6 +126,15 @@ export default {
     this.keydownHandler = event => {
       this.onKeydown(event);
     };
+    
+    if (this.websiteReady === true) {
+      this.enterAnimation();
+    }
+
+    if (this.returnHome === true) {
+      this.enterAnimation();
+      this.$store.commit(RETURN_HOME, false);
+    }
 
     this.wheelHandler = this.wheelHandler.bind(this);
     this.keydownHandler = this.keydownHandler.bind(this);
