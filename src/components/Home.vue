@@ -126,7 +126,7 @@ export default {
     this.keydownHandler = event => {
       this.onKeydown(event);
     };
-    
+
     if (this.websiteReady === true) {
       this.enterAnimation();
     }
