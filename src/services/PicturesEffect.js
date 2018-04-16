@@ -1,513 +1,186 @@
 /* eslint-disable */
-import { TweenMax } from 'gsap';
-import * as PIXI from 'pixi.js';
+import * as THREE from 'three';
 
-(function () {
+export default function PictureEffect(opts) {
+    var vertex = `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+        }
+    `;
 
-  window.CanvasSlideshow = function (options) {
+    var fragment = `
+        varying vec2 vUv;
 
-    //  SCOPE
-    /// ---------------------------      
-    var that = this;
+        uniform sampler2D texture;
+        uniform sampler2D texture2;
+        uniform sampler2D disp;
 
+        // uniform float time;
+        // uniform float _rot;
+        uniform float dispFactor;
+        uniform float effectFactor;
 
+        // vec2 rotate(vec2 v, float a) {
+        //  float s = sin(a);
+        //  float c = cos(a);
+        //  mat2 m = mat2(c, -s, s, c);
+        //  return m * v;
+        // }
 
-    //  OPTIONS
-    /// ---------------------------      
-    options = options || {};
-    options.stageWidth = options.hasOwnProperty('stageWidth') ? options.stageWidth : 1920;
-    options.stageHeight = options.hasOwnProperty('stageHeight') ? options.stageHeight : 1080;
-    options.pixiSprites = options.hasOwnProperty('sprites') ? options.sprites : [];
-    options.autoPlay = options.hasOwnProperty('autoPlay') ? options.autoPlay : true;
-    options.autoPlaySpeed = options.hasOwnProperty('autoPlaySpeed') ? options.autoPlaySpeed : [10, 3];
-    options.fullScreen = options.hasOwnProperty('fullScreen') ? options.fullScreen : true;
-    options.displaceScale = options.hasOwnProperty('displaceScale') ? options.displaceScale : [200, 70];
-    options.displacementImage = options.hasOwnProperty('displacementImage') ? options.displacementImage : '';
-    options.navElement = options.hasOwnProperty('navElement') ? options.navElement : document.querySelectorAll('.scene-nav');
-    options.displaceAutoFit = options.hasOwnProperty('displaceAutoFit') ? options.displaceAutoFit : false;
-    options.wacky = options.hasOwnProperty('wacky') ? options.wacky : false;
-    options.interactive = options.hasOwnProperty('interactive') ? options.interactive : false;
-    options.interactionEvent = options.hasOwnProperty('interactionEvent') ? options.interactionEvent : '';
-    options.displaceScaleTo = (options.autoPlay === false) ? [0, 0] : [20, 20];
-    options.textColor = options.hasOwnProperty('textColor') ? options.textColor : '#fff';
-    options.displacementCenter = options.hasOwnProperty('displacementCenter') ? options.displacementCenter : false;
-    options.dispatchPointerOver = options.hasOwnProperty('dispatchPointerOver') ? options.dispatchPointerOver : false;
+        void main() {
 
-    //  PIXI VARIABLES
-    /// ---------------------------    
-    var renderer = new PIXI.autoDetectRenderer(options.stageWidth, options.stageHeight, {
-      transparent: true
+            vec2 uv = vUv;
+
+            // uv -= 0.5;
+            // vec2 rotUV = rotate(uv, _rot);
+            // uv += 0.5;
+
+            vec4 disp = texture2D(disp, uv);
+
+            vec2 distortedPosition = vec2(uv.x + dispFactor * (disp.r*effectFactor), uv.y);
+            vec2 distortedPosition2 = vec2(uv.x - (1.0 - dispFactor) * (disp.r*effectFactor), uv.y);
+
+            vec4 _texture = texture2D(texture, distortedPosition);
+            vec4 _texture2 = texture2D(texture2, distortedPosition2);
+
+            vec4 finalTexture = mix(_texture, _texture2, dispFactor);
+
+            gl_FragColor = finalTexture;
+            // gl_FragColor = disp;
+        }
+    `;
+
+    var parent = opts.parent || console.warn("no parent");
+    var dispImage = opts.displacementImage || console.warn("displacement image missing");
+    var image1 = opts.image1 || console.warn("first image missing");
+    var image2 = opts.image2 || console.warn("second image missing");
+    var intensity = opts.intensity || 1;
+    var speedIn = opts.speedIn || 1.6;
+    var speedOut = opts.speedOut || 1.2;
+    var userHover = (opts.hover === undefined) ? true : opts.hover;
+    var easing = opts.easing || Expo.easeOut;
+
+    var mobileAndTabletcheck = function() {
+      var check = false;
+      (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
+      return check;
+    };
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.OrthographicCamera(
+        parent.offsetWidth / -2,
+        parent.offsetWidth / 2,
+        parent.offsetHeight / 2,
+        parent.offsetHeight / -2,
+        1,
+        1000
+    );
+
+    camera.position.z = 1;
+
+    var renderer = new THREE.WebGLRenderer({
+        antialias: false,
+        // alpha: true
     });
-    var stage = new PIXI.Container();
-    var slidesContainer = new PIXI.Container();
-    var displacementSprite = new PIXI.Sprite.fromImage(options.displacementImage);
-    var displacementFilter = new PIXI.filters.DisplacementFilter(displacementSprite);
 
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setClearColor(0xffffff, 0.0);
+    renderer.setSize(parent.offsetWidth, parent.offsetHeight);
+    parent.appendChild(renderer.domElement);
 
+    // var addToGPU = function(t) {
+    //     renderer.setTexture2D(t, 0);
+    // };
 
-    //  SLIDES ARRAY INDEX
-    /// ---------------------------    
-    this.currentIndex = 0;
+    var loader = new THREE.TextureLoader();
+    loader.crossOrigin = "";
+    var texture1 = loader.load(image1);
+    var texture2 = loader.load(image2);
 
+    var disp = loader.load(dispImage);
+    disp.wrapS = disp.wrapT = THREE.RepeatWrapping;
 
+    texture1.magFilter = texture2.magFilter = THREE.LinearFilter;
+    texture1.minFilter = texture2.minFilter = THREE.LinearFilter;
 
-    /// ---------------------------
-    //  INITIALISE PIXI
-    /// ---------------------------      
-    this.initPixi = function () {
+    texture1.anisotropy = renderer.getMaxAnisotropy();
+    texture2.anisotropy = renderer.getMaxAnisotropy();
 
-      // Add canvas to the HTML
-      document.body.appendChild(renderer.view);
-
-
-      // Add child container to the main container 
-      stage.addChild(slidesContainer);
-
-
-      // Enable Interactions
-      stage.interactive = true;
-
-
-      // Fit renderer to the screen
-      if (options.fullScreen === true) {
-        renderer.view.style.objectFit = 'cover';
-        renderer.view.style.width = '100%';
-        renderer.view.style.height = '100%';
-        renderer.view.style.top = '50%';
-        renderer.view.style.left = '50%';
-        renderer.view.style.webkitTransform = 'translate( -50%, -50% ) scale(1.2)';
-        renderer.view.style.transform = 'translate( -50%, -50% ) scale(1.2)';
-      } else {
-        renderer.view.style.maxWidth = '100%';
-        renderer.view.style.top = '50%';
-        renderer.view.style.left = '50%';
-        renderer.view.style.webkitTransform = 'translate( -50%, -50% )';
-        renderer.view.style.transform = 'translate( -50%, -50% )';
-      }
-
-
-      displacementSprite.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
-
-
-      // Set the filter to stage and set some default values for the animation
-      stage.filters = [displacementFilter];
-
-      if (options.autoPlay === false) {
-        displacementFilter.scale.x = 0;
-        displacementFilter.scale.y = 0;
-      }
-
-      if (options.wacky === true) {
-
-        displacementSprite.anchor.set(0.5);
-        displacementSprite.x = renderer.width / 2;
-        displacementSprite.y = renderer.height / 2;
-      }
-
-      displacementSprite.scale.x = 2;
-      displacementSprite.scale.y = 2;
-
-      // PIXI tries to fit the filter bounding box to the renderer so we optionally bypass
-      displacementFilter.autoFit = options.displaceAutoFit;
-
-      stage.addChild(displacementSprite);
-
-    };
-
-
-
-    /// ---------------------------
-    //  LOAD SLIDES TO CANVAS
-    /// ---------------------------          
-    this.loadPixiSprites = function (sprites) {
-
-
-      var rSprites = options.sprites;
-      var rTexts = options.texts;
-
-      for (var i = 0; i < rSprites.length; i++) {
-
-        var texture = new PIXI.Texture.fromImage(sprites[i]);
-        var image = new PIXI.Sprite(texture);
-
-        if (rTexts) {
-          var richText = new PIXI.Text(rTexts[i], style);
-          image.addChild(richText);
-
-          richText.anchor.set(0.5);
-          richText.x = image.width / 2;
-          richText.y = image.height / 2;
-        }
-
-        /* */
-        // image.anchor.set(0.5);
-        // image.x = renderer.width / 2;
-        // image.y = renderer.height / 2;            
-        // image.transform.scale.x = 1.3;
-        // image.transform.scale.y = 1.3;
-
-
-        if (i !== 0) {
-          TweenMax.set(image, {
-            alpha: 0
-          });
-        }
-
-        slidesContainer.addChild(image);
-
-      }
-
-    };
-
-
-
-    /// ---------------------------
-    //  DEFAULT RENDER/ANIMATION
-    /// ---------------------------        
-    if (options.autoPlay === true) {
-
-      var ticker = new PIXI.ticker.Ticker();
-
-      ticker.autoStart = options.autoPlay;
-
-      ticker.add(function (delta) {
-
-        displacementSprite.x += options.autoPlaySpeed[0] * delta;
-        displacementSprite.y += options.autoPlaySpeed[1];
-
-        renderer.render(stage);
-
-      });
-
-    } else {
-
-      var render = new PIXI.ticker.Ticker();
-
-      render.autoStart = true;
-
-      render.add(function (delta) {
-        renderer.render(stage);
-      });
-
-    }
-
-
-    /// ---------------------------
-    //  TRANSITION BETWEEN SLIDES
-    /// ---------------------------    
-    var isPlaying = false;
-    var slideImages = slidesContainer.children;
-    this.moveSlider = function (newIndex) {
-
-      isPlaying = true;
-
-
-      var baseTimeline = new TimelineMax({
-        onComplete: function () {
-          that.currentIndex = newIndex;
-          isPlaying = false;
-          if (options.wacky === true) {
-            displacementSprite.scale.set(1);
-          }
+    var mat = new THREE.ShaderMaterial({
+        uniforms: {
+            effectFactor: { type: "f", value: intensity },
+            dispFactor: { type: "f", value: 0.0 },
+            texture: { type: "t", value: texture1 },
+            texture2: { type: "t", value: texture2 },
+            disp: { type: "t", value: disp }
         },
-        onUpdate: function () {
 
-          if (options.wacky === true) {
-            displacementSprite.rotation += baseTimeline.progress() * 0.02;
-            displacementSprite.scale.set(baseTimeline.progress() * 3);
-          }
+        vertexShader: vertex,
+        fragmentShader: fragment,
+        transparent: true,
+        opacity: 1.0
+    });
 
+    var geometry = new THREE.PlaneBufferGeometry(
+        parent.offsetWidth,
+        parent.offsetHeight,
+        1
+    );
+    var object = new THREE.Mesh(geometry, mat);
+    scene.add(object);
+
+    var addEvents = function(){
+        var evtIn = "mouseenter";
+        var evtOut = "mouseleave";
+        if (mobileAndTabletcheck()) {
+            evtIn = "touchstart";
+            evtOut = "touchend";
         }
-      });
-
-      baseTimeline.clear();
-
-      if (baseTimeline.isActive()) {
-        return;
-      }
-
-      // DEMO 2
-      baseTimeline
-        .to(displacementFilter.scale, 1.5, {
-          x: options.displaceScale[0],
-          y: options.displaceScale[1],
-          ease: Power2.easeOut
-        })
-        .to(slideImages[that.currentIndex], 1.5, {
-          alpha: 0,
-          ease: Power2.easeOut
-        }, 0)
-        .to(slideImages[newIndex], 1, {
-          alpha: 1,
-          ease: Power2.easeOut
-        }, 1)
-        .to(displacementFilter.scale, 1.5, {
-          x: options.displaceScaleTo[0],
-          y: options.displaceScaleTo[1],
-          ease: Expo.easeOut
-        }, 0.8);
-
-    };
-
-
-
-    /// ---------------------------
-    //  CLICK HANDLERS
-    /// ---------------------------         
-    var nav = options.navElement;
-
-    for (var i = 0; i < nav.length; i++) {
-
-      var navItem = nav[i];
-
-      navItem.onclick = function (event) {
-
-        // Make sure the previous transition has ended
-        if (isPlaying) {
-          return false;
-        }
-
-        if (this.getAttribute('data-nav') === 'next') {
-
-          if (that.currentIndex >= 0 && that.currentIndex < slideImages.length - 1) {
-            that.moveSlider(that.currentIndex + 1);
-          } else {
-            that.moveSlider(0);
-          }
-        } else {
-          if (that.currentIndex > 0 && that.currentIndex < slideImages.length) {
-            that.moveSlider(that.currentIndex - 1);
-          } else {
-            that.moveSlider(spriteImages.length - 1);
-          }
-        }
-        return false;
-      }
-    }
-
-    /// ---------------------------
-    //  INIT FUNCTIONS
-    /// ---------------------------     
-    this.init = function () {
-
-
-      that.initPixi();
-      that.loadPixiSprites(options.pixiSprites);
-
-      /*
-      if ( options.fullScreen === true ) {
-        window.addEventListener("resize", function( event ){ 
-          scaleToWindow( renderer.view );
+        parent.addEventListener(evtIn, function(e) {
+            TweenMax.to(mat.uniforms.dispFactor, speedIn, {
+                value: 1,
+                ease: easing
+            });
         });
-        scaleToWindow( renderer.view );  
-      }
-      */
 
-
+        parent.addEventListener(evtOut, function(e) {
+            TweenMax.to(mat.uniforms.dispFactor, speedOut, {
+                value: 0,
+                ease: easing
+            });
+        });
     };
 
-
-    /// ---------------------------
-    //  INTERACTIONS
-    /// ---------------------------
-    function rotateSpite() {
-      displacementSprite.rotation += 0.001;
-      rafID = requestAnimationFrame(rotateSpite);
+    if (userHover) {
+        addEvents();
     }
 
-    if (options.interactive === true) {
+    window.addEventListener("resize", function(e) {
+        renderer.setSize(parent.offsetWidth, parent.offsetHeight);
+    });
 
-      var rafID, mouseX, mouseY;
 
-      // Enable interactions on our slider
-      slidesContainer.interactive = true;
-      slidesContainer.buttonMode = true;
-
-      // HOVER
-      if (options.interactionEvent === 'hover' || options.interactionEvent === 'both') {
-
-        slidesContainer.pointerover = function (mouseData) {
-          mouseX = mouseData.data.global.x;
-          mouseY = mouseData.data.global.y;
-          TweenMax.to(displacementFilter.scale, 1, {
-            x: "+=" + Math.sin(mouseX) * 100 + "",
-            y: "+=" + Math.cos(mouseY) * 100 + ""
-          });
-          rotateSpite();
-        };
-
-        slidesContainer.pointerout = function (mouseData) {
-          TweenMax.to(displacementFilter.scale, 1, {
-            x: 0,
-            y: 0
-          });
-          cancelAnimationFrame(rafID);
-        };
-
-      }
-
-      // CLICK
-      if (options.interactionEvent === 'click' || options.interactionEvent === 'both') {
-
-        slidesContainer.pointerup = function (mouseData) {
-          if (options.dispatchPointerOver === true) {
-            TweenMax.to(displacementFilter.scale, 1, {
-              x: 0,
-              y: 0,
-              onComplete: function () {
-                TweenMax.to(displacementFilter.scale, 1, {
-                  x: 20,
-                  y: 20
-                });
-              }
-            });
-          } else {
-            TweenMax.to(displacementFilter.scale, 1, {
-              x: 0,
-              y: 0
-            });
-            cancelAnimationFrame(rafID);
-          }
-
-        };
-
-        slidesContainer.pointerdown = function (mouseData) {
-          mouseX = mouseData.data.global.x;
-          mouseY = mouseData.data.global.y;
-          TweenMax.to(displacementFilter.scale, 1, {
-            x: "+=" + Math.sin(mouseX) * 1200 + "",
-            y: "+=" + Math.cos(mouseY) * 200 + ""
-          });
-        };
-
-        slidesContainer.pointerout = function (mouseData) {
-          if (options.dispatchPointerOver === true) {
-            TweenMax.to(displacementFilter.scale, 1, {
-              x: 0,
-              y: 0,
-              onComplete: function () {
-                TweenMax.to(displacementFilter.scale, 1, {
-                  x: 20,
-                  y: 20
-                });
-              }
-            });
-          } else {
-            TweenMax.to(displacementFilter.scale, 1, {
-              x: 0,
-              y: 0
-            });
-            cancelAnimationFrame(rafID);
-          }
-
-        };
-
-      }
-
+    this.next = function(){
+        TweenMax.to(mat.uniforms.dispFactor, speedIn, {
+            value: 1,
+            ease: easing
+        });
     }
 
+    this.previous = function(){
+        TweenMax.to(mat.uniforms.dispFactor, speedOut, {
+            value: 0,
+            ease: easing
+        });
+    };
 
+    var animate = function() {
+        requestAnimationFrame(animate);
 
-    /// ---------------------------
-    //  CENTER DISPLACEMENT
-    /// ---------------------------
-    if (options.displacementCenter === true) {
-      displacementSprite.anchor.set(0.5);
-      displacementSprite.x = renderer.view.width / 2;
-      displacementSprite.y = renderer.view.height / 2;
-    }
+        renderer.render(scene, camera);
+    };
+    animate();
+};
 
-
-    /// ---------------------------
-    //  START 
-    /// ---------------------------           
-    this.init();
-
-
-    /// ---------------------------
-    //  HELPER FUNCTIONS
-    /// ---------------------------
-    function scaleToWindow(canvas, backgroundColor) {
-      var scaleX, scaleY, scale, center;
-
-      //1. Scale the canvas to the correct size
-      //Figure out the scale amount on each axis
-      scaleX = window.innerWidth / canvas.offsetWidth;
-      scaleY = window.innerHeight / canvas.offsetHeight;
-
-      //Scale the canvas based on whichever value is less: `scaleX` or `scaleY`
-      scale = Math.min(scaleX, scaleY);
-      canvas.style.transformOrigin = "0 0";
-      canvas.style.transform = "scale(" + scale + ")";
-
-      //2. Center the canvas.
-      //Decide whether to center the canvas vertically or horizontally.
-      //Wide canvases should be centered vertically, and 
-      //square or tall canvases should be centered horizontally
-      if (canvas.offsetWidth > canvas.offsetHeight) {
-        if (canvas.offsetWidth * scale < window.innerWidth) {
-          center = "horizontally";
-        } else {
-          center = "vertically";
-        }
-      } else {
-        if (canvas.offsetHeight * scale < window.innerHeight) {
-          center = "vertically";
-        } else {
-          center = "horizontally";
-        }
-      }
-
-      //Center horizontally (for square or tall canvases)
-      var margin;
-      if (center === "horizontally") {
-        margin = (window.innerWidth - canvas.offsetWidth * scale) / 2;
-        canvas.style.marginTop = 0 + "px";
-        canvas.style.marginBottom = 0 + "px";
-        canvas.style.marginLeft = margin + "px";
-        canvas.style.marginRight = margin + "px";
-      }
-
-      //Center vertically (for wide canvases) 
-      if (center === "vertically") {
-        margin = (window.innerHeight - canvas.offsetHeight * scale) / 2;
-        canvas.style.marginTop = margin + "px";
-        canvas.style.marginBottom = margin + "px";
-        canvas.style.marginLeft = 0 + "px";
-        canvas.style.marginRight = 0 + "px";
-      }
-
-      //3. Remove any padding from the canvas  and body and set the canvas
-      //display style to "block"
-      canvas.style.paddingLeft = 0 + "px";
-      canvas.style.paddingRight = 0 + "px";
-      canvas.style.paddingTop = 0 + "px";
-      canvas.style.paddingBottom = 0 + "px";
-      canvas.style.display = "block";
-
-      //4. Set the color of the HTML body background
-      document.body.style.backgroundColor = backgroundColor;
-
-      //Fix some quirkiness in scaling for Safari
-      var ua = navigator.userAgent.toLowerCase();
-      if (ua.indexOf("safari") != -1) {
-        if (ua.indexOf("chrome") > -1) {
-          // Chrome
-        } else {
-          // Safari
-          //canvas.style.maxHeight = "100%";
-          //canvas.style.minHeight = "100%";
-        }
-      }
-
-      //5. Return the `scale` value. This is important, because you'll nee this value 
-      //for correct hit testing between the pointer and sprites
-      return scale;
-    } // http://bit.ly/2y1Yk2k      
-
-
-  };
-
-})();
-
-export default CanvasSlideshow;

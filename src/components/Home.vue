@@ -63,7 +63,7 @@
       <div class="home__links-wrapper">
         <div class="home__link" ref="linkProject">
           <div class="home__link-wrapper">
-            <div class="link home__link-value" v-on:click="goToProject(project.slug)">see the case</div>
+            <div class="link home__link-value" v-on:click="goToProject(currentProject)">see the case</div>
           </div>
         </div>
       </div>
@@ -75,6 +75,8 @@
 import { TimelineMax } from 'gsap';
 import { Lethargy } from 'lethargy';
 import { ease } from '@/services/utils';
+import PictureEffect from '@/services/PicturesEffect';
+
 export default {
   name: 'Home',
   data() {
@@ -110,6 +112,8 @@ export default {
     }
   },
   mounted() {
+    console.log(PictureEffect)
+
     this.wheelHandler = event => {
       this.onMouseWheel(event);
     };
@@ -337,41 +341,50 @@ export default {
         }, '-=1.3');
     },
 
-    goToProject(slug) {
-      /*
+    goToProject(id) {
       const timeline = new TimelineMax({
         onComplete: () => {
-          this.$router.push({
-            name: 'project',
-            params: { slug: this.$store.state.content.projects[this.currentProject].slug }
-          });
+          console.log(id)
         }
       });
 
-      const timeline = new TimelineMax()
-
       timeline
-        .to(this.$refs.backgroundValue[this.currentProject].querySelector('.home__background-source'), 1.5, {
-          scale: 1.5,
+        .staggerFromTo(this.$refs.title1Value[this.currentProject].querySelectorAll('.home__titles-part-value'), 0.8, {
+          y: '0%'
+        }, {
+          y: '-100%',
+          ease: ease
+        }, -0.05)
+        .staggerFromTo(this.$refs.title2Value[this.currentProject].querySelectorAll('.home__titles-part-value'), 0.8, {
+          y: '0%'
+        }, {
+          y: '-100%',
+          ease: ease
+        }, -0.05, '-= 0.8')
+        .fromTo(this.$refs.illustrationValue[this.currentProject].querySelector('.home__illustration-source '), 0.8, {
+          left: '50%',
+          width: '50%'
+        }, {
+          left: '0%',
+          width: '100%',
           ease: ease
         })
-        .to(this.$refs.bars.querySelectorAll('.home__subbar--1'), 0.8, {
-          scaleY: 0,
+        .to(this.$refs.jobValue[this.currentProject].querySelector('.home__details-job-value'), 0.6, {
+          x: '-100%',
           ease: ease
-        }, '-=1.5')
-        .to(this.$refs.bars.querySelectorAll('.home__subbar--2'), 0.8, {
-          scaleY: 0,
+        }, '-=0.6')
+        .to(this.$refs.typeValue[this.currentProject].querySelector('.home__details-type-value'), 0.6, {
+          x: '-100%',
           ease: ease
-        }, '-=1.35')
-        .to(this.$refs.bars.querySelectorAll('.home__subbar--3'), 0.8, {
-          scaleY: 0,
+        }, '-=0.6')
+        .to(this.$refs.linkProject.querySelector('.home__link-value'), 0.6, {
+          x: '-100%',
           ease: ease
-        }, '-=1.2');
-      this.$router.push({
-        name: 'project',
-        params: { slug: slug }
-      });
-      */
+        }, '-=0.6')
+        .to(this.$refs.projectNumber[this.currentProject].querySelector('.home__project-number-value'), 0.6, {
+          y: '-100%',
+          ease: ease
+        }, '-=0.6');
     }
   },
   watch: {
@@ -426,8 +439,8 @@ export default {
 .home__illustrations {
   position: absolute;
   top: $horizontal-line-1;
-  left: 50%;
-  width: $vertical-line-3 - $vertical-line-2;
+  left: $vertical-line-2;
+  width: $size-illustration;
   height: 50%;
   z-index: $zindex-home-illustrations;
   overflow: hidden;
@@ -435,7 +448,7 @@ export default {
 }
 
 .home__illustration {
-  position: absolute;
+  position: relative;
   width: 100%;
   height: 100%;
   z-index: $zindex-home-illustrations;
@@ -457,11 +470,16 @@ export default {
 }
 
 .home__illustration-source {
+  position: absolute;
+  width: 50%;
+  left: 50%;
   overflow: hidden;
 
   img {
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    right: 0;
+    height: 150%;
+    width: 74vw;
     object-fit: cover;
     transform: translateY(100%);
     will-change: transform;
