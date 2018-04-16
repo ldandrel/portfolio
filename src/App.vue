@@ -8,7 +8,7 @@
 
       <router-view/>
 
-      <div class="scroll-fill" v-if="$route.name !== 'about'" ref="scroll">
+      <div class="scroll-fill" v-if="$route.name !== 'About'" ref="scroll">
         <div class="scroll-fill-1">scroll</div>
         <div class="scroll-fill-line"></div>
         <div class="scroll-fill-2">down</div>
