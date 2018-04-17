@@ -46,13 +46,13 @@
 
     <div class="home__details">
       <div class="home__details-content">
-        <div class="home__details-type" ref="typeValue" v-for="(project, index) in projects" :key="index">
-          <div class="home__details-type-wrapper">
+        <div class="home__details-type">
+          <div class="home__details-type-wrapper" ref="typeValue" v-for="(project, index) in projects" :key="index">
             <div class="home__details-type-value">{{ project.type }}</div>
           </div>
         </div>
-        <div class="home__details-job" ref="jobValue" v-for="(project, index) in projects" :key="index">
-          <div class="home__details-job-wrapper">
+        <div class="home__details-job">
+          <div class="home__details-job-wrapper" ref="jobValue" v-for="(project, index) in projects" :key="index">
             <div class="home__details-job-value">{{ project.job }}</div>
           </div>
         </div>
@@ -612,7 +612,7 @@ export default {
 .home__details{
   position: absolute;
   left:$vertical-line-2;
-  bottom: calc(25% + 50px);
+  bottom: calc(25% + 90px);
   z-index: $zindex-home-details;
 }
 
@@ -622,25 +622,21 @@ export default {
   width: 37vw;
 }
 
-.home__details-type,
-.home__details-job {
+.home__details-type-wrapper,
+.home__details-job-wrapper {
+  overflow: hidden;
   position: absolute;
   left: 0;
   text-align: right;
   color: $grey;
 }
 
-.home__details-job {
+.home__details-job-wrapper {
   bottom: 0;
 }
 
-.home__details-type {
+.home__details-type-wrapper {
   top:0;
-}
-
-.home__details-type-wrapper,
-.home__details-job-wrapper {
-  overflow: hidden;
 }
 
 .home__details-type-value,

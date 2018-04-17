@@ -31,11 +31,13 @@ export default {
         delay: 0.7
       });
 
-      TweenMax.to(this.$refs.return, 0.25, {
-        y: '0%',
-        ease: easeDefault,
-        delay: 0.7
-      });
+      if (this.$route.name !== 'Home') {
+        TweenMax.to(this.$refs.return, 0.25, {
+          y: '0%',
+          ease: easeDefault,
+          delay: 0.7
+        });
+      }
     },
     goHome() {
       this.$store.commit(RETURN_HOME, true);
