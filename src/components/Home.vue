@@ -113,6 +113,10 @@ export default {
 
     returnHome() {
       return this.$store.state.returnHome;
+    },
+
+    goAbout() {
+      return this.$store.state.goAbout;
     }
   },
   mounted() {
@@ -148,7 +152,6 @@ export default {
     window.removeEventListener('DOMMouseScroll', this.wheelHandler);
     window.removeEventListener('MozMousePixelScroll', this.wheelHandler);
     window.removeEventListener('keydown', this.keydownHandler);
-    this.clearDefinitelySwitchingInterval();
   },
   methods: {
     enterAnimation() {
@@ -195,6 +198,58 @@ export default {
           y: '100%'
         }, {
           y: '0%',
+          ease: ease
+        }, '-=0.7');
+    },
+
+    exitAnimation() {
+      const timeline = new TimelineMax({
+        onComplete: () => {
+          this.$router.push({ name: 'About' })
+        }
+      });
+
+      timeline
+        .fromTo(this.$refs.illustrationValue[this.currentProject].querySelector('.home__illustration-source img'), 0.8, {
+          opacity: '1'
+        }, {
+          opacity: '0',
+          ease: ease
+        })
+        .staggerFromTo(this.$refs.title1Value[this.currentProject].querySelectorAll('.home__titles-part-value'), 0.7, {
+          y: '0%'
+        }, {
+          y: '-100%',
+          ease: ease
+        }, -0.05, '-=0.8')
+        .staggerFromTo(this.$refs.title2Value[this.currentProject].querySelectorAll('.home__titles-part-value'), 0.7, {
+          y: '0%'
+        }, {
+          y: '-100%',
+          ease: ease
+        }, -0.05, '-=0.7')
+        .fromTo(this.$refs.typeValue[this.currentProject].querySelector('.home__details-type-value'), 0.8, {
+          y: '0%'
+        }, {
+          y: '-100%',
+          ease: ease
+        }, '-=0.7')
+        .fromTo(this.$refs.jobValue[this.currentProject].querySelector('.home__details-job-value'), 0.8, {
+          y: '0%'
+        }, {
+          y: '-100%',
+          ease: ease
+        }, '-=0.7')
+        .fromTo(this.$refs.linkProject.querySelector('.home__link-value'), 0.8, {
+          y: '0%'
+        }, {
+          y: '-100%',
+          ease: ease
+        }, '-=0.7')
+        .fromTo(this.$refs.projectNumber[this.currentProject].querySelector('.home__project-number-value'), 0.8, {
+          y: '0%'
+        }, {
+          y: '-100%',
           ease: ease
         }, '-=0.7');
     },
@@ -402,6 +457,12 @@ export default {
     websiteReady(boolean) {
       if (boolean === true) {
         this.enterAnimation();
+      }
+    },
+
+    goAbout(boolean) {
+      if (boolean === true) {
+        this.exitAnimation();
       }
     }
   }

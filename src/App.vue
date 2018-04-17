@@ -73,7 +73,7 @@ export default {
   },
   watch: {
     websiteReady(boolean) {
-      if (boolean === true) {
+      if (boolean === true && this.$route.name !== 'About') {
         this.scrollOpacity();
       }
     }

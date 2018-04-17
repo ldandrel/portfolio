@@ -67,6 +67,7 @@
 <script>
 import { TimelineMax } from 'gsap';
 import { ease } from '@/services/utils'
+import { GO_ABOUT } from '@/store/types'
 
 export default {
   name: 'About',
@@ -85,6 +86,9 @@ export default {
     },
     returnHome() {
       return this.$store.state.returnHome;
+    },
+    goAbout() {
+      return this.$store.state.goAbout;
     }
   },
   methods: {
@@ -186,6 +190,12 @@ export default {
       if (boolean === true) {
         this.exitAnimation();
       }
+    }
+  },
+  mounted() {
+    if (this.goAbout === true) {
+      this.enterAnimation();
+      this.$store.commit(GO_ABOUT, false);
     }
   }
 }

@@ -4,13 +4,13 @@
           <div class="header-logo">
               <router-link tag="a" to="/">Luc <br> Dandrel</router-link>
           </div>
-          <div class="header__return" v-if="['About', 'single-project'].indexOf($route.name) > -1">
+          <div class="header__return">
             <div class="header__return-wrapper">
-              <div ref="return" class="link" v-on:click="goHome">return home</div>
+              <div ref="return" class="link header__return-value" v-on:click="goHome">return home</div>
             </div>
           </div>
           <div class="header-about">
-              <router-link tag="a" to="/">About</router-link>
+              <a v-on:click="goAbout">About</a>
           </div>
         </div>
     </div>
@@ -18,8 +18,8 @@
 
 <script>
 import { TweenMax } from 'gsap';
-import { easeDefault, ease } from '@/services/utils';
-import { RETURN_HOME } from '@/store/types';
+import { easeDefault } from '@/services/utils';
+import { RETURN_HOME, GO_ABOUT } from '@/store/types';
 
 export default {
   name: 'Header',
@@ -30,9 +30,26 @@ export default {
         ease: easeDefault,
         delay: 0.7
       });
+
+      TweenMax.to(this.$refs.return, 0.25, {
+        y: '0%',
+        ease: easeDefault,
+        delay: 0.7
+      });
     },
     goHome() {
       this.$store.commit(RETURN_HOME, true);
+    },
+
+    goAbout() {
+      if (this.$route.name !== 'About') {
+        this.$store.commit(GO_ABOUT, true);
+        TweenMax.to(this.$refs.return, 0.6, {
+          y: '0%',
+          ease: easeDefault,
+          delay: 1.5
+        });
+      }
     }
   },
   watch: {
@@ -45,7 +62,7 @@ export default {
       if (boolean === true) {
         TweenMax.to(this.$refs.return, 0.6, {
           y: '-100%',
-          ease: ease,
+          ease: easeDefault,
           delay: 0.2
         });
       }
@@ -94,10 +111,6 @@ export default {
     }
   }
 
-  .header__return a{
-    margin-left:-12px;
-  }
-
   .header-logo{
     margin-left:7%;
     a{
@@ -121,5 +134,10 @@ export default {
 
 .header__return-wrapper{
   overflow: hidden;
+}
+
+.header__return-value {
+  transform: translateY(100%);
+  will-change: transform;
 }
 </style>
