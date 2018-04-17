@@ -5,4 +5,5 @@ export const LOAD_WEBSITE = 'LOAD_WEBSITE';
 export const SWITCH_MOBILE = 'SWITCH_MOBILE';
 export const SWITCH_CURRENT_PROJECT = 'SWITCH_CURRENT_PROJECT';
 export const TRANSITIONING = 'TRANSITIONING';
-export const RETURN_HOME = 'RETURN_HOME'
+export const RETURN_HOME = 'RETURN_HOME';
+export const GO_ABOUT = 'GO_ABOUT';

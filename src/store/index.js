@@ -9,7 +9,8 @@ import {
   SWITCH_CURRENT_PROJECT,
   TRANSITIONING,
   SWITCH_MOBILE,
-  RETURN_HOME
+  RETURN_HOME,
+  GO_ABOUT
 } from '@/store/types';
 import ProgressLoaderService from '@/services/ProgressLoaderService';
 
@@ -24,7 +25,8 @@ const state = {
   transitioning: false,
   darkMode: false,
   isMobile: false,
-  returnHome: false
+  returnHome: false,
+  goAbout: false
 };
 
 const mutations = {
@@ -48,6 +50,9 @@ const mutations = {
   },
   [RETURN_HOME](state, boolean) {
     state.returnHome = boolean;
+  },
+  [GO_ABOUT](state, boolean) {
+    state.goAbout = boolean;
   }
 };
 

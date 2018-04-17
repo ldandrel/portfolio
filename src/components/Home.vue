@@ -75,7 +75,6 @@
 import { TimelineMax } from 'gsap';
 import { Lethargy } from 'lethargy';
 import { ease } from '@/services/utils';
-import PictureEffect from '@/services/PicturesEffect';
 import { RETURN_HOME } from '@/store/types';
 
 export default {
@@ -117,8 +116,6 @@ export default {
     }
   },
   mounted() {
-    console.log(PictureEffect)
-
     this.wheelHandler = event => {
       this.onMouseWheel(event);
     };
