@@ -6,11 +6,10 @@ import {
   LOAD_ASSETS_PROGRESS,
   LOAD_ASSETS_LOADED,
   LOAD_WEBSITE,
-  SWITCH_CURRENT_PROJECT,
-  TRANSITIONING,
   SWITCH_MOBILE,
   RETURN_HOME,
-  GO_ABOUT
+  GO_ABOUT,
+  GO_PROJECT
 } from '@/store/types';
 import ProgressLoaderService from '@/services/ProgressLoaderService';
 
@@ -21,9 +20,7 @@ const state = {
   assetsLoadingProgress: 0,
   assetsLoaded: false,
   websiteReady: false,
-  currentProject: false,
-  transitioning: false,
-  darkMode: false,
+  goProject: false,
   isMobile: false,
   returnHome: false,
   goAbout: false
@@ -39,12 +36,6 @@ const mutations = {
   [LOAD_WEBSITE](state) {
     state.websiteReady = true;
   },
-  [SWITCH_CURRENT_PROJECT](state, id) {
-    state.currentProject = id;
-  },
-  [TRANSITIONING](state, value) {
-    state.transitioning = value;
-  },
   [SWITCH_MOBILE](state, boolean) {
     state.isMobile = boolean;
   },
@@ -53,6 +44,9 @@ const mutations = {
   },
   [GO_ABOUT](state, boolean) {
     state.goAbout = boolean;
+  },
+  [GO_PROJECT](state, boolean) {
+    state.goProject = boolean;
   }
 };
 

@@ -210,48 +210,48 @@ export default {
       });
 
       timeline
-        .fromTo(this.$refs.illustrationValue[this.currentProject].querySelector('.home__illustration-source img'), 0.8, {
+        .fromTo(this.$refs.illustrationValue[this.currentProject].querySelector('.home__illustration-source img'), 1, {
           opacity: '1'
         }, {
           opacity: '0',
           ease: ease
         })
-        .staggerFromTo(this.$refs.title1Value[this.currentProject].querySelectorAll('.home__titles-part-value'), 0.7, {
+        .fromTo(this.$refs.projectNumber[this.currentProject].querySelector('.home__project-number-value'), 0.5, {
+          y: '0%'
+        }, {
+          y: '-100%',
+          ease: ease
+        }, '-=0.8')
+        .staggerFromTo(this.$refs.title1Value[this.currentProject].querySelectorAll('.home__titles-part-value'), 0.6, {
           y: '0%'
         }, {
           y: '-100%',
           ease: ease
         }, -0.05, '-=0.8')
-        .staggerFromTo(this.$refs.title2Value[this.currentProject].querySelectorAll('.home__titles-part-value'), 0.7, {
+        .staggerFromTo(this.$refs.title2Value[this.currentProject].querySelectorAll('.home__titles-part-value'), 0.6, {
           y: '0%'
         }, {
           y: '-100%',
           ease: ease
-        }, -0.05, '-=0.7')
-        .fromTo(this.$refs.typeValue[this.currentProject].querySelector('.home__details-type-value'), 0.8, {
+        }, -0.05, '-=0.8')
+        .fromTo(this.$refs.typeValue[this.currentProject].querySelector('.home__details-type-value'), 0.5, {
           y: '0%'
         }, {
           y: '-100%',
           ease: ease
-        }, '-=0.7')
-        .fromTo(this.$refs.jobValue[this.currentProject].querySelector('.home__details-job-value'), 0.8, {
+        }, '-=0.8')
+        .fromTo(this.$refs.jobValue[this.currentProject].querySelector('.home__details-job-value'), 0.5, {
           y: '0%'
         }, {
           y: '-100%',
           ease: ease
-        }, '-=0.7')
-        .fromTo(this.$refs.linkProject.querySelector('.home__link-value'), 0.8, {
+        }, '-=0.8')
+        .fromTo(this.$refs.linkProject.querySelector('.home__link-value'), 0.6, {
           y: '0%'
         }, {
           y: '-100%',
           ease: ease
-        }, '-=0.7')
-        .fromTo(this.$refs.projectNumber[this.currentProject].querySelector('.home__project-number-value'), 0.8, {
-          y: '0%'
-        }, {
-          y: '-100%',
-          ease: ease
-        }, '-=0.7');
+        }, '-=0.8');
     },
 
     isDescending(text) {
@@ -555,6 +555,7 @@ export default {
     object-fit: cover;
     transform: translateY(100%);
     will-change: transform;
+    filter: grayscale(100%);
   }
 }
 
