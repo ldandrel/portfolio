@@ -8,38 +8,40 @@
         </div>
       </div>
     </div>
-    <div class="project__title" ref="title">
-      <div class="project__title-wrapper">
+    <div class="project__title">
+      <div class="project__title-wrapper" ref="title">
         <h1 class="project__title-value">
           {{ project.title }}
         </h1>
       </div>
     </div>
 
-    <div class="project__details" ref="details">
-      <div class="project__details-content">
-        <div class="project__details-detail">
-          <div class="project__details-content-wrapper">
-            <div class="project__details-content-value" ref="type">{{ project.type }}</div>
+    <div class="project__details">
+      <div class="project__details-wrapper" ref="details">
+        <div class="project__details-content">
+          <div class="project__details-detail">
+            <div class="project__details-content-wrapper">
+              <div class="project__details-content-value" ref="type">{{ project.type }}</div>
+            </div>
           </div>
-        </div>
 
-        <div class="project__details-detail">
-          <div class="project__details-content-wrapper">
-            <div class="project__details-content-value" ref="job">{{ project.job }}</div>
+          <div class="project__details-detail">
+            <div class="project__details-content-wrapper">
+              <div class="project__details-content-value" ref="job">{{ project.job }}</div>
+            </div>
           </div>
-        </div>
 
-        <div class="project__details-detail">
-          <div class="project__details-content-wrapper">
-            <div class="project__details-content-value" ref="date">{{ project.date }}</div>
+          <div class="project__details-detail">
+            <div class="project__details-content-wrapper">
+              <div class="project__details-content-value" ref="date">{{ project.date }}</div>
+            </div>
           </div>
-        </div>
 
-        <div class="project__details-detail">
-          <div class="project__details-content-wrapper">
-            <div class="project__details-content-value" ref="roleContent">
-              <a :href="project.link" class="link">website</a>
+          <div class="project__details-detail">
+            <div class="project__details-content-wrapper">
+              <div class="project__details-content-value" ref="roleContent">
+                <a :href="project.link" class="link">website</a>
+              </div>
             </div>
           </div>
         </div>
@@ -83,6 +85,9 @@ export default {
     },
     goProject() {
       return this.$store.state.goProject;
+    },
+    websiteReady() {
+      return this.$store.state.websiteReady;
     }
   },
   beforeMount() {
@@ -93,7 +98,6 @@ export default {
     if (existingProject === undefined) {
       this.$router.push({ name: 'Home' });
     }
-
   },
   mounted() {
     if (this.goProject === true) {
@@ -130,13 +134,30 @@ export default {
       const timeline = new TimelineMax();
 
       timeline
-        .to(this.$refs.illustration.querySelector('.project__illustration-source img'), 0.7, {
-          css: { 'filter': 'grayscale(0%)', '-webkit-filter': 'grayscale(0%)' },
+        .to(this.$refs.illustration.querySelector('.project__illustration-source'), 1, {
+          left: '0%',
+          width: '100%',
           ease: ease
         })
+        .to(this.$refs.illustration.querySelector('.project__illustration-source img'), 1, {
+          css: { 'filter': 'grayscale(0%)', '-webkit-filter': 'grayscale(0%)' },
+          ease: ease
+        }, '-=1')
+        .staggerFromTo([this.$refs.title, this.$refs.details], 0.5, {
+          width: '0%'
+        }, {
+          width: '100%',
+          ease: ease
+        }, 0.5, '-=1')
+    }
+  },
+  watch: {
+    websiteReady(boolean) {
+      if (boolean === true) {
+        this.enterAnimation();
+      }
     }
   }
-
 }
 </script>
 
@@ -188,7 +209,6 @@ export default {
   right: 0;
   overflow: hidden;
 
-
   &--from-home {
     left:0%;
     width: 100%;
@@ -214,6 +234,7 @@ export default {
 
 .project__title-wrapper {
   overflow: hidden;
+  width: 0%;
 }
 
 .project__title-value {
@@ -249,6 +270,12 @@ export default {
   height: 100%;
   justify-content: space-between;
   z-index: 2;
+  width: 37vw;
+}
+
+.project__details-wrapper {
+  overflow: hidden;
+  width: 0%;
 }
 
 .project__details-detail {
