@@ -1,10 +1,10 @@
 <template>
 <div class="project">
   <div class="project__head">
-    <div class="project__illustration-wrapper" >
+    <div class="project__illustration-wrapper" ref="illustration">
       <div class="project__illustration">
-        <div class="project__illustration-source">
-          <img :src="project.illustration" ref="illustration">
+        <div class="project__illustration-source" :class="{'project__illustration-source--from-home': fromHome}">
+          <img :src="project.illustration">
         </div>
       </div>
     </div>
@@ -73,7 +73,8 @@ export default {
       pressTimeout: null,
       leavingToProject: false,
       scrollbar: null,
-      observer: null
+      observer: null,
+      fromHome: false
     }
   },
   computed: {
@@ -87,9 +88,12 @@ export default {
   beforeMount() {
     const existingProject = this.$store.state.content.projects.find(project => project.slug === this.slug);
 
+    this.fromHome = this.goProject
+
     if (existingProject === undefined) {
-      this.$router.push({ name: 'home' });
+      this.$router.push({ name: 'Home' });
     }
+
   },
   mounted() {
     if (this.goProject === true) {
@@ -126,7 +130,7 @@ export default {
       const timeline = new TimelineMax();
 
       timeline
-        .to(this.$refs.illustration, 0.7, {
+        .to(this.$refs.illustration.querySelector('.project__illustration-source img'), 0.7, {
           css: { 'filter': 'grayscale(0%)', '-webkit-filter': 'grayscale(0%)' },
           ease: ease
         })
@@ -180,9 +184,15 @@ export default {
 
 .project__illustration-source {
   position: absolute;
-  width: 100%;
-  left: 0;
+  width: 0%;
+  right: 0;
   overflow: hidden;
+
+
+  &--from-home {
+    left:0%;
+    width: 100%;
+  }
 
   img {
     position: absolute;
