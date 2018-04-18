@@ -297,7 +297,7 @@ export default {
           this.switchProject();
           setTimeout(() => {
             this.switing = false;
-          }, 500);
+          }, 1500);
         }
       }
     },
@@ -323,7 +323,7 @@ export default {
 
           setTimeout(() => {
             this.switing = false;
-          }, 500);
+          }, 1500);
         }
       }
     },
@@ -563,7 +563,6 @@ export default {
   background-color:$white;
   will-change: transform;
 }
-
 
 .home__illustrations {
   position: absolute;

@@ -58,7 +58,8 @@ div.link {
       bottom:2px;
       margin-left:12px;
       transform-origin: right;
-      will-change: transform;
+	  will-change: transform;
+	  transition: transform 1s ease;
     }
 }
 
@@ -66,7 +67,6 @@ a.link:hover,
 div.link:hover {
 	&::after{
 	  transform: scaleX(6);
-	  transition: all 1s ease;
 	}
 }
 
