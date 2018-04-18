@@ -10,6 +10,17 @@
       </div>
     </div>
 
+    <div class="home__progress" ref="progress">
+      <div class="home__progress-wrapper">
+        <div class="home__progress-number" :class="{'home__progress-number--is-active': currentProject === index}" v-for="(project, index) in projects" :key="index">
+          <div class="home__progress-number-wrapper">
+            <div class="home__progress-number-value" ref="indexValue">{{ (index + 1)|pad }}</div>
+          </div>
+        </div>
+        <div class="home__progress-bar" ref="progressBar"></div>
+      </div>
+    </div>
+
     <div class="home__illustrations" ref="illustrations">
       <div class="home__illustration" ref="illustrationValue" :class="{'home__illustration--current': currentProject === index, 'home__illustration--previous': previousProject === index}" v-for="(project, index) in projects" :key="index">
         <div class="home__illustration-wrapper">
@@ -75,7 +86,7 @@
 import { TimelineMax } from 'gsap';
 import { Lethargy } from 'lethargy';
 import { ease } from '@/services/utils';
-import { RETURN_HOME } from '@/store/types';
+import { RETURN_HOME, GO_PROJECT } from '@/store/types';
 
 export default {
   name: 'Home',
@@ -186,6 +197,10 @@ export default {
           y: '100%'
         }, {
           y: '0%',
+          ease: ease
+        }, '-=0.7')
+        .to(this.$refs.progress, 0.4, {
+          opacity: '1',
           ease: ease
         }, '-=0.7')
         .fromTo(this.$refs.linkProject.querySelector('.home__link-value'), 0.8, {
@@ -339,12 +354,16 @@ export default {
       const timeline = new TimelineMax();
 
       timeline
+        .to(this.$refs.progressBar, 0.7, {
+          y: `${(this.currentProject * 2) * 16}px`,
+          ease: ease
+        })
         .staggerFromTo(this.$refs.title1Value[this.previousProject].querySelectorAll('.home__titles-part-value'), 0.7, {
           y: '0%'
         }, {
           y: '-100%',
           ease: ease
-        }, 0.05)
+        }, 0.05, '-=0.7')
         .staggerFromTo(this.$refs.title2Value[this.previousProject].querySelectorAll('.home__titles-part-value'), 0.7, {
           y: '0%'
         }, {
@@ -410,7 +429,7 @@ export default {
     goToProject(id) {
       const timeline = new TimelineMax({
         onComplete: () => {
-          console.log(id)
+          this.$store.commit(GO_PROJECT, true);
         }
       });
 
@@ -507,6 +526,44 @@ export default {
   user-select: none;
   will-change: transform;
 }
+
+.home__progress {
+  position: absolute;
+  right: $vertical-line-1;
+  top:$horizontal-line-1;
+  height: 50vh;
+  display:flex;
+  align-items: center;
+  width: 26px;
+  opacity:0;
+}
+
+.home__progress-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.home__progress-number {
+  padding:8px 0;
+  line-height: 1;
+  color:$grey;
+  cursor:pointer;
+
+  &--is-active{
+    color:$white;
+  }
+}
+
+.home__progress-bar {
+  position:absolute;
+  right: 0;
+  top:4px;
+  height: 24px;
+  width: 1px;
+  background-color:$white;
+  will-change: transform;
+}
+
 
 .home__illustrations {
   position: absolute;
