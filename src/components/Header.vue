@@ -6,7 +6,7 @@
           </div>
           <div class="header__return">
             <div class="header__return-wrapper">
-              <div ref="return" class="link header__return-value" v-on:click="goHome">return home</div>
+              <div ref="return" class="link header__return-value" :class="{'header__return-value--active' : ['About', 'Project'].indexOf($route.name) > -1}" v-on:click="goHome">return home</div>
             </div>
           </div>
           <div class="header-about">
@@ -30,14 +30,6 @@ export default {
         ease: easeDefault,
         delay: 0.7
       });
-
-      if (this.$route.name !== 'Home') {
-        TweenMax.to(this.$refs.return, 0.25, {
-          y: '0%',
-          ease: easeDefault,
-          delay: 0.7
-        });
-      }
     },
     goHome() {
       this.$store.commit(RETURN_HOME, true);
@@ -46,11 +38,6 @@ export default {
     goAbout() {
       if (this.$route.name !== 'About') {
         this.$store.commit(GO_ABOUT, true);
-        TweenMax.to(this.$refs.return, 0.6, {
-          y: '0%',
-          ease: easeDefault,
-          delay: 1.5
-        });
       }
     }
   },
@@ -59,23 +46,11 @@ export default {
       if (boolean === true) {
         this.enterAnimation();
       }
-    },
-    returnHome(boolean) {
-      if (boolean === true) {
-        TweenMax.to(this.$refs.return, 0.6, {
-          y: '-100%',
-          ease: easeDefault,
-          delay: 0.2
-        });
-      }
     }
   },
   computed: {
     websiteReady() {
       return this.$store.state.websiteReady;
-    },
-    returnHome() {
-      return this.$store.state.returnHome;
     }
   }
 }
@@ -141,5 +116,11 @@ export default {
 .header__return-value {
   transform: translateY(100%);
   will-change: transform;
+  transition: transform 0.5s $easing;
+
+  &--active {
+    transform: translateY(0%);
+  }
 }
+
 </style>

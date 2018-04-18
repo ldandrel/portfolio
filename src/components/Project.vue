@@ -1,54 +1,63 @@
 <template>
-<div class="project">
-  <div class="project__head">
-    <div class="project__illustration-wrapper" ref="illustration">
-      <div class="project__illustration">
-        <div class="project__illustration-source" :class="{'project__illustration-source--from-home': fromHome}">
-          <img :src="project.illustration">
+  <div class="project">
+    <div class="project__head">
+      <div class="project__illustration-wrapper" ref="illustration">
+        <div class="project__illustration">
+          <div class="project__illustration-source" :class="{'project__illustration-source--from-home': fromHome}">
+            <img :src="project.illustration">
+          </div>
         </div>
       </div>
-    </div>
-    <div class="project__title">
-      <div class="project__title-wrapper" ref="title">
-        <h1 class="project__title-value">
-          {{ project.title }}
-        </h1>
+      <div class="project__title">
+        <div class="project__title-wrapper" ref="title">
+          <h1 class="project__title-value">
+            {{ project.title }}
+          </h1>
+        </div>
       </div>
-    </div>
 
-    <div class="project__details">
-      <div class="project__details-wrapper" ref="details">
-        <div class="project__details-content">
-          <div class="project__details-detail">
-            <div class="project__details-content-wrapper">
-              <div class="project__details-content-value" ref="type">{{ project.type }}</div>
+      <div class="project__details">
+        <div class="project__details-wrapper" ref="details">
+          <div class="project__details-content">
+            <div class="project__details-detail">
+              <div class="project__details-content-wrapper">
+                <div class="project__details-content-value" ref="type">{{ project.type }}</div>
+              </div>
             </div>
-          </div>
 
-          <div class="project__details-detail">
-            <div class="project__details-content-wrapper">
-              <div class="project__details-content-value" ref="job">{{ project.job }}</div>
+            <div class="project__details-detail">
+              <div class="project__details-content-wrapper">
+                <div class="project__details-content-value" ref="job">{{ project.job }}</div>
+              </div>
             </div>
-          </div>
 
-          <div class="project__details-detail">
-            <div class="project__details-content-wrapper">
-              <div class="project__details-content-value" ref="date">{{ project.date }}</div>
+            <div class="project__details-detail">
+              <div class="project__details-content-wrapper">
+                <div class="project__details-content-value" ref="date">{{ project.date }}</div>
+              </div>
             </div>
-          </div>
 
-          <div class="project__details-detail">
-            <div class="project__details-content-wrapper">
-              <div class="project__details-content-value" ref="roleContent">
-                <a :href="project.link" class="link">website</a>
+            <div class="project__details-detail">
+              <div class="project__details-content-wrapper">
+                <div class="project__details-content-value" ref="roleContent">
+                  <a :href="project.link" class="link">website</a>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="project__content">
+      <div class="project__description">
+        <div class="project__description-wrapper">
+          <p class="project__description-text">{{ project.description }}</p>
+        </div>
+      </div>
+
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -88,6 +97,12 @@ export default {
     },
     websiteReady() {
       return this.$store.state.websiteReady;
+    },
+    returnHome() {
+      return this.$store.state.returnHome;
+    },
+    goAbout() {
+      return this.$store.state.goAbout;
     }
   },
   beforeMount() {
@@ -149,12 +164,43 @@ export default {
           width: '100%',
           ease: ease
         }, 0.5, '-=1')
+        .to(this.$refs.title.querySelector('.project__title-value'), 0, {
+          css: { 'white-space': 'normal' }
+        })
+    },
+    exitAnimation(routeName) {
+      const timeline = new TimelineMax({
+        onComplete: () => { this.$router.push({name: routeName}) }
+      });
+
+      timeline
+        .to(this.$refs.illustration.querySelector('.project__illustration-source'), 1, {
+          left: '100%',
+          width: '00%',
+          ease: ease
+        })
+        .staggerFromTo([this.$refs.title, this.$refs.details], 0.5, {
+          width: '100%'
+        }, {
+          width: '0%',
+          ease: ease
+        }, -0.5, '-=1')
     }
   },
   watch: {
     websiteReady(boolean) {
       if (boolean === true) {
         this.enterAnimation();
+      }
+    },
+    returnHome(boolean) {
+      if (boolean === true) {
+        this.exitAnimation('Home');
+      }
+    },
+    goAbout(boolean) {
+      if (boolean === true) {
+        this.exitAnimation('About');
       }
     }
   }
@@ -276,6 +322,7 @@ export default {
 .project__details-wrapper {
   overflow: hidden;
   width: 0%;
+  height: 100%;
 }
 
 .project__details-detail {
@@ -299,4 +346,19 @@ export default {
   }
 }
 
+.project__content {
+  position: relative;
+  pointer-events: all;
+  overflow: hidden;
+  width: 74vw;
+  margin:82px auto 0px auto;
+}
+
+.project__description {
+  width: 45%;
+}
+
+.project__description-text {
+  color:$grey;
+}
 </style>

@@ -733,4 +733,5 @@ export default {
   will-change: transform;
   z-index: $zindex-home-links;
 }
+
 </style>
