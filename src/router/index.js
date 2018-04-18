@@ -21,7 +21,7 @@ export default new Router({
     },
     {
       path: '/project/:slug',
-      name: 'project',
+      name: 'Project',
       component: Project,
       props: true
     }

@@ -15,6 +15,7 @@
         "date": 2018,
         "title1": "My Movie",
         "title2": "Desktop",
+        "title": "My Movie Desktop",
         "type": "personnal project",
         "job": "developper front & back",
         "illustration": "/static/projects/movie-wallpaper/movie-wallpaper.jpg",

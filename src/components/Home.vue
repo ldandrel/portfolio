@@ -74,7 +74,7 @@
       <div class="home__links-wrapper">
         <div class="home__link" ref="linkProject">
           <div class="home__link-wrapper">
-            <div class="link home__link-value" v-on:click="goToProject(currentProject)">see the case</div>
+            <div class="link home__link-value" v-on:click="goToProject()">see the case</div>
           </div>
         </div>
       </div>
@@ -426,10 +426,11 @@ export default {
         }, '-=1.3');
     },
 
-    goToProject(id) {
+    goToProject() {
       const timeline = new TimelineMax({
         onComplete: () => {
           this.$store.commit(GO_PROJECT, true);
+          this.$router.push({ name: 'Project', params: { slug: this.$store.state.content.projects[this.currentProject].slug } })
         }
       });
 
@@ -463,7 +464,7 @@ export default {
           ease: ease
         }, '-=0.6')
         .to(this.$refs.linkProject.querySelector('.home__link-value'), 0.6, {
-          x: '-100%',
+          x: '-105%',
           ease: ease
         }, '-=0.6')
         .to(this.$refs.projectNumber[this.currentProject].querySelector('.home__project-number-value'), 0.6, {

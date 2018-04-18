@@ -1,39 +1,59 @@
 <template>
-  <div class="project">
-    <div class="project__head">
-      <div class="project__picture-wrapper" ref="projectPicture">
-        <div class="project__picture">
-          <img :src="project.illustration">
-        </div>
-      </div>
-      <div class="project__intro">
-        <div class="project__intro-content">
-          <div class="project__intro-left">
-            <h1 class="project__intro-title">
-              {{ project.title }}
-            </h1>
-          </div>
-          <div class="project__intro-right">
-              <span class="project__intro-type">{{ project.type }}</span>
-              <span class="project__intro-job">{{ project.job }}</span>
-              <span class="project__intro-date">{{ project.date }}</span>
-              <a class="link" :href="project.url">see the website</a>
-          </div>
+<div class="project">
+  <div class="project__head">
+    <div class="project__illustration-wrapper" >
+      <div class="project__illustration">
+        <div class="project__illustration-source">
+          <img :src="project.illustration" ref="illustration">
         </div>
       </div>
     </div>
-    <div class="project__section">
-      <div class="project__paragraph">
-        <p>{{project.description}}</p>
+    <div class="project__title" ref="title">
+      <div class="project__title-wrapper">
+        <h1 class="project__title-value">
+          {{ project.title }}
+        </h1>
+      </div>
+    </div>
+
+    <div class="project__details" ref="details">
+      <div class="project__details-content">
+        <div class="project__details-detail">
+          <div class="project__details-content-wrapper">
+            <div class="project__details-content-value" ref="type">{{ project.type }}</div>
+          </div>
+        </div>
+
+        <div class="project__details-detail">
+          <div class="project__details-content-wrapper">
+            <div class="project__details-content-value" ref="job">{{ project.job }}</div>
+          </div>
+        </div>
+
+        <div class="project__details-detail">
+          <div class="project__details-content-wrapper">
+            <div class="project__details-content-value" ref="date">{{ project.date }}</div>
+          </div>
+        </div>
+
+        <div class="project__details-detail">
+          <div class="project__details-content-wrapper">
+            <div class="project__details-content-value" ref="roleContent">
+              <a :href="project.link" class="link">website</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
 import Scrollbar from 'smooth-scrollbar';
-import { TweenMax } from 'gsap';
-
+import { TimelineMax } from 'gsap';
+import { GO_PROJECT } from '@/store/types';
+import { ease } from '@/services/utils'
 export default {
   name: 'Project',
   props: ['slug'],
@@ -59,6 +79,9 @@ export default {
   computed: {
     project() {
       return this.$store.state.content.projects.find(project => project.slug === this.slug);
+    },
+    goProject() {
+      return this.$store.state.goProject;
     }
   },
   beforeMount() {
@@ -69,6 +92,11 @@ export default {
     }
   },
   mounted() {
+    if (this.goProject === true) {
+      this.enterAnimation();
+      this.$store.commit(GO_PROJECT, false);
+    }
+
     const options = {
       damping: 0.06,
       thumbMinSize: 40,
@@ -92,10 +120,16 @@ export default {
     onScroll(event) {
       const percentage = Math.round(((event.offset.y / window.innerHeight) * 100) / 0.7);
       console.log(percentage)
+    },
 
-      TweenMax.to(this.$refs.projectPicture, 0.4, {
-        height: `${percentage}%`
-      });
+    enterAnimation() {
+      const timeline = new TimelineMax();
+
+      timeline
+        .to(this.$refs.illustration, 0.7, {
+          css: { 'filter': 'grayscale(0%)', '-webkit-filter': 'grayscale(0%)' },
+          ease: ease
+        })
     }
   }
 
@@ -115,63 +149,117 @@ export default {
 
 .project__head {
   position: relative;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   pointer-events: all;
 }
 
-.project__picture-wrapper{
+.project__illustration-wrapper {
   position: absolute;
-  top:25%;
-  left: 13%;
-  width: 74%;
+  top: $horizontal-line-1;
+  left: $vertical-line-2;
+  width: $size-illustration;
   height: 50%;
-  will-change: transform;
+  z-index: $zindex-home-illustrations;
   overflow: hidden;
+  user-select: none;
 }
 
-.project__picture img{
-    width: 100%;
-    height: auto;
+.project__illustration {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: $zindex-home-illustrations;
+  will-change: transform;
 }
 
-.project__intro {
+.project__illustration-source {
+  width: 100%;
+  height: 100%;
+}
+
+.project__illustration-source {
   position: absolute;
-  width:100%;
-  top:calc(75% + 50px);
-}
+  width: 100%;
+  left: 0;
+  overflow: hidden;
 
-.project__intro-content {
-  position:sticky;
-  top:25%;
-  left:13%;
-  width: 74%;
-  display: flex;
-  align-items: flex-end;
-}
-
-.project__intro-left,
-.project__intro-right {
-  width: 50%;
-}
-
-.project__intro-title {
-  font-family: $title-font;
-  font-size:70px;
-  transform: translateX(-6px);
-}
-.project__intro-right {
-  color:$grey;
-  display: flex;
-  justify-content: space-between;
-
-  span{
-    margin: 0 12px;
+  img {
+    position: absolute;
+    right: 0;
+    height: 150%;
+    width: 74vw;
+    object-fit: cover;
+    will-change: transform;
+    filter: grayscale(100%);
   }
 }
 
-.project__section {
+.project__title {
+  position: absolute;
+  top: $project-info;
+  left: $vertical-line-2;
+  max-width: $size-description;
+}
+
+.project__title-wrapper {
+  overflow: hidden;
+}
+
+.project__title-value {
+  font-family: $title-font;
+  font-size: 70px;
+  will-change: transform;
+  transform: translate(-4px, 0);
+  line-height: 1;
+  white-space: nowrap;
+
+  @include responsive($xl) {
+    font-size: 55px;
+    transform: translate(-3px, 0);
+  }
+}
+
+.project__details {
+  position: absolute;
+  top: $project-info;
+  left: $vertical-line-3;
+  width: $size-description;
+  height: 55px;
+
+  @include responsive($xl) {
+    height: 45px;
+  }
+}
+
+.project__details-content {
   position: relative;
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.project__details-detail {
+  padding:0px 12px;
+
+  &:first-of-type{
+    padding: 0 12px 0 0;
+  }
+
+  &:last-of-type {
+    padding:0 0 0 12px;
+  }
+}
+.project__details-content-value {
+  color:$grey;
+
+  a:hover {
+    &::after {
+      transform:scaleX(4.4)
+    }
+  }
 }
 
 </style>
