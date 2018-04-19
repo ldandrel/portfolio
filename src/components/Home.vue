@@ -14,7 +14,7 @@
       <div class="home__progress-wrapper">
         <div class="home__progress-number" :class="{'home__progress-number--is-active': currentProject === index}" v-for="(project, index) in projects" :key="index">
           <div class="home__progress-number-wrapper">
-            <div class="home__progress-number-value" ref="indexValue">{{ (index + 1)|pad }}</div>
+            <div class="home__progress-number-value" v-on:click="updateCurrentProject(index)" ref="indexValue">{{ (index + 1)|pad }}</div>
           </div>
         </div>
         <div class="home__progress-bar" ref="progressBar"></div>
@@ -327,24 +327,30 @@ export default {
     },
 
     updateCurrentProject(direction) {
-      switch (direction) {
-        case 'up':
-          if (this.currentProject === 0) {
-            this.currentProject = this.projects.length - 1;
-          } else {
-            this.currentProject -= 1;
-          }
-          break;
-        case 'down':
-          if (this.currentProject === this.projects.length - 1) {
-            this.currentProject = 0;
-          } else {
-            this.currentProject += 1;
-          }
-          break;
-        default:
-          console.error(`Undefined direction "${direction}" used.`);
-          break;
+      if (typeof direction === 'string') {
+        switch (direction) {
+          case 'up':
+            if (this.currentProject === 0) {
+              this.currentProject = this.projects.length - 1;
+            } else {
+              this.currentProject -= 1;
+            }
+            break;
+          case 'down':
+            if (this.currentProject === this.projects.length - 1) {
+              this.currentProject = 0;
+            } else {
+              this.currentProject += 1;
+            }
+            break;
+          default:
+            console.error(`Undefined direction "${direction}" used.`);
+            break;
+        } 
+      } else {
+          this.previousProject = this.currentProject;
+          this.currentProject = direction
+          this.switchProject();
       }
     },
 

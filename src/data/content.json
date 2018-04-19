@@ -117,6 +117,8 @@
         }
       },
     "assets": [
-        "/static/projects/movie-wallpaper/282460.jpg"
+        "/static/projects/movie-wallpaper/illustration.jpg",
+        "/static/projects/kygo/kygo.jpg",
+        "/static/projects/intership/intership.jpeg"
     ]
 }
