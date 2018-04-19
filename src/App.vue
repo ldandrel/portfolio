@@ -8,10 +8,10 @@
 
       <router-view/>
 
-      <div class="scroll-fill" v-if="$route.name !== 'About'" ref="scroll">
-        <div class="scroll-fill-1">scroll</div>
-        <div class="scroll-fill-line"></div>
-        <div class="scroll-fill-2">down</div>
+      <div class="scroll__fill" :class="{'scroll__fill--active' : ['Home', 'Project'].indexOf($route.name) > -1 && websiteReady}" ref="scroll">
+        <div class="scroll__fill-1">scroll</div>
+        <div class="scroll__fill-line"></div>
+        <div class="scroll__fill-2">down</div>
       </div>
   </div>
     </div>
@@ -22,9 +22,8 @@ import GlobalHeader from '@/components/Header';
 import ProgressLoader from '@/components/ProgressLoader';
 import Background from '@/components/Background';
 import Responsive from '@/components/Responsive';
-import { isMobile, ease } from '@/services/utils';
+import { isMobile } from '@/services/utils';
 import { LOAD_ASSETS, SWITCH_MOBILE } from '@/store/types';
-import { TweenMax } from 'gsap';
 
 export default {
   name: 'App',
@@ -45,14 +44,6 @@ export default {
       return this.$store.state.websiteReady;
     }
   },
-  methods: {
-    scrollOpacity() {
-      TweenMax.to(this.$refs.scroll, 1, {
-        opacity: 1,
-        ease: ease
-      });
-    }
-  },
   mounted() {
     this.$store.dispatch(LOAD_ASSETS);
 
@@ -70,13 +61,6 @@ export default {
       this.isMobile = true;
       this.$store.commit(SWITCH_MOBILE, true);
     }
-  },
-  watch: {
-    websiteReady(boolean) {
-      if (boolean === true && this.$route.name !== 'About') {
-        this.scrollOpacity();
-      }
-    }
   }
 }
 </script>
@@ -84,7 +68,7 @@ export default {
 <style lang="scss">
 @import "./assets/scss/app.scss";
 
-.scroll-fill{
+.scroll__fill {
   position:fixed;
   bottom: 20px;
   color:$grey;
@@ -94,22 +78,28 @@ export default {
   width: 100vw;
   justify-content: center;
   opacity: 0;
+  transition: opacity 0.7s $easing;
+  will-change: opacity;
 
   div:nth-child(odd){
     margin: 0 12px;
   }
 
-  .scroll-fill-line{
-    height: 27px;
-    width: 1px;
-    background-color: $white;
-    display: inline-block;
-    position: fixed;
-    left:50%;
-    animation: scroll-fill 1.2s cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
-    animation-direction: reverse;
-    will-change: transform;
-
+  &--active {
+    opacity: 1;
+    transition-delay: 0.7s;
   }
+}
+
+.scroll__fill-line {
+  height: 27px;
+  width: 1px;
+  background-color: $white;
+  display: inline-block;
+  position: fixed;
+  left:50%;
+  animation: scroll-fill 1.2s cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
+  animation-direction: reverse;
+  will-change: transform;
 }
 </style>

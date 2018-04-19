@@ -9,6 +9,9 @@
                 <div class="background-line background-line-vertical background-line-vertical-3"></div>
                 <div class="background-line background-line-vertical background-line-vertical-4"></div>
                 <div class="background-line background-line-vertical background-line-vertical-5"></div>
+                <div v-if="$route.name == 'Project'" class="background-line background-line--white background-line-vertical-2"></div>
+                <div v-if="$route.name == 'Project'" class="background-line background-line--white background-line-vertical-4"></div>
+
             </div>
             <div class="background-grid-horizontal" ref="linesHorizontal">
                 <div class="background-line background-line-horizontal background-line-horizontal-1"></div>
@@ -21,7 +24,7 @@
 <script>
 import { LOAD_ASSETS } from '@/store/types';
 import { ease } from '@/services/utils';
-import { TimelineMax } from 'gsap';
+import { TweenMax, TimelineMax } from 'gsap';
 
 export default {
   name: 'Background',
@@ -71,7 +74,14 @@ export default {
         }, '-=1')
     },
     handleScroll() {
-      console.log('test')
+      if (this.$route.name === 'Project') {
+        TweenMax.to(this.$refs.linesVertical.querySelectorAll('.background-line--white'), 0, {
+          scaleY: Math.abs(window.scrollY / ((window.innerHeight / 2) - window.innerHeight)),
+          repeat: -1,
+          yoyo: true,
+          ease: ease
+        });
+      }
     }
   },
   computed: {
@@ -83,27 +93,7 @@ export default {
     this.$store.dispatch(LOAD_ASSETS);
 
     window.addEventListener('scroll', this.handleScroll);
-    if (this.$route.name === 'project') {
-      let height = document.body.scrollHeight;
-      console.log(height);
-      var ticking = false;
 
-      const faitQuelquechose = (scroll) => {
-        console.log(scroll)
-      }
-
-      window.addEventListener('scroll', function(e) {
-        console.log('test')
-        let currentScroll = window.scrollY;
-        if (!ticking) {
-          window.requestAnimationFrame(function() {
-            faitQuelquechose(currentScroll);
-            ticking = false;
-          });
-        }
-        ticking = true;
-      });
-    }
     if (this.websiteReady === true) {
       this.enterAnimation();
     }
@@ -148,18 +138,30 @@ export default {
   .background-line {
     background-color: $background-line;
     position: fixed;
+
+    &--white {
+      background-color: $white;
+      height: 100vh;
+      width: 1px;
+      transform:scaleY(0);
+      transform-origin: top;
+      will-change: transform;
+    }
   }
   .background-line-vertical{
     height: 100vh;
     width: 1px;
     transform:scaleY(0);
     transform-origin: top;
+    will-change: transform;
   }
   .background-line-horizontal{
     width: 100vw;
     height: 1px;
     transform:scaleX(0);
     transform-origin: left;
+    will-change: transform;
+
   }
 
   .background-line-vertical-1 {
@@ -188,16 +190,6 @@ export default {
 
   .background-line-horizontal-2 {
     bottom:$horizontal-line-1;
-  }
-
-  .background-line-vertical:nth-child(even)::before {
-      content:"";
-      width: 100%;
-      height: 100%;
-      background:$white;
-      position: absolute;
-      transform: scaleY(0);
-      transform-origin: top;
   }
 }
 </style>

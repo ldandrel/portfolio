@@ -56,6 +56,23 @@
         </div>
       </div>
 
+      <div class="project__elements">
+        <div class="project__element" ref="elements" v-for="(element, index) in project.elements" :key="index">
+          <div v-if="element.type === 'video'" class="project__element-source project__element-source--video">
+            <div v-if="element.title !== false" class="project__element-title">
+              {{ element.title }}
+            </div>
+            <video ref="projectVideo" playsinline autoplay muted loop :src="element.source"></video>
+          </div>
+
+          <div v-if="element.type === 'image'" class="project__element-source project__element-source--image">
+            <div v-if="element.title !== false" class="project__element-title">
+              {{ element.title }}
+            </div>
+            <img :src="element.source">
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -124,7 +141,7 @@ export default {
     onScroll(event) {
       TweenMax.to(this.$refs.illustration, 0, {
         height: `${this.illustrationHeight - window.scrollY / 3}px`,
-        repeat: 2,
+        repeat: -1,
         yoyo: true,
         ease: ease
       });
@@ -208,6 +225,8 @@ export default {
 .project{
   width: 100vw;
   height: 100vh;
+scroll-behavior: smooth;
+
 }
 
 .project__head {
@@ -221,8 +240,8 @@ export default {
 .project__illustration-wrapper {
   position: absolute;
   top: $horizontal-line-1;
-  left: $vertical-line-2;
-  width: $size-illustration;
+  left: calc(13vw + 1px);
+  width: calc(74vw - 2px);
   height: 50%;
   z-index: $zindex-home-illustrations;
   overflow: hidden;
@@ -344,13 +363,36 @@ export default {
   pointer-events: all;
   overflow: hidden;
   width: 74vw;
-  margin:82px auto 300px auto;
+  margin:48px auto 300px auto;
+  padding-top:24px;
+  display: flex;
 }
 
 .project__description {
   width: 45%;
 }
 
+.project__elements {
+  width: 50%;
+  margin-left: 5%;
+}
+
+.project__element {
+  margin-bottom: 55px;
+}
+.project__element-source {
+  video,
+  img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    max-height: 329px;
+  }
+}
+.project__element-title {
+  margin: -24px 0 12px 10px;
+  color:$grey;
+}
 .project__description-text {
   color:$grey;
 }
