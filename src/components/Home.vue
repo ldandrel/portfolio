@@ -346,11 +346,11 @@ export default {
           default:
             console.error(`Undefined direction "${direction}" used.`);
             break;
-        } 
+        }
       } else {
-          this.previousProject = this.currentProject;
-          this.currentProject = direction
-          this.switchProject();
+        this.previousProject = this.currentProject;
+        this.currentProject = direction
+        this.switchProject();
       }
     },
 
