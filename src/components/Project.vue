@@ -8,16 +8,16 @@
           </div>
         </div>
       </div>
-      <div class="project__title">
-        <div class="project__title-wrapper" ref="title">
+      <div class="project__title" ref="title">
+        <div class="project__title-wrapper">
           <h1 class="project__title-value">
             {{ project.title }}
           </h1>
         </div>
       </div>
 
-      <div class="project__details">
-        <div class="project__details-wrapper" ref="details">
+      <div class="project__details" ref="details">
+        <div class="project__details-wrapper">
           <div class="project__details-content">
             <div class="project__details-detail">
               <div class="project__details-content-wrapper">
@@ -61,8 +61,7 @@
 </template>
 
 <script>
-import Scrollbar from 'smooth-scrollbar';
-import { TimelineMax } from 'gsap';
+import { TimelineMax, TweenMax } from 'gsap';
 import { GO_PROJECT } from '@/store/types';
 import { ease } from '@/services/utils'
 export default {
@@ -71,10 +70,6 @@ export default {
   data() {
     return {
       currentScrollPosition: 0,
-      prevScrollPosition: 0,
-      scrollSpeed: 0,
-      scrollDifference: 0,
-      scrollDirection: 1,
       overflowed: false,
       ready: false,
       elements: [],
@@ -83,7 +78,6 @@ export default {
       currentButtonPositionY: 0,
       pressTimeout: null,
       leavingToProject: false,
-      scrollbar: null,
       observer: null,
       fromHome: false
     }
@@ -109,7 +103,6 @@ export default {
     const existingProject = this.$store.state.content.projects.find(project => project.slug === this.slug);
 
     this.fromHome = this.goProject
-
     if (existingProject === undefined) {
       this.$router.push({ name: 'Home' });
     }
@@ -119,30 +112,30 @@ export default {
       this.enterAnimation();
       this.$store.commit(GO_PROJECT, false);
     }
-
-    const options = {
-      damping: 0.06,
-      thumbMinSize: 40,
-      renderByPixels: !('ontouchstart' in document),
-      alwaysShowTracks: false,
-      continuousScrolling: true
-    };
-
-    Scrollbar.init(document.querySelector('.project'), {
-      ...options,
-      wheelEventTarget: document
-    });
-
-    this.scrollbar = Scrollbar.get(document.querySelector('.project'));
-
-    this.scrollbar.addListener(event => {
+    window.addEventListener('scroll', (event) => {
       this.onScroll(event);
     });
   },
   methods: {
     onScroll(event) {
-      const percentage = Math.round(((event.offset.y / window.innerHeight) * 100) / 0.7);
-      console.log(percentage)
+      console.log(window.scrollY)
+      console.log(this.$refs.illustration.scrollHeight)
+      TweenMax.to(this.$refs.illustration, 0, {
+        height: `${this.$refs.illustration.scrollHeight - window.scrollY}px`,
+        repeat: 2,
+        yoyo: true,
+        ease: ease
+      });
+      
+      /*
+      const percentageScroll = Math.round(((this.$refs.title.getBoundingClientRect().top - 55) * 100) / window.innerHeight)
+      console.log(percentageScroll)
+      if (percentageScroll <= 25) {
+        this.$refs.title.style.position = 'fixed'
+        this.$refs.details.style.position = 'fixed'
+        this.$refs.title.style.top = 'calc(25% - 55px)'
+      }
+      */
     },
 
     enterAnimation() {
@@ -158,7 +151,7 @@ export default {
           css: { 'filter': 'grayscale(0%)', '-webkit-filter': 'grayscale(0%)' },
           ease: ease
         }, '-=1')
-        .staggerFromTo([this.$refs.title, this.$refs.details], 0.5, {
+        .staggerFromTo([this.$refs.title.querySelector('.project__title-wrapper'), this.$refs.details.querySelector('.project__details-wrapper')], 0.5, {
           width: '0%'
         }, {
           width: '100%',
@@ -174,12 +167,15 @@ export default {
       });
 
       timeline
+        .to(this.$refs.title.querySelector('.project__title-value'), 0, {
+          css: { 'white-space': 'nowrap' }
+        })
         .to(this.$refs.illustration.querySelector('.project__illustration-source'), 1, {
           left: '100%',
           width: '00%',
           ease: ease
         })
-        .staggerFromTo([this.$refs.title, this.$refs.details], 0.5, {
+        .staggerFromTo([this.$refs.title.querySelector('.project__title-wrapper'), this.$refs.details.querySelector('.project__details-wrapper')], 0.5, {
           width: '100%'
         }, {
           width: '0%',
@@ -209,11 +205,6 @@ export default {
 
 <style lang="scss" scoped>
 .project{
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
   width: 100vw;
   height: 100vh;
 }
@@ -223,6 +214,7 @@ export default {
   width: 100%;
   height: 100vh;
   pointer-events: all;
+  z-index:2;
 }
 
 .project__illustration-wrapper {
@@ -263,7 +255,7 @@ export default {
   img {
     position: absolute;
     right: 0;
-    height: 150%;
+    height: 50vh;
     width: 74vw;
     object-fit: cover;
     will-change: transform;
@@ -351,7 +343,7 @@ export default {
   pointer-events: all;
   overflow: hidden;
   width: 74vw;
-  margin:82px auto 0px auto;
+  margin:82px auto 300px auto;
 }
 
 .project__description {

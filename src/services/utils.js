@@ -26,3 +26,20 @@ export const isMobile = () => {
 
   return check;
 };
+
+export const intersectionObserver = (element, callback) => {
+  const observer = new IntersectionObserver(
+    observables => {
+      observables.forEach(observable => {
+        if (observable.intersectionRatio <= 0.3) return;
+        callback();
+        observer.disconnect();
+      });
+    },
+    {
+      threshold: [0.3]
+    }
+  );
+
+  observer.observe(element);
+};

@@ -181,10 +181,9 @@ export default {
           y: '0%',
           ease: ease
         }, 0.05, '-=0.7')
-        .fromTo(this.$refs.illustrationValue[this.currentProject].querySelector('.home__illustration-source img'), 0.8, {
-          y: '100%'
-        }, {
-          y: '0%',
+        .to(this.$refs.illustrationValue[this.currentProject].querySelector('.home__illustration-source'), 0.8, {
+          left: '50%',
+          width: '50%',
           ease: ease
         }, '-=1')
         .fromTo(this.$refs.typeValue[this.currentProject].querySelector('.home__details-type-value'), 0.8, {
@@ -225,10 +224,9 @@ export default {
       });
 
       timeline
-        .fromTo(this.$refs.illustrationValue[this.currentProject].querySelector('.home__illustration-source img'), 1, {
-          opacity: '1'
-        }, {
-          opacity: '0',
+        .to(this.$refs.illustrationValue[this.currentProject].querySelector('.home__illustration-source'), 1, {
+          left: '50%',
+          width: '0%',
           ease: ease
         })
         .fromTo(this.$refs.projectNumber[this.currentProject].querySelector('.home__project-number-value'), 0.5, {
@@ -382,10 +380,17 @@ export default {
           y: '0%',
           ease: ease
         }, 0.05, '-=0.7')
-        .fromTo(this.$refs.illustrationValue[this.currentProject].querySelector('.home__illustration-source img'), 0.8, {
-          y: '100%'
+        .to(this.$refs.illustrationValue[this.previousProject].querySelector('.home__illustration-source'), 0.8, {
+          left: '50%',
+          width: '0%',
+          ease: ease
+        }, '-=1.3')
+        .fromTo(this.$refs.illustrationValue[this.currentProject].querySelector('.home__illustration-source'), 0.8, {
+          left: '100%',
+          width: 'O%',
         }, {
-          y: '0%',
+          left: '50%',
+          width: '50%',
           ease: ease
         }, '-=1.3')
         .fromTo(this.$refs.typeValue[this.previousProject].querySelector('.home__details-type-value'), 0.6, {
@@ -600,18 +605,16 @@ export default {
 
 .home__illustration-source {
   position: absolute;
-  width: 50%;
-  left: 50%;
+  width: 0%;
+  left: 100%;
   overflow: hidden;
 
   img {
     position: absolute;
     right: 0;
-    height: 150%;
     width: 74vw;
+    height: 100%;
     object-fit: cover;
-    transform: translateY(100%);
-    will-change: transform;
     filter: grayscale(100%);
   }
 }
