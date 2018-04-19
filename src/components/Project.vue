@@ -79,7 +79,8 @@ export default {
       pressTimeout: null,
       leavingToProject: false,
       observer: null,
-      fromHome: false
+      fromHome: false,
+      illustrationHeight: null
     }
   },
   computed: {
@@ -112,21 +113,21 @@ export default {
       this.enterAnimation();
       this.$store.commit(GO_PROJECT, false);
     }
+
+    this.illustrationHeight = this.$refs.illustration.scrollHeight
+
     window.addEventListener('scroll', (event) => {
       this.onScroll(event);
     });
   },
   methods: {
     onScroll(event) {
-      console.log(window.scrollY)
-      console.log(this.$refs.illustration.scrollHeight)
       TweenMax.to(this.$refs.illustration, 0, {
-        height: `${this.$refs.illustration.scrollHeight - window.scrollY}px`,
+        height: `${this.illustrationHeight - window.scrollY / 3}px`,
         repeat: 2,
         yoyo: true,
         ease: ease
       });
-      
       /*
       const percentageScroll = Math.round(((this.$refs.title.getBoundingClientRect().top - 55) * 100) / window.innerHeight)
       console.log(percentageScroll)

@@ -387,7 +387,7 @@ export default {
         }, '-=1.3')
         .fromTo(this.$refs.illustrationValue[this.currentProject].querySelector('.home__illustration-source'), 0.8, {
           left: '100%',
-          width: 'O%',
+          width: 'O%'
         }, {
           left: '50%',
           width: '50%',
