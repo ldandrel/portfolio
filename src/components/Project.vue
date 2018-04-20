@@ -80,7 +80,7 @@
 <script>
 import { TimelineMax, TweenMax } from 'gsap';
 import { GO_PROJECT } from '@/store/types';
-import { ease } from '@/services/utils'
+import { ease, intersectionObserver } from '@/services/utils'
 export default {
   name: 'Project',
   props: ['slug'],
@@ -133,6 +133,22 @@ export default {
 
     this.illustrationHeight = this.$refs.illustration.scrollHeight
 
+    this.observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.intersectionRatio > 0) {
+          entry.target.play();
+        } else {
+          entry.target.pause();
+        }
+      });
+    });
+
+    if (this.$refs.projectVideo) {
+      this.$refs.projectVideo.forEach(video => {
+        this.observer.observe(video);
+      });
+    }
+
     window.addEventListener('scroll', (event) => {
       this.onScroll(event);
     });
@@ -145,15 +161,20 @@ export default {
         yoyo: true,
         ease: ease
       });
-      /*
-      const percentageScroll = Math.round(((this.$refs.title.getBoundingClientRect().top - 55) * 100) / window.innerHeight)
-      console.log(percentageScroll)
-      if (percentageScroll <= 25) {
+
+      const titlePosition = Math.round(this.$refs.title.getBoundingClientRect().top)
+      const lineVertical = Math.round(document.querySelector('.background-line-horizontal-1').getBoundingClientRect().top) - 53
+
+      if (titlePosition > lineVertical - 10 && titlePosition < lineVertical + 10) {
         this.$refs.title.style.position = 'fixed'
         this.$refs.details.style.position = 'fixed'
-        this.$refs.title.style.top = 'calc(25% - 55px)'
+        this.$refs.title.style.top = `${lineVertical}px`
+        this.$refs.details.style.top = `${lineVertical}px`
       }
-      */
+
+      intersectionObserver(this.$refs.illustration, () => {
+        console.log()
+      });
     },
 
     enterAnimation() {
@@ -386,7 +407,7 @@ scroll-behavior: smooth;
     object-fit: cover;
     width: 100%;
     height: 100%;
-    max-height: 329px;
+    max-height: 415px;
   }
 }
 .project__element-title {
