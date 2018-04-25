@@ -42,7 +42,7 @@ $vertical-line-2: 13%;
 $vertical-line-3: 50%;
 $horizontal-line-1: 25%;
 
-$project-info: 78%;
+$project-info: calc(75% + 35px);
 
 //Sizes 
 $size-illustration : ($vertical-line-3 - $vertical-line-2) * 2;

@@ -75,18 +75,27 @@ export default {
     },
     handleScroll() {
       if (this.$route.name === 'Project') {
-        TweenMax.to(this.$refs.linesVertical.querySelectorAll('.background-line--white'), 0, {
+        TweenMax.set(this.$refs.linesVertical.querySelectorAll('.background-line--white'), {
           scaleY: Math.abs(window.scrollY / ((window.innerHeight / 2) - window.innerHeight)),
           repeat: -1,
           yoyo: true,
           ease: ease
         });
       }
+    },
+    exitProject() {
+      TweenMax.to(this.$refs.linesVertical.querySelectorAll('.background-line--white'), 1, {
+        scaleY: 0,
+        ease: ease
+      });
     }
   },
   computed: {
     websiteReady() {
       return this.$store.state.websiteReady;
+    },
+    returnHome() {
+      return this.$store.state.returnHome;
     }
   },
   mounted () {
@@ -110,6 +119,11 @@ export default {
     websiteReady(boolean) {
       if (boolean === true) {
         this.enterAnimation();
+      }
+    },
+    returnHome(boolean) {
+      if (boolean === true && this.$route.name === 'Project') {
+        this.exitProject();
       }
     }
   }

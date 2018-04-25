@@ -8,7 +8,7 @@
           </div>
         </div>
       </div>
-      <div class="project__title" ref="title">
+      <div class="project__title" :class="{'project__title--fixed': fixed}" ref="title">
         <div class="project__title-wrapper">
           <h1 class="project__title-value">
             {{ project.title }}
@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <div class="project__details" ref="details">
+      <div class="project__details" :class="{'project__details--fixed': fixed}" ref="details">
         <div class="project__details-wrapper">
           <div class="project__details-content">
             <div class="project__details-detail">
@@ -50,26 +50,28 @@
     </div>
 
     <div class="project__content">
-      <div class="project__description">
+      <div class="project__description" :class="{'project__description--fixed': fixed}" ref="description">
         <div class="project__description-wrapper">
           <p class="project__description-text">{{ project.description }}</p>
         </div>
       </div>
 
-      <div class="project__elements">
-        <div class="project__element" ref="elements" v-for="(element, index) in project.elements" :key="index">
-          <div v-if="element.type === 'video'" class="project__element-source project__element-source--video">
-            <div v-if="element.title !== false" class="project__element-title">
-              {{ element.title }}
+      <div class="project__elements" ref="elements">
+        <div class="project__elements-wrapper">
+          <div class="project__element" ref="elements" v-for="(element, index) in project.elements" :key="index">
+            <div v-if="element.type === 'video'" class="project__element-source project__element-source--video">
+              <div v-if="element.title !== false" class="project__element-title">
+                {{ element.title }}
+              </div>
+              <video ref="projectVideo" playsinline autoplay muted loop :src="element.source"></video>
             </div>
-            <video ref="projectVideo" playsinline autoplay muted loop :src="element.source"></video>
-          </div>
 
-          <div v-if="element.type === 'image'" class="project__element-source project__element-source--image">
-            <div v-if="element.title !== false" class="project__element-title">
-              {{ element.title }}
+            <div v-if="element.type === 'image'" class="project__element-source project__element-source--image">
+              <div v-if="element.title !== false" class="project__element-title">
+                {{ element.title }}
+              </div>
+              <img :src="element.source">
             </div>
-            <img :src="element.source">
           </div>
         </div>
       </div>
@@ -80,24 +82,17 @@
 <script>
 import { TimelineMax, TweenMax } from 'gsap';
 import { GO_PROJECT } from '@/store/types';
-import { ease, intersectionObserver } from '@/services/utils'
+import { ease, intersectionObserverConfig, intersectionObserver } from '@/services/utils'
+
 export default {
   name: 'Project',
   props: ['slug'],
   data() {
     return {
-      currentScrollPosition: 0,
-      overflowed: false,
-      ready: false,
-      elements: [],
-      buttonWrapperDetails: null,
-      currentButtonPositionX: 0,
-      currentButtonPositionY: 0,
-      pressTimeout: null,
-      leavingToProject: false,
       observer: null,
       fromHome: false,
-      illustrationHeight: null
+      illustrationHeight: null,
+      fixed: false
     }
   },
   computed: {
@@ -136,18 +131,30 @@ export default {
     this.observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.intersectionRatio > 0) {
-          entry.target.play();
+          TweenMax.to(entry.target, 0.5, {
+            autoAlpha: 0.3,
+            ease: ease
+          });
         } else {
-          entry.target.pause();
+          TweenMax.to(entry.target, 0.5, {
+            autoAlpha: 1,
+            ease: ease
+          });
         }
       });
+    }, intersectionObserverConfig);
+
+    this.$refs.elements.querySelectorAll('.project__element-source').forEach(element => {
+      this.observer.observe(element);
     });
 
-    if (this.$refs.projectVideo) {
-      this.$refs.projectVideo.forEach(video => {
-        this.observer.observe(video);
-      });
-    }
+    intersectionObserver(this.$refs.title, 0, () => {
+      this.fixed = true
+    })
+
+    intersectionObserver(this.$refs.illustration, 0, () => {
+      this.fixed = false
+    })
 
     window.addEventListener('scroll', (event) => {
       this.onScroll(event);
@@ -155,28 +162,13 @@ export default {
   },
   methods: {
     onScroll(event) {
-      TweenMax.to(this.$refs.illustration, 0, {
+      TweenMax.set(this.$refs.illustration, {
         height: `${this.illustrationHeight - window.scrollY / 3}px`,
         repeat: -1,
         yoyo: true,
         ease: ease
       });
-
-      const titlePosition = Math.round(this.$refs.title.getBoundingClientRect().top)
-      const lineVertical = Math.round(document.querySelector('.background-line-horizontal-1').getBoundingClientRect().top) - 53
-
-      if (titlePosition > lineVertical - 10 && titlePosition < lineVertical + 10) {
-        this.$refs.title.style.position = 'fixed'
-        this.$refs.details.style.position = 'fixed'
-        this.$refs.title.style.top = `${lineVertical}px`
-        this.$refs.details.style.top = `${lineVertical}px`
-      }
-
-      intersectionObserver(this.$refs.illustration, () => {
-        console.log()
-      });
     },
-
     enterAnimation() {
       const timeline = new TimelineMax();
 
@@ -199,6 +191,14 @@ export default {
         .to(this.$refs.title.querySelector('.project__title-value'), 0, {
           css: { 'white-space': 'normal' }
         })
+        .staggerTo(this.$refs.elements.querySelectorAll('.project__element'), 1, {
+          x: '0%',
+          ease: ease
+        }, 0.05, '-=1')
+        .to(this.$refs.description.querySelector('.project__description-text'), 1, {
+          x: '0%',
+          ease: ease
+        }, '-=1');
     },
     exitAnimation(routeName) {
       const timeline = new TimelineMax({
@@ -220,7 +220,21 @@ export default {
           width: '0%',
           ease: ease
         }, -0.5, '-=1')
+        .staggerTo(this.$refs.elements.querySelectorAll('.project__element'), 1, {
+          x: '-105%',
+          ease: ease
+        }, 0.05, '-=1')
+        .to(this.$refs.description.querySelector('.project__description-text'), 1, {
+          x: '-100%',
+          ease: ease
+        }, '-=1');
+    },
+    reset() {
+
     }
+  },
+  updated() {
+    this.reset();
   },
   watch: {
     websiteReady(boolean) {
@@ -311,6 +325,16 @@ scroll-behavior: smooth;
   max-width: $size-description;
 }
 
+.project__title--fixed {
+  position: fixed;
+  top: calc(25% - 54px);
+
+  @include responsive($xl) {
+    font-size: 55px;
+    top: calc(25% - 43px);
+  }
+}
+
 .project__title-wrapper {
   overflow: hidden;
   width: 0%;
@@ -339,6 +363,15 @@ scroll-behavior: smooth;
 
   @include responsive($xl) {
     height: 45px;
+  }
+}
+
+.project__details--fixed {
+  position: fixed;
+  top: calc(25% - 55px);
+
+  @include responsive($xl) {
+    top: calc(25% - 45px);
   }
 }
 
@@ -382,7 +415,6 @@ scroll-behavior: smooth;
 .project__content {
   position: relative;
   pointer-events: all;
-  overflow: hidden;
   width: 74vw;
   margin:48px auto 300px auto;
   padding-top:24px;
@@ -390,17 +422,42 @@ scroll-behavior: smooth;
 }
 
 .project__description {
-  width: 45%;
+  width: 32vw;
+  position: absolute;
+}
+
+.project__description--fixed {
+  position: fixed;
+  bottom: 25%;
+}
+
+.project__description-wrapper {
+  overflow: hidden;
+}
+
+.project__description-text {
+  color:$grey;
+  transform: translateX(-100%);
+  will-change: transform;
 }
 
 .project__elements {
-  width: 50%;
-  margin-left: 5%;
+  position: absolute;
+  width: calc(50% - 2px);
+  left: calc(50% + 1px);
+  will-change: transform;
+}
+
+.project__elements-wrapper {
+  overflow: hidden;
 }
 
 .project__element {
   margin-bottom: 55px;
+  transform: translateX(-100%);
+  will-change: transform;
 }
+
 .project__element-source {
   video,
   img {
@@ -410,11 +467,9 @@ scroll-behavior: smooth;
     max-height: 415px;
   }
 }
+
 .project__element-title {
   margin: -24px 0 12px 10px;
-  color:$grey;
-}
-.project__description-text {
   color:$grey;
 }
 </style>

@@ -27,19 +27,24 @@ export const isMobile = () => {
   return check;
 };
 
-export const intersectionObserver = (element, callback) => {
+let marginTop = (75 * window.innerHeight / 100) + 43
+export const intersectionObserverConfig = {
+  rootMargin: `35px 0% -${marginTop}px 0%`,
+  threshold: []
+};
+
+for (let i = 0; i <= 1.0; i += 0.05) {
+  intersectionObserverConfig.threshold.push(i);
+}
+
+export const intersectionObserver = (element, ratio, callback) => {
   const observer = new IntersectionObserver(
     observables => {
       observables.forEach(observable => {
-        if (observable.intersectionRatio <= 0.3) return;
+        if (observable.intersectionRatio <= ratio) return;
         callback();
-        observer.disconnect();
       });
-    },
-    {
-      threshold: [0.3]
-    }
-  );
+    }, intersectionObserverConfig);
 
   observer.observe(element);
 };

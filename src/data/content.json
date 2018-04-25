@@ -18,34 +18,34 @@
         "title": "My Movie Desktop",
         "type": "personnal project",
         "job": "developper front & back",
-        "illustration": "/static/projects/movie-wallpaper/illustration.jpg",
-        "url": "google.com",
+        "illustration": "/static/projects/my-movie-desktop/illustration.jpg",
+        "url": "https://mymoviedesktop.com",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         "elements" : [
           {
             "type": "video",
-            "source": "/static/projects/movie-wallpaper/my-movie-desktop.mp4",
+            "source": "/static/projects/my-movie-desktop/my-movie-desktop.mp4",
             "title": "Demonstration"
           },
           {
             "type": "image",
-            "source": "http://lorempixel.com/600/400/",
-            "title": "Image 1"
+            "source": "/static/projects/my-movie-desktop/discover.png",
+            "title": "Discover a movie"
           },
           {
             "type": "image",
-            "source": "http://lorempixel.com/600/400/",
-            "title": "Image 2"
+            "source": "/static/projects/my-movie-desktop/informations.png",
+            "title": "Details"
           },
           {
             "type": "image",
-            "source": "http://lorempixel.com/600/400/",
-            "title": "Image 3"
+            "source": "/static/projects/my-movie-desktop/favorites.png",
+            "title": "Favorites"
           },
           {
             "type": "image",
-            "source": "http://lorempixel.com/600/400/",
-            "title": "Image 4"
+            "source": "/static/projects/my-movie-desktop/landing-beta.png",
+            "title": "Landing website - BETA"
           }
         ]
       },
@@ -66,8 +66,8 @@
         "id": 2,
         "slug": "intership-spin",
         "date": 2017,
-        "title1": "Intership at",
-        "title2": "Spin",
+        "title1": "Intership",
+        "title2": "at Spin",
         "title": "Intership at Spin",
         "type": "intership",
         "job": "developper front & back",
@@ -139,7 +139,7 @@
         }
       },
     "assets": [
-        "/static/projects/movie-wallpaper/illustration.jpg",
+        "/static/projects/my-movie-desktop/illustration.jpg",
         "/static/projects/kygo/illustration.jpg",
         "/static/projects/intership/intership.jpeg"
     ]

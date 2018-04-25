@@ -629,6 +629,7 @@ export default {
   position: absolute;
   left: $vertical-line-2;
   z-index: $zindex-home-title;
+  transform: translateX(-6px);
 
   &--line1 {
     top: calc(25% + 40px);
@@ -674,6 +675,10 @@ export default {
   transform: translateY(100%);
   user-select: none;
   will-change: transform;
+
+  @include responsive($lg) {
+    font-size: 85px;
+  }
 }
 
 .home__details{

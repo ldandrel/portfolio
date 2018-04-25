@@ -44,6 +44,10 @@ export default {
       return this.$store.state.websiteReady;
     }
   },
+  beforeCreate() {
+    console.log(window)
+    scrollTo(0, 0)
+  },
   mounted() {
     this.$store.dispatch(LOAD_ASSETS);
 
