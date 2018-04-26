@@ -439,10 +439,10 @@ export default {
 
     goToProject() {
       this.$store.commit(CURRENT_PROJECT, this.$store.state.content.projects[this.currentProject].id);
+      this.$store.commit(GO_PROJECT, true);
 
       const timeline = new TimelineMax({
         onComplete: () => {
-          this.$store.commit(GO_PROJECT, true);
           this.$router.push({ name: 'Project', params: { slug: this.$store.state.content.projects[this.currentProject].slug } })
         }
       });
