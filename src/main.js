@@ -22,3 +22,5 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+console.log('Coded with love by 👨🏻‍💻 Luc Dandrel and design by 👩🏻‍🎨 Evie Bauland')

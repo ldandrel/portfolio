@@ -6,3 +6,4 @@ export const SWITCH_MOBILE = 'SWITCH_MOBILE';
 export const GO_PROJECT = 'GO_PROJECT';
 export const RETURN_HOME = 'RETURN_HOME';
 export const GO_ABOUT = 'GO_ABOUT';
+export const CURRENT_PROJECT = 'CURRENT_PROJECT';

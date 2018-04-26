@@ -8,6 +8,16 @@
 
       <router-view/>
 
+      <div class="illustrations" ref="illustrations" v-if="goProject">
+        <div class="illustration" ref="illustrationValue" v-if="currentProject == index" v-for="(project, index) in projects" :key="index">
+          <div class="illustration-wrapper">
+            <div class="illustration-source">
+              <img :src="project.illustration">
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="scroll__fill" :class="{'scroll__fill--active' : ['Home', 'Project'].indexOf($route.name) > -1 && websiteReady}" ref="scroll">
         <div class="scroll__fill-1">scroll</div>
         <div class="scroll__fill-line"></div>
@@ -42,15 +52,23 @@ export default {
   computed: {
     websiteReady() {
       return this.$store.state.websiteReady;
+    },
+
+    goProject() {
+      return this.$store.state.goProject;
+    },
+
+    currentProject() {
+      return this.$store.state.currentProject;
+    },
+
+    projects() {
+      return this.$store.state.content.projects;
     }
-  },
-  beforeCreate() {
-    console.log(window)
-    scrollTo(0, 0)
   },
   mounted() {
     this.$store.dispatch(LOAD_ASSETS);
-
+    console.log(this.currentProject)
     window.addEventListener('resize', () => {
       if (window.innerWidth <= this.breakpoint && this.isMobile !== true) {
         this.isMobile = true;
@@ -71,6 +89,45 @@ export default {
 
 <style lang="scss">
 @import "./assets/scss/app.scss";
+
+.illustrations {
+  position: absolute;
+  top: $horizontal-line-1;
+  left: $vertical-line-2;
+  width: $size-illustration;
+  height: 50%;
+  overflow: hidden;
+  user-select: none;
+}
+
+.illustration {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+.illustration-wrapper,
+.illustration-source {
+  width: 100%;
+  height: 100%;
+}
+
+.illustration-source {
+  position: absolute;
+  width: 100%;
+  left: 0%;
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    right: 0;
+    width: 74vw;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+  }
+}
 
 .scroll__fill {
   position:fixed;

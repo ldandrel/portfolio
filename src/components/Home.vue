@@ -86,7 +86,7 @@
 import { TimelineMax } from 'gsap';
 import { Lethargy } from 'lethargy';
 import { ease } from '@/services/utils';
-import { RETURN_HOME, GO_PROJECT } from '@/store/types';
+import { RETURN_HOME, GO_PROJECT, CURRENT_PROJECT } from '@/store/types';
 
 export default {
   name: 'Home',
@@ -438,6 +438,8 @@ export default {
     },
 
     goToProject() {
+      this.$store.commit(CURRENT_PROJECT, this.$store.state.content.projects[this.currentProject].id);
+
       const timeline = new TimelineMax({
         onComplete: () => {
           this.$store.commit(GO_PROJECT, true);

@@ -59,17 +59,14 @@
       <div class="project__elements" ref="elements">
         <div class="project__elements-wrapper">
           <div class="project__element" ref="elements" v-for="(element, index) in project.elements" :key="index">
+            <div v-if="element.title !== false" class="project__element-title">
+              {{ element.title }}
+            </div>
             <div v-if="element.type === 'video'" class="project__element-source project__element-source--video">
-              <div v-if="element.title !== false" class="project__element-title">
-                {{ element.title }}
-              </div>
               <video ref="projectVideo" playsinline autoplay muted loop :src="element.source"></video>
             </div>
 
             <div v-if="element.type === 'image'" class="project__element-source project__element-source--image">
-              <div v-if="element.title !== false" class="project__element-title">
-                {{ element.title }}
-              </div>
               <img :src="element.source">
             </div>
           </div>
@@ -81,8 +78,8 @@
 
 <script>
 import { TimelineMax, TweenMax } from 'gsap';
-import { GO_PROJECT } from '@/store/types';
-import { ease, intersectionObserverConfig, intersectionObserver } from '@/services/utils'
+import { GO_PROJECT, CURRENT_PROJECT } from '@/store/types';
+import { ease, intersectionObserver } from '@/services/utils'
 
 export default {
   name: 'Project',
@@ -121,6 +118,12 @@ export default {
     }
   },
   mounted() {
+    this.wheelScroll = event => {
+      this.onScroll(event);
+    };
+
+    this.$store.commit(CURRENT_PROJECT, this.project.id);
+
     if (this.goProject === true) {
       this.enterAnimation();
       this.$store.commit(GO_PROJECT, false);
@@ -128,6 +131,10 @@ export default {
 
     this.illustrationHeight = this.$refs.illustration.scrollHeight
 
+    const config = {
+      rootMargin: `0% 0% -75% 0%`,
+      threshold: [0]
+    }
     this.observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.intersectionRatio > 0) {
@@ -142,9 +149,9 @@ export default {
           });
         }
       });
-    }, intersectionObserverConfig);
+    }, config);
 
-    this.$refs.elements.querySelectorAll('.project__element-source').forEach(element => {
+    this.$refs.elements.querySelectorAll('.project__element').forEach(element => {
       this.observer.observe(element);
     });
 
@@ -156,9 +163,10 @@ export default {
       this.fixed = false
     })
 
-    window.addEventListener('scroll', (event) => {
-      this.onScroll(event);
-    });
+    window.addEventListener('scroll', this.wheelScroll);
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.wheelScroll);
   },
   methods: {
     onScroll(event) {
@@ -416,14 +424,14 @@ scroll-behavior: smooth;
   position: relative;
   pointer-events: all;
   width: 74vw;
-  margin:48px auto 300px auto;
-  padding-top:24px;
+  margin: auto;
   display: flex;
 }
 
 .project__description {
   width: 32vw;
   position: absolute;
+  margin-top: 24px;
 }
 
 .project__description--fixed {
@@ -456,6 +464,10 @@ scroll-behavior: smooth;
   margin-bottom: 55px;
   transform: translateX(-100%);
   will-change: transform;
+
+  &:last-of-type {
+    margin-bottom: 25vh;
+  }
 }
 
 .project__element-source {
@@ -469,7 +481,7 @@ scroll-behavior: smooth;
 }
 
 .project__element-title {
-  margin: -24px 0 12px 10px;
+  margin: 0 0 12px 10px;
   color:$grey;
 }
 </style>
