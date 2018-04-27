@@ -26,20 +26,26 @@ class ProgressLoader {
             progressEvent.loaded / progressEvent.total * 100
           );
 
-          this.updateProgress(index, percent);
+          this.updateProgress(index, percent, request.element);
         }
       });
     });
   }
 
-  updateProgress(index, progress) {
+  updateProgress(index, progress, element) {
     this.requests[index].progress = progress;
     const total = this.requests.reduce(
       (value, request) => value + request.progress,
       0
     );
 
-    this.totalProgress = Math.floor(total / this.requests.length);
+    const average = Math.floor(total / this.requests.length);
+
+    console.warn(average)
+    console.log(this.totalProgress)
+
+    if (average > this.totalProgress) this.totalProgress = average;
+    console.log(this.totalProgress)
 
     if (this.totalProgress === 100) {
       this.progressEventsCall();

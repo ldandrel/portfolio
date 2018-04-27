@@ -1,6 +1,6 @@
 <template>
   <div class="project">
-    <div class="project__head">
+    <div class="project__container">
       <div class="project__illustration-wrapper" ref="illustration">
         <div class="project__illustration">
           <div class="project__illustration-source" :class="{'project__illustration-source--from-home': fromHome}">
@@ -8,48 +8,48 @@
           </div>
         </div>
       </div>
-      <div class="project__title" :class="{'project__title--fixed': fixed}" ref="title">
-        <div class="project__title-wrapper">
-          <h1 class="project__title-value">
-            {{ project.title }}
-          </h1>
+      <div class="project__sticky">
+        <div class="project__title" :class="{'project__title--fixed': fixed}" ref="title">
+          <div class="project__title-wrapper">
+            <h1 class="project__title-value">
+              {{ project.title }}
+            </h1>
+          </div>
         </div>
-      </div>
 
-      <div class="project__details" :class="{'project__details--fixed': fixed}" ref="details">
-        <div class="project__details-wrapper">
-          <div class="project__details-content">
-            <div class="project__details-detail">
-              <div class="project__details-content-wrapper">
-                <div class="project__details-content-value" ref="type">{{ project.type }}</div>
+        <div class="project__details" :class="{'project__details--fixed': fixed}" ref="details">
+          <div class="project__details-wrapper">
+            <div class="project__details-content">
+              <div class="project__details-detail">
+                <div class="project__details-content-wrapper">
+                  <div class="project__details-content-value" ref="type">{{ project.type }}</div>
+                </div>
               </div>
-            </div>
 
-            <div class="project__details-detail">
-              <div class="project__details-content-wrapper">
-                <div class="project__details-content-value" ref="job">{{ project.job }}</div>
+              <div class="project__details-detail">
+                <div class="project__details-content-wrapper">
+                  <div class="project__details-content-value" ref="job">{{ project.job }}</div>
+                </div>
               </div>
-            </div>
 
-            <div class="project__details-detail">
-              <div class="project__details-content-wrapper">
-                <div class="project__details-content-value" ref="date">{{ project.date }}</div>
+              <div class="project__details-detail">
+                <div class="project__details-content-wrapper">
+                  <div class="project__details-content-value" ref="date">{{ project.date }}</div>
+                </div>
               </div>
-            </div>
 
-            <div class="project__details-detail">
-              <div class="project__details-content-wrapper">
-                <div class="project__details-content-value" ref="roleContent">
-                  <a :href="project.url" target="_blank" class="link">website</a>
+              <div class="project__details-detail">
+                <div class="project__details-content-wrapper">
+                  <div class="project__details-content-value" ref="roleContent">
+                    <a :href="project.url" target="_blank" class="link">website</a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="project__content">
       <div class="project__description" :class="{'project__description--fixed': fixed}" ref="description">
         <div class="project__description-wrapper">
           <p class="project__description-text">{{ project.description }}</p>
@@ -79,7 +79,7 @@
 <script>
 import { TimelineMax, TweenMax } from 'gsap';
 import { GO_PROJECT, CURRENT_PROJECT } from '@/store/types';
-import { ease, intersectionObserver } from '@/services/utils'
+import { ease } from '@/services/utils'
 
 export default {
   name: 'Project',
@@ -132,7 +132,7 @@ export default {
     this.illustrationHeight = this.$refs.illustration.scrollHeight
 
     const config = {
-      rootMargin: `0% 0% -75% 0%`,
+      rootMargin: `100% 0% -75% 0%`,
       threshold: [0]
     }
     this.observer = new IntersectionObserver(entries => {
@@ -154,14 +154,6 @@ export default {
     this.$refs.elements.querySelectorAll('.project__element').forEach(element => {
       this.observer.observe(element);
     });
-
-    intersectionObserver(this.$refs.title, 0, () => {
-      this.fixed = true
-    })
-
-    intersectionObserver(this.$refs.illustration, 0, () => {
-      this.fixed = false
-    })
 
     window.addEventListener('scroll', this.wheelScroll);
   },
@@ -267,26 +259,21 @@ export default {
 <style lang="scss" scoped>
 .project{
   width: 100vw;
-  height: 100vh;
-scroll-behavior: smooth;
 
 }
 
-.project__head {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  pointer-events: all;
-  z-index:2;
+.project__container {
+  width: calc(74vw - 2px);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin:auto;
 }
 
 .project__illustration-wrapper {
-  position: absolute;
-  top: $horizontal-line-1;
-  left: calc(13vw + 1px);
-  width: calc(74vw - 2px);
-  height: 50%;
-  z-index: $zindex-home-illustrations;
+  margin-top: 25vh;
+  width: 100%;
+  height: 50vh;
   overflow: hidden;
   user-select: none;
 }
@@ -295,7 +282,6 @@ scroll-behavior: smooth;
   position: relative;
   width: 100%;
   height: 100%;
-  z-index: $zindex-home-illustrations;
   will-change: transform;
 }
 
@@ -326,21 +312,22 @@ scroll-behavior: smooth;
   }
 }
 
-.project__title {
-  position: absolute;
-  top: $project-info;
-  left: $vertical-line-2;
-  max-width: $size-description;
-}
-
-.project__title--fixed {
-  position: fixed;
-  top: calc(25% - 54px);
+.project__sticky {
+  width: 100%;
+  margin-top: $project-info;
+  display: flex;
+  position: sticky;
+  top: calc(25% - 55px);
+  height: 55px;
 
   @include responsive($xl) {
-    font-size: 55px;
-    top: calc(25% - 43px);
+    top: calc(25% - 45px);
+    height: 45px;
   }
+}
+
+.project__title {
+  width: 50%;
 }
 
 .project__title-wrapper {
@@ -363,24 +350,7 @@ scroll-behavior: smooth;
 }
 
 .project__details {
-  position: absolute;
-  top: $project-info;
-  left: $vertical-line-3;
-  width: $size-description;
-  height: 55px;
-
-  @include responsive($xl) {
-    height: 45px;
-  }
-}
-
-.project__details--fixed {
-  position: fixed;
-  top: calc(25% - 55px);
-
-  @include responsive($xl) {
-    top: calc(25% - 45px);
-  }
+  width: 50%;
 }
 
 .project__details-content {
@@ -420,23 +390,19 @@ scroll-behavior: smooth;
   }
 }
 
-.project__content {
-  position: relative;
-  pointer-events: all;
-  width: 74vw;
-  margin: auto;
-  display: flex;
-}
-
 .project__description {
-  width: 32vw;
-  position: absolute;
-  margin-top: 24px;
-}
+  width: 32%;
+  padding-top: 24px;
+  margin-top: calc(25vh - 90px);
+  position: sticky;
+  top: 25%;
+  height: 50vh;
+  display: flex;
+  align-items: flex-end;
 
-.project__description--fixed {
-  position: fixed;
-  bottom: 25%;
+  @include responsive($xl) {
+    margin-top: calc(25vh - 80px);
+  }
 }
 
 .project__description-wrapper {
@@ -450,10 +416,13 @@ scroll-behavior: smooth;
 }
 
 .project__elements {
-  position: absolute;
   width: calc(50% - 2px);
-  left: calc(50% + 1px);
-  will-change: transform;
+  margin-left: calc(18% + 1px);
+  margin-top: calc(25vh - 90px);
+
+  @include responsive($xl) {
+    margin-top: calc(25vh - 80px);
+  }
 }
 
 .project__elements-wrapper {
