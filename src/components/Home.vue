@@ -74,11 +74,13 @@
       <div class="home__links-wrapper">
         <div class="home__link" ref="linkProject">
           <div class="home__link-wrapper">
-            <div class="link home__link-value" v-on:click="goToProject()">see the case</div>
+            <div :class="{ 'link--hover': hover }"  class="link home__link-value" v-on:click="goToProject()">see the case</div>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="home__project-hover" v-on:click="goToProject()" v-on:mouseover="hover = true" v-on:mouseleave="hover = false"></div>
   </div>
 </template>
 
@@ -102,7 +104,8 @@ export default {
       pressTimeout: null,
       leavingToProject: false,
       wheelHandler: null,
-      keydownHandler: null
+      keydownHandler: null,
+      hover: false
     }
   },
   computed: {
@@ -165,6 +168,10 @@ export default {
     window.removeEventListener('keydown', this.keydownHandler);
   },
   methods: {
+    onHover() {
+      console.log('hover')
+      this.hover = !this.hover
+    },
     enterAnimation() {
       const timeline = new TimelineMax();
 
@@ -750,4 +757,13 @@ export default {
   z-index: $zindex-home-links;
 }
 
+.home__project-hover {
+  position: absolute;
+  top: 25vh;
+  left: 13vw;
+  z-index: 5;
+  width: 74vw;
+  height: 50vh;
+  cursor:pointer;
+}
 </style>

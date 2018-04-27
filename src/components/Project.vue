@@ -78,7 +78,7 @@
 
 <script>
 import { TimelineMax, TweenMax } from 'gsap';
-import { GO_PROJECT, CURRENT_PROJECT } from '@/store/types';
+import { GO_PROJECT, CURRENT_PROJECT, RETURN_HOME } from '@/store/types';
 import { ease } from '@/services/utils'
 
 export default {
@@ -228,13 +228,11 @@ export default {
           x: '-100%',
           ease: ease
         }, '-=1');
-    },
-    reset() {
-
     }
   },
-  updated() {
-    this.reset();
+  beforeRouteLeave (to, from, next) {
+    if (to.name === 'Home') this.$store.commit(RETURN_HOME, true)
+    next()
   },
   watch: {
     websiteReady(boolean) {

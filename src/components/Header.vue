@@ -2,7 +2,7 @@
     <div class="header">
         <div class="header-wrapper" ref="header">
           <div class="header-logo">
-              <router-link tag="a" to="/">Luc <br> Dandrel</router-link>
+              <div v-on:click="goHome">Luc <br> Dandrel</div>
           </div>
           <div class="header__return">
             <div class="header__return-wrapper">
@@ -10,7 +10,7 @@
             </div>
           </div>
           <div class="header-about">
-              <a v-on:click="goAbout">About</a>
+              <div v-on:click="goAbout">About</div>
           </div>
         </div>
     </div>
@@ -69,7 +69,7 @@ export default {
     justify-content: space-between;
     transform: translateY(100%);
   }
-  .header-logo a, .header-about a{
+  .header-logo div, .header-about div{
     font-family: $title-font;
     position:relative;
     color:$white;
@@ -90,7 +90,7 @@ export default {
 
   .header-logo{
     margin-left:7%;
-    a{
+    div{
       left:10px;
       &::before{
         left:-10px;
@@ -100,7 +100,7 @@ export default {
 
   .header-about{
     margin-right: 7%;
-    a{
+    div{
       right:10px;
       &::before{
         right:-10px;

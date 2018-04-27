@@ -70,6 +70,12 @@ div.link:hover {
 	}
 }
 
+.link--hover {
+	&::after{
+		transform: scaleX(6);
+	}
+}
+
 input:focus {
 	outline: none;
 }
