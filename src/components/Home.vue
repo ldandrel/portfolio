@@ -354,10 +354,15 @@ export default {
             console.error(`Undefined direction "${direction}" used.`);
             break;
         }
-      } else {
+      } else if (this.switing === false) {
+        this.switing = true
         this.previousProject = this.currentProject;
         this.currentProject = direction
         this.switchProject();
+
+        setTimeout(() => {
+          this.switing = false;
+        }, 1500);
       }
     },
 

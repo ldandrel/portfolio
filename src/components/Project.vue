@@ -139,11 +139,11 @@ export default {
       entries.forEach(entry => {
         if (entry.intersectionRatio > 0) {
           TweenMax.to(entry.target, 0.5, {
-            autoAlpha: 0.3,
+            autoAlpha: 0.05,
             ease: ease
           });
         } else {
-          TweenMax.to(entry.target, 0.5, {
+          TweenMax.to(entry.target, 0.8, {
             autoAlpha: 1,
             ease: ease
           });
@@ -391,16 +391,12 @@ export default {
 .project__description {
   width: 32%;
   padding-top: 24px;
-  margin-top: calc(25vh - 90px);
+  margin-left: 1px;
   position: sticky;
   top: 25%;
   height: 50vh;
   display: flex;
   align-items: flex-end;
-
-  @include responsive($xl) {
-    margin-top: calc(25vh - 80px);
-  }
 }
 
 .project__description-wrapper {
@@ -416,11 +412,7 @@ export default {
 .project__elements {
   width: calc(50% - 2px);
   margin-left: calc(18% + 1px);
-  margin-top: calc(25vh - 90px);
-
-  @include responsive($xl) {
-    margin-top: calc(25vh - 80px);
-  }
+  margin-top: 25vh;
 }
 
 .project__elements-wrapper {

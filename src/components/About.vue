@@ -33,6 +33,11 @@
               <a :href="social.link" :title="social.title"><i :class="'fab ' + social.icon"></i></a>
           </div>
         </div>
+        <div class="about__social-resume-wrapper">
+          <div class="about__social-value about__social-resume-value">
+            <a class="link" :href="about.resume.url">{{ about.resume.text }}</a>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -299,6 +304,7 @@ export default {
   position: relative;
   top: -24px;
   display: flex;
+  align-items: flex-end;
 }
 
 .about__social-wrapper {
@@ -311,6 +317,15 @@ export default {
   color: $white;
   font-size:24px;
   margin-right: 20px;
+}
+
+.about__social-resume-wrapper {
+  overflow: hidden;
+}
+
+.about__social-resume-value {
+  font-size:inherit;
+  margin-right: 0;
 }
 
 .about__descriptions {
