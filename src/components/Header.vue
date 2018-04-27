@@ -73,6 +73,7 @@ export default {
     font-family: $title-font;
     position:relative;
     color:$white;
+    cursor:pointer;
     &:before{
       content:"";
       width: 1px;
@@ -117,6 +118,7 @@ export default {
   transform: translateY(100%);
   will-change: transform;
   transition: transform 0.5s $easing;
+  cursor:pointer;
 
   &--active {
     transform: translateY(0%);
