@@ -6,6 +6,7 @@ import App from './App';
 import router from './router';
 import store from './store';
 import { pad } from '@/services/utils';
+import VueAnalytics from 'vue-analytics'
 
 Vue.use(Vuex);
 Vue.config.productionTip = false;
@@ -13,6 +14,10 @@ Vue.config.productionTip = false;
 Vue.filter('pad', value => {
   return pad(value, 2);
 });
+
+Vue.use(VueAnalytics, {
+  id: 'UA-93913497-1'
+})
 
 /* eslint-disable no-new */
 new Vue({

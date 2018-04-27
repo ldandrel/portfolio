@@ -37,8 +37,6 @@ for (let i = 0; i <= 1.05; i += 0.05) {
   intersectionObserverConfig.threshold.push(Math.round(1000 * i) / 1000);
 }
 
-console.log(intersectionObserverConfig.threshold)
-
 export const intersectionObserver = (element, ratio, callback) => {
   const observer = new IntersectionObserver(
     observables => {
