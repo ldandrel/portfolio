@@ -39,11 +39,24 @@ class ProgressLoader {
       (value, request) => value + request.progress,
       0
     );
-
     const average = Math.floor(total / this.requests.length);
 
-    if (average > this.average || this.average === 0) this.average = average;
+    /*
+    console.warn(average)
     console.log(this.average)
+    console.log(average > this.average)
+
+    if (this.average === 0) {
+      this.average = average
+    } else if (average > this.average) {
+      this.average = average
+    }
+    // console.log(this.average)
+    // if (average > this.average || this.average === 0) ;
+
+    */
+
+    this.totalProgress = average
 
     if (this.totalProgress === 100) {
       this.progressEventsCall();
