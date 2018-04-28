@@ -1,4 +1,5 @@
 import * as CustomEase from './CustomEase';
+import 'intersection-observer';
 
 export const pad = (number, size) => {
   let formattedNumber = `${number}`;

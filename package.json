@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "gsap": "^1.20.4",
+    "intersection-observer": "^0.5.0",
     "lethargy": "^1.0.4",
     "vue": "^2.5.2",
     "vue-analytics": "^5.10.3",
