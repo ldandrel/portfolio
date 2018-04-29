@@ -68,7 +68,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch(LOAD_ASSETS);
-    console.log(this.currentProject)
+
     window.addEventListener('resize', () => {
       if (window.innerWidth <= this.breakpoint && this.isMobile !== true) {
         this.isMobile = true;
