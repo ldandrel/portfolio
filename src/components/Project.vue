@@ -162,12 +162,18 @@ export default {
   },
   methods: {
     onScroll(event) {
-      TweenMax.set(this.$refs.illustration, {
-        height: `${this.illustrationHeight - window.scrollY / 3}px`,
-        repeat: -1,
-        yoyo: true,
-        ease: ease
-      });
+      // const percent = Math.abs(window.scrollY / ((window.innerHeight / 1.5) - window.innerHeight)) * 100
+      const percent = Math.round((100 * window.scrollY) / window.innerHeight) * 0.5
+      console.log(percent)
+      if (percent <= 25.5) {
+        TweenMax.to(this.$refs.illustration, 0.3, {
+          webkitClipPath: `inset(0% 0% ${percent}vh 0%)`,
+          clipPath: `inset(0% 0% ${percent}% 0%)`,
+          repeat: -1,
+          yoyo: true,
+          ease: ease
+        });
+      }
     },
     enterAnimation() {
       const timeline = new TimelineMax();
@@ -281,6 +287,7 @@ export default {
   width: 100%;
   height: 100%;
   will-change: transform;
+  z-index: 3;
 }
 
 .project__illustration-source {
@@ -389,7 +396,7 @@ export default {
 }
 
 .project__description {
-  width: 32%;
+  width: 40%;
   padding-top: 24px;
   margin-left: 1px;
   position: sticky;
@@ -407,11 +414,12 @@ export default {
   color:$grey;
   transform: translateX(-100%);
   will-change: transform;
+  white-space: pre-line;
 }
 
 .project__elements {
   width: calc(50% - 2px);
-  margin-left: calc(18% + 1px);
+  margin-left: calc(10% + 1px);
   margin-top: 25vh;
 }
 

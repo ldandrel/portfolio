@@ -95,7 +95,7 @@ export default {
   top: $horizontal-line-1;
   left: $vertical-line-2;
   width: $size-illustration;
-  z-index:-1;
+  z-index:0;
   height: 50%;
   overflow: hidden;
   user-select: none;
