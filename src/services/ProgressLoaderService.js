@@ -56,7 +56,7 @@ class ProgressLoader {
 
     */
 
-    this.totalProgress = average
+    this.totalProgress = average;
 
     if (this.totalProgress === 100) {
       this.progressEventsCall();

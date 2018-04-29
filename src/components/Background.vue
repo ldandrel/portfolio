@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import { LOAD_ASSETS } from '@/store/types';
 import { ease } from '@/services/utils';
 import { TweenMax, TimelineMax } from 'gsap';
 
@@ -99,8 +98,6 @@ export default {
     }
   },
   mounted () {
-    this.$store.dispatch(LOAD_ASSETS);
-
     window.addEventListener('scroll', this.handleScroll);
 
     if (this.websiteReady === true) {
