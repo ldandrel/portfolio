@@ -73,12 +73,20 @@ export default {
         }, '-=1')
     },
     handleScroll() {
-      if (this.$route.name === 'Project') {
+      if (this.$route.name === 'Project' && this.websiteReady) {
         TweenMax.set(this.$refs.linesVertical.querySelectorAll('.background-line--white'), {
           scaleY: Math.abs(window.scrollY / ((window.innerHeight / 2) - window.innerHeight)),
-          repeat: -1,
           yoyo: true,
           ease: ease
+        });
+      }
+    },
+    enterInProject() {
+      if (this.$route.name === 'Project') {
+        TweenMax.to(this.$refs.linesVertical.querySelectorAll('.background-line--white'), 1, {
+          scaleY: Math.abs(window.scrollY / ((window.innerHeight / 2) - window.innerHeight)),
+          ease: ease,
+          delay: 0.2
         });
       }
     },
@@ -103,19 +111,21 @@ export default {
     if (this.websiteReady === true) {
       this.enterAnimation();
     }
+    this.$refs.backgroundCanvas.width = window.innerWidth
+    this.$refs.backgroundCanvas.height = window.innerHeight
 
-    let _this = this
-    let resizeCanvas = (() => {
-      _this.$refs.backgroundCanvas.width = window.innerWidth
-      _this.$refs.backgroundCanvas.height = window.innerHeight
-    })()
-    window.onresize = resizeCanvas
+    window.addEventListener('resize', () => {
+      this.$refs.backgroundCanvas.width = window.innerWidth
+      this.$refs.backgroundCanvas.height = window.innerHeight
+    });
+
     this.loop()
   },
   watch: {
     websiteReady(boolean) {
       if (boolean === true) {
         this.enterAnimation();
+        this.enterInProject();
       }
     },
     returnHome(boolean) {

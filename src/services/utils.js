@@ -1,5 +1,4 @@
 import * as CustomEase from './CustomEase';
-import 'intersection-observer';
 
 export const pad = (number, size) => {
   let formattedNumber = `${number}`;
@@ -26,26 +25,4 @@ export const isMobile = () => {
   })(navigator.userAgent || navigator.vendor || window.opera);
 
   return check;
-};
-
-let marginTop = (75 * window.innerHeight / 100) + 43
-export const intersectionObserverConfig = {
-  rootMargin: `35px 0% -${marginTop}px 0%`,
-  threshold: []
-};
-
-for (let i = 0; i <= 1.05; i += 0.05) {
-  intersectionObserverConfig.threshold.push(Math.round(1000 * i) / 1000);
-}
-
-export const intersectionObserver = (element, ratio, callback) => {
-  const observer = new IntersectionObserver(
-    observables => {
-      observables.forEach(observable => {
-        if (observable.intersectionRatio <= ratio) return;
-        callback();
-      });
-    }, intersectionObserverConfig);
-
-  observer.observe(element);
 };

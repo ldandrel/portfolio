@@ -30,7 +30,7 @@
       <div class="about__socials-content" ref="socials">
         <div class="about__social-wrapper" :key="index" v-for="(social, index) in about.socials">
           <div class="about__social-value">
-              <a :href="social.link" :title="social.title"><i :class="'fab ' + social.icon"></i></a>
+              <a :href="social.link" target="_blanck" :title="social.title"><i :class="'fab ' + social.icon"></i></a>
           </div>
         </div>
         <div class="about__social-resume-wrapper">
@@ -56,11 +56,21 @@
       </div>
     </div>
 
+    <div class="about__skills">
+      <div class="about__skills-content" ref="skills">
+        <div class="about__skill-wrapper" :key="index" v-for="(skill, index) in about.skills.items">
+            <div class="about__skill-value">
+                {{ skill }}
+            </div>
+        </div>
+      </div>
+    </div>
+
     <div class="about__credit">
       <div class="about__credit-content">
         <div class="about__credit-wrapper">
           <div class="about__credit-value" ref="credit">
-            <p>{{ about.credits.text }} <a class="link" :href="about.credits.evie.link" target="_blank">{{ about.credits.evie.title }}</a> {{ about.credits.text2 }} </p>
+            <p>{{ about.credits.text }} <a class="link" :href="about.credits.evie.link" target="_blank">{{ about.credits.evie.title }}</a> {{ about.credits.text2 }} <a class="link" :href="about.credits.louis.link" target="_blank">{{ about.credits.louis.title }}</a> {{ about.credits.text3 }} </p>
           </div>
         </div>
       </div>
@@ -72,7 +82,7 @@
 <script>
 import { TimelineMax } from 'gsap';
 import { ease } from '@/services/utils'
-import { GO_ABOUT } from '@/store/types'
+import { GO_ABOUT, RETURN_HOME, GO_PROJECT } from '@/store/types'
 
 export default {
   name: 'About',
@@ -133,6 +143,12 @@ export default {
           y: '0%',
           ease: ease
         }, 0.4, '-=0.8')
+        .staggerFromTo(this.$refs.skills.querySelectorAll('.about__skill-value'), 0.8, {
+          y: '100%'
+        }, {
+          y: '0%',
+          ease: ease
+        }, 0.1, '-=0.8')
         .to(this.$refs.email, 0.8, {
           y: '0%',
           ease: ease
@@ -143,10 +159,10 @@ export default {
         }, '-=0.7');
     },
 
-    exitAnimation() {
+    exitAnimation(next) {
       const timeline = new TimelineMax({
         onComplete: () => {
-          this.$router.push({ name: 'Home' })
+          next()
         }
       });
 
@@ -173,6 +189,12 @@ export default {
           y: '-100%',
           ease: ease
         }, 0.4, '-=0.8')
+        .staggerFromTo(this.$refs.skills.querySelectorAll('.about__skill-value'), 0.8, {
+          y: '0%'
+        }, {
+          y: '-100%',
+          ease: ease
+        }, 0.1, '-=0.8')
         .to(this.$refs.email, 0.6, {
           y: '-100%',
           ease: ease
@@ -183,17 +205,21 @@ export default {
         }, '-=0.6');
     }
   },
+  beforeRouteLeave(to, from, next) {
+    if (to.name === 'Home') {
+      this.$store.commit(RETURN_HOME, true);
+      this.exitAnimation(next)
+    } else if (to.name === 'Project') {
+      this.$store.commit(GO_PROJECT, true);
+      this.exitAnimation(next)
+    }
+  },
   watch: {
     websiteReady(boolean) {
       if (boolean === true) {
         setTimeout(() => {
           this.enterAnimation();
         }, 500)
-      }
-    },
-    returnHome(boolean) {
-      if (boolean === true) {
-        this.exitAnimation();
       }
     }
   },
@@ -215,6 +241,7 @@ export default {
   bottom: 0;
   width: 100vw;
   height: 100vh;
+  z-index:2;
 }
 
 .about__subhead {
@@ -315,6 +342,33 @@ export default {
   will-change: transform;
   transform: translateY(100%);
   color: $white;
+  font-size:24px;
+  margin-right: 20px;
+}
+
+.about__skills {
+  position: absolute;
+  left: $vertical-line-3;
+  top: calc(25% + 293px);
+  height: 110px;
+  display: flex;
+  align-items: center;
+}
+
+.about__skills-content {
+  position: relative;
+  display: flex;
+}
+
+.about__skill-wrapper {
+  overflow: hidden;
+}
+
+.about__skill-value {
+  will-change: transform;
+  transform: translateY(100%);
+  color: $white;
+  font-family: $title-font;
   font-size:24px;
   margin-right: 20px;
 }

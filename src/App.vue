@@ -8,8 +8,8 @@
 
       <router-view/>
 
-      <div class="illustrations" ref="illustrations" v-if="goProject">
-        <div class="illustration" ref="illustrationValue" v-if="currentProject == index" v-for="(project, index) in projects" :key="index">
+      <div class="illustrations" ref="illustrations">
+        <div class="illustration" ref="illustrationValue" :class="{'illustration--current': currentProject === index, 'illustration--previous': previousProject === index }" v-for="(project, index) in projects" :key="index">
           <div class="illustration-wrapper">
             <div class="illustration-source">
               <img :src="project.illustration">
@@ -23,8 +23,14 @@
         <div class="scroll__fill-line"></div>
         <div class="scroll__fill-2">down</div>
       </div>
-  </div>
+
+      <audio loop="loop" ref="sound">
+        <source :src="sound.mp3" type="audio/mp3" />
+        <source :src="sound.ogg" type="audio/ogg" />
+        Your browser doesn't support audio API
+      </audio>
     </div>
+  </div>
 </template>
 
 <script>
@@ -32,8 +38,10 @@ import GlobalHeader from '@/components/Header';
 import ProgressLoader from '@/components/ProgressLoader';
 import Background from '@/components/Background';
 import Responsive from '@/components/Responsive';
-import { isMobile } from '@/services/utils';
+import { isMobile, ease } from '@/services/utils';
 import { LOAD_ASSETS, SWITCH_MOBILE } from '@/store/types';
+import { TweenMax, TimelineMax } from 'gsap';
+import 'intersection-observer';
 
 export default {
   name: 'App',
@@ -46,7 +54,8 @@ export default {
   data() {
     return {
       isMobile: false,
-      breakpoint: 900
+      breakpoint: 900,
+      illustrationHeight: null
     }
   },
   computed: {
@@ -62,12 +71,33 @@ export default {
       return this.$store.state.currentProject;
     },
 
+    previousProject() {
+      return this.$store.state.previousProject;
+    },
+
     projects() {
       return this.$store.state.content.projects;
+    },
+
+    sound() {
+      return this.$store.state.content.sound;
+    },
+
+    goAbout() {
+      return this.$store.state.goAbout;
+    },
+
+    returnHome() {
+      return this.$store.state.returnHome;
     }
   },
   mounted() {
     this.$store.dispatch(LOAD_ASSETS);
+    this.wheelScroll = event => {
+      this.onScroll(event);
+    };
+    this.illustrationHeight = this.$refs.illustrationValue[this.currentProject].scrollHeight
+    window.addEventListener('scroll', this.wheelScroll);
 
     window.addEventListener('resize', () => {
       if (window.innerWidth <= this.breakpoint && this.isMobile !== true) {
@@ -83,6 +113,143 @@ export default {
       this.isMobile = true;
       this.$store.commit(SWITCH_MOBILE, true);
     }
+  },
+  methods: {
+    startSound() {
+      this.$refs.sound.play()
+    },
+
+    onScroll(event) {
+      if (this.$route.name === 'Project') {
+        const reduction = this.illustrationHeight - window.scrollY / 3
+
+        if (reduction < this.illustrationHeight) {
+          TweenMax.set(this.$refs.illustrationValue[this.currentProject].querySelector('.illustration-source'), {
+            height: `${reduction}px`,
+            yoyo: true,
+            ease: ease
+          });
+        }
+      }
+    },
+
+    enterAnimation() {
+      if (this.$route.name === 'Home') {
+        TweenMax.fromTo(this.$refs.illustrationValue[this.currentProject].querySelector('.illustration-source'), 0.8, {
+          width: '0%',
+          left: '100%'
+        }, {
+          width: '50%',
+          left: '50%',
+          ease: ease
+        })
+      }
+
+      if (this.$route.name === 'Project') {
+        TweenMax.fromTo(this.$refs.illustrationValue[this.currentProject].querySelector('.illustration-source'), 0.8, {
+          width: '0%',
+          left: '100%'
+        }, {
+          width: '100%',
+          left: '0%',
+          ease: ease
+        })
+        TweenMax.to(this.$refs.illustrationValue[this.currentProject].querySelector('.illustration-source img'), 1, {
+          css: { 'filter': 'grayscale(0%)', '-webkit-filter': 'grayscale(0%)' },
+          ease: ease,
+          delay: 0.6
+        })
+      }
+    },
+
+    goHome() {
+      TweenMax.set(this.$refs.illustrationValue[this.currentProject].querySelector('.illustration-source'), {
+        top: '0%',
+        height: '100%'
+      })
+      TweenMax.to(this.$refs.illustrationValue[this.currentProject].querySelector('.illustration-source'), 0.8, {
+        width: '50%',
+        left: '50%',
+        ease: ease,
+        delay: 1.6
+      })
+    },
+
+    switchProject() {
+      if (this.$route.name === 'Home') {
+        const timeline = new TimelineMax()
+        timeline
+          .to(this.$refs.illustrationValue[this.currentProject].querySelector('.illustration-source'), 1, {
+            width: '50%',
+            left: '50%',
+            ease: ease
+          })
+          .to(this.$refs.illustrationValue[this.previousProject].querySelector('.illustration-source'), 1, {
+            width: '0%',
+            left: '100%',
+            ease: ease
+          })
+      }
+    },
+
+    enterInProject() {
+      const timeline = new TimelineMax();
+
+      timeline
+        .to(this.$refs.illustrationValue[this.currentProject].querySelector('.illustration-source'), 0.8, {
+          width: '100%',
+          left: '0%',
+          ease: ease,
+          delay: 0.8
+        })
+        .to(this.$refs.illustrationValue[this.currentProject].querySelector('.illustration-source img'), 1, {
+          css: { 'filter': 'grayscale(0%)', '-webkit-filter': 'grayscale(0%)' },
+          ease: ease
+        })
+    },
+
+    exitAnimation() {
+      TweenMax.to(this.$refs.illustrations.querySelectorAll('.illustration-source'), 0.8, {
+        left: '100%',
+        width: '0%',
+        ease: ease
+      })
+      TweenMax.to(this.$refs.illustrations.querySelectorAll('.illustration-source img'), 0.8, {
+        css: { 'filter': 'grayscale(100%)', '-webkit-filter': 'grayscale(100%)' },
+        ease: ease
+      })
+    }
+  },
+  watch: {
+    websiteReady(boolean) {
+      if (boolean === true) {
+        this.enterAnimation();
+        this.startSound();
+      }
+    },
+
+    returnHome(boolean) {
+      if (boolean === true) {
+        this.exitAnimation()
+        this.goHome();
+      }
+    },
+
+    goAbout(boolean) {
+      if (boolean === true) {
+        this.exitAnimation();
+      }
+    },
+
+    goProject(boolean) {
+      if (boolean === true) {
+        this.enterInProject()
+      }
+    },
+
+    currentProject() {
+      this.switchProject()
+    }
   }
 }
 </script>
@@ -93,19 +260,28 @@ export default {
 .illustrations {
   position: absolute;
   top: $horizontal-line-1;
-  left: $vertical-line-2;
-  width: $size-illustration;
-  z-index:0;
+  left: calc(13% + 1px);
+  width: calc(74vw - 2px);
   height: 50%;
   overflow: hidden;
   user-select: none;
+  z-index: 0;
 }
 
 .illustration {
   position: absolute;
   width: 100%;
   height: 100%;
+  z-index: $zindex-home-illustrations;
   will-change: transform;
+
+  &--previous {
+    z-index: $zindex-home-illustrations-previous;
+  }
+
+  &--current {
+    z-index: $zindex-home-illustrations-current;
+  }
 }
 
 .illustration-wrapper,
@@ -116,9 +292,10 @@ export default {
 
 .illustration-source {
   position: absolute;
-  width: 100%;
-  left: 0%;
+  width: 0%;
+  left: 100%;
   overflow: hidden;
+  will-change: transform;
 
   img {
     position: absolute;

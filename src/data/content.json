@@ -1,6 +1,4 @@
 {
-    "title": "Luc Dandrel",
-    "email": "luc.dandrel@gmail.com",
     "projects": [
       {
         "id": 0,
@@ -53,7 +51,7 @@
         "job": "developer front & back",
         "illustration": "/static/projects/kygo/illustration.jpg",
         "url": "https://kygo.lucdandrel.com",
-        "description": "Kygo is one of the most weep-known DJ of our time. Since Firestone, his success has never stopped growing. For its new album, we created as a school a brand new website for the artist. This website was built using wordpress. The goal was to promote the artist and create a hub for its community.",
+        "description": "Kygo is one of the most weep-known DJ of our time. Since Firestone, his success has never stopped growing. For its new album, we created as a school a brand new website for the artist. This website was built using wordpress with a custom theme. The goal was to promote the artist and create a hub for its community.",
         "elements" : [
           {
             "type": "image",
@@ -87,8 +85,8 @@
         "type": "intership",
         "job": "developer front & back",
         "illustration": "/static/projects/intership/intership.jpeg",
-        "url": "google.com",
-        "description": "lorem blabla",
+        "url": "https://lesbonsprofils.fr/",
+        "description": "Spin Interactive is a web agency located in Paris. During my internship, I worked on the development of an internet platform made for the professional insertion -Les Bons Profils-. We built this platform using Symfony. The work was complex because the site included 2 accesses (HR access and candidate access). A matching algorithm was intended to match job offer and compatible candidate for more efficiency. \n\r\n\r I thank all the Spin team for this wonderful internship",
         "elements" : [
           {
             "type": "image",
@@ -141,7 +139,8 @@
           "items": [
             "Node.js",
             "Vue.js",
-            "Symfony"
+            "Symfony",
+            "Electron"
           ]
         },
         "contact": {
@@ -149,17 +148,30 @@
         },
         "credits": {
           "text": "Thanks to my dolphins friend",
-          "text2": "for designing this beautiful portfolio",
+          "text2": "for designing this beautiful portfolio and my dad",
+          "text3": "for the sound design",
           "gif": "https://media.giphy.com/media/dpSrm4cwUmCeQ/giphy.gif",
           "evie": {
             "title": "Evie Bauland",
             "link": "https://dribbble.com/EvieBauland"
+          },
+          "louis": {
+            "title": "Louis Dandrel", 
+            "link": "https://fr.wikipedia.org/wiki/Louis_Dandrel"
           }
+        
         }
       },
     "assets": [
         "/static/projects/my-movie-desktop/illustration.jpg",
         "/static/projects/kygo/illustration.jpg",
-        "/static/projects/intership/intership.jpeg"
-    ]
+        "/static/projects/intership/intership.jpeg",
+        "/static/sound.ogg",
+        "/static/sound.mp3"
+    ],
+    "sound": {
+      "ogg": "/static/sound.ogg", 
+      "mp3": "/static/sound.mp3"
+    }
+  
 }

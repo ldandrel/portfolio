@@ -10,7 +10,8 @@ import {
   RETURN_HOME,
   GO_ABOUT,
   GO_PROJECT,
-  CURRENT_PROJECT
+  CURRENT_PROJECT,
+  PREVIOUS_PROJECT
 } from '@/store/types';
 import ProgressLoaderService from '@/services/ProgressLoaderService';
 
@@ -25,7 +26,8 @@ const state = {
   isMobile: false,
   returnHome: false,
   goAbout: false,
-  currentProject: null
+  currentProject: 0,
+  previousProject: null
 };
 
 const mutations = {
@@ -46,6 +48,9 @@ const mutations = {
   },
   [CURRENT_PROJECT](state, id) {
     state.currentProject = id;
+  },
+  [PREVIOUS_PROJECT](state, id) {
+    state.previousProject = id;
   },
   [GO_ABOUT](state, boolean) {
     state.goAbout = boolean;

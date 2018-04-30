@@ -2,15 +2,15 @@
     <div class="header">
         <div class="header-wrapper" ref="header">
           <div class="header-logo">
-              <div v-on:click="goHome">Luc <br> Dandrel</div>
+              <router-link to="/" tag="div">Luc <br> Dandrel</router-link>
           </div>
           <div class="header__return">
             <div class="header__return-wrapper">
-              <div ref="return" class="link header__return-value" :class="{'header__return-value--active' : ['About', 'Project'].indexOf($route.name) > -1}" v-on:click="goHome">return home</div>
+              <router-link to="/" tag="div" class="link header__return-value">return home</router-link>
             </div>
           </div>
           <div class="header-about">
-              <div v-on:click="goAbout">About</div>
+              <router-link :to="{name : 'About'}" tag="div">About</router-link>
           </div>
         </div>
     </div>
@@ -19,7 +19,6 @@
 <script>
 import { TweenMax } from 'gsap';
 import { easeDefault } from '@/services/utils';
-import { RETURN_HOME, GO_ABOUT } from '@/store/types';
 
 export default {
   name: 'Header',
@@ -30,15 +29,6 @@ export default {
         ease: easeDefault,
         delay: 0.7
       });
-    },
-    goHome() {
-      this.$store.commit(RETURN_HOME, true);
-    },
-
-    goAbout() {
-      if (this.$route.name !== 'About') {
-        this.$store.commit(GO_ABOUT, true);
-      }
     }
   },
   watch: {
@@ -112,6 +102,10 @@ export default {
 
 .header__return-wrapper{
   overflow: hidden;
+
+  .header__return-value:not(.router-link-exact-active) {
+    transform: translateY(0%);
+  }
 }
 
 .header__return-value {
@@ -119,10 +113,6 @@ export default {
   will-change: transform;
   transition: transform 0.5s $easing;
   cursor:pointer;
-
-  &--active {
-    transform: translateY(0%);
-  }
 }
 
 </style>

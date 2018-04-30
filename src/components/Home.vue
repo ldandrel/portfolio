@@ -17,17 +17,7 @@
             <div class="home__progress-number-value" v-on:click="updateCurrentProject(index)" ref="indexValue">{{ (index + 1)|pad }}</div>
           </div>
         </div>
-        <div class="home__progress-bar" ref="progressBar"></div>
-      </div>
-    </div>
-
-    <div class="home__illustrations" ref="illustrations">
-      <div class="home__illustration" ref="illustrationValue" :class="{'home__illustration--current': currentProject === index, 'home__illustration--previous': previousProject === index}" v-for="(project, index) in projects" :key="index">
-        <div class="home__illustration-wrapper">
-          <div class="home__illustration-source">
-            <img :src="project.illustration">
-          </div>
-        </div>
+        <div class="home__progress-bar" ref="progressBar" :style="{ transform: `translateY(${(this.currentProject * 2) * 16}px)`}"></div>
       </div>
     </div>
 
@@ -88,7 +78,7 @@
 import { TimelineMax } from 'gsap';
 import { Lethargy } from 'lethargy';
 import { ease } from '@/services/utils';
-import { RETURN_HOME, GO_PROJECT, CURRENT_PROJECT } from '@/store/types';
+import { RETURN_HOME, GO_PROJECT, CURRENT_PROJECT, PREVIOUS_PROJECT } from '@/store/types';
 
 export default {
   name: 'Home',
@@ -131,9 +121,15 @@ export default {
 
     goAbout() {
       return this.$store.state.goAbout;
+    },
+
+    currentProjectInStore() {
+      return this.$store.state.currentProject;
     }
   },
   mounted() {
+    this.currentProject = this.currentProjectInStore;
+
     this.wheelHandler = event => {
       this.onMouseWheel(event);
     };
@@ -169,7 +165,6 @@ export default {
   },
   methods: {
     onHover() {
-      console.log('hover')
       this.hover = !this.hover
     },
     enterAnimation() {
@@ -188,11 +183,6 @@ export default {
           y: '0%',
           ease: ease
         }, 0.05, '-=0.7')
-        .to(this.$refs.illustrationValue[this.currentProject].querySelector('.home__illustration-source'), 0.8, {
-          left: '50%',
-          width: '50%',
-          ease: ease
-        }, '-=1')
         .fromTo(this.$refs.typeValue[this.currentProject].querySelector('.home__details-type-value'), 0.8, {
           y: '100%'
         }, {
@@ -231,17 +221,12 @@ export default {
       });
 
       timeline
-        .to(this.$refs.illustrationValue[this.currentProject].querySelector('.home__illustration-source'), 1, {
-          left: '50%',
-          width: '0%',
-          ease: ease
-        })
         .fromTo(this.$refs.projectNumber[this.currentProject].querySelector('.home__project-number-value'), 0.5, {
           y: '0%'
         }, {
           y: '-100%',
           ease: ease
-        }, '-=0.8')
+        })
         .staggerFromTo(this.$refs.title1Value[this.currentProject].querySelectorAll('.home__titles-part-value'), 0.6, {
           y: '0%'
         }, {
@@ -289,6 +274,7 @@ export default {
         if (!this.switing) {
           this.switing = true;
           this.previousProject = this.currentProject;
+          this.$store.commit(PREVIOUS_PROJECT, this.previousProject);
 
           switch (event.keyCode) {
             case 40:
@@ -315,8 +301,8 @@ export default {
       if (check !== false) {
         if (this.switing === false) {
           this.switing = true;
-
           this.previousProject = this.currentProject;
+          this.$store.commit(PREVIOUS_PROJECT, this.previousProject);
 
           if (check === -1) {
             this.updateCurrentProject('down');
@@ -342,22 +328,27 @@ export default {
             } else {
               this.currentProject -= 1;
             }
+            this.$store.commit(CURRENT_PROJECT, this.currentProject);
             break;
           case 'down':
+
             if (this.currentProject === this.projects.length - 1) {
               this.currentProject = 0;
             } else {
               this.currentProject += 1;
             }
+            this.$store.commit(CURRENT_PROJECT, this.currentProject);
             break;
           default:
             console.error(`Undefined direction "${direction}" used.`);
             break;
         }
       } else if (this.switing === false) {
+        this.$store.commit(PREVIOUS_PROJECT, this.currentProject);
         this.switing = true
         this.previousProject = this.currentProject;
         this.currentProject = direction
+        this.$store.commit(CURRENT_PROJECT, this.currentProject);
         this.switchProject();
 
         setTimeout(() => {
@@ -398,19 +389,6 @@ export default {
           y: '0%',
           ease: ease
         }, 0.05, '-=0.7')
-        .to(this.$refs.illustrationValue[this.previousProject].querySelector('.home__illustration-source'), 0.8, {
-          left: '50%',
-          width: '0%',
-          ease: ease
-        }, '-=1.3')
-        .fromTo(this.$refs.illustrationValue[this.currentProject].querySelector('.home__illustration-source'), 0.8, {
-          left: '100%',
-          width: 'O%'
-        }, {
-          left: '50%',
-          width: '50%',
-          ease: ease
-        }, '-=1.3')
         .fromTo(this.$refs.typeValue[this.previousProject].querySelector('.home__details-type-value'), 0.6, {
           y: '0%'
         }, {
@@ -450,7 +428,6 @@ export default {
     },
 
     goToProject() {
-      this.$store.commit(CURRENT_PROJECT, this.$store.state.content.projects[this.currentProject].id);
       this.$store.commit(GO_PROJECT, true);
 
       const timeline = new TimelineMax({
@@ -472,14 +449,6 @@ export default {
           y: '-100%',
           ease: ease
         }, -0.05, '-= 0.8')
-        .fromTo(this.$refs.illustrationValue[this.currentProject].querySelector('.home__illustration-source '), 0.8, {
-          left: '50%',
-          width: '50%'
-        }, {
-          left: '0%',
-          width: '100%',
-          ease: ease
-        })
         .to(this.$refs.jobValue[this.currentProject].querySelector('.home__details-job-value'), 0.6, {
           x: '-100%',
           ease: ease
@@ -523,6 +492,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: 1;
 }
 
 .home__projects-number{
@@ -588,55 +558,6 @@ export default {
   width: 1px;
   background-color:$white;
   will-change: transform;
-}
-
-.home__illustrations {
-  position: absolute;
-  top: $horizontal-line-1;
-  left: $vertical-line-2;
-  width: $size-illustration;
-  height: 50%;
-  z-index: $zindex-home-illustrations;
-  overflow: hidden;
-  user-select: none;
-}
-
-.home__illustration {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: $zindex-home-illustrations;
-  will-change: transform;
-
-  &--previous {
-    z-index: $zindex-home-illustrations-previous;
-  }
-
-  &--current {
-    z-index: $zindex-home-illustrations-current;
-  }
-}
-
-.home__illustration-wrapper,
-.home__illustration-source {
-  width: 100%;
-  height: 100%;
-}
-
-.home__illustration-source {
-  position: absolute;
-  width: 0%;
-  left: 100%;
-  overflow: hidden;
-
-  img {
-    position: absolute;
-    right: 0;
-    width: 74vw;
-    height: 100%;
-    object-fit: cover;
-    filter: grayscale(100%);
-  }
 }
 
 .home__titles {

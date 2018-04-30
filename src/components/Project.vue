@@ -1,15 +1,8 @@
 <template>
   <div class="project">
     <div class="project__container">
-      <div class="project__illustration-wrapper" ref="illustration">
-        <div class="project__illustration">
-          <div class="project__illustration-source" :class="{'project__illustration-source--from-home': fromHome}">
-            <img :src="project.illustration">
-          </div>
-        </div>
-      </div>
       <div class="project__sticky">
-        <div class="project__title" :class="{'project__title--fixed': fixed}" ref="title">
+        <div class="project__title" ref="title">
           <div class="project__title-wrapper">
             <h1 class="project__title-value">
               {{ project.title }}
@@ -17,7 +10,7 @@
           </div>
         </div>
 
-        <div class="project__details" :class="{'project__details--fixed': fixed}" ref="details">
+        <div class="project__details" ref="details">
           <div class="project__details-wrapper">
             <div class="project__details-content">
               <div class="project__details-detail">
@@ -50,7 +43,7 @@
         </div>
       </div>
 
-      <div class="project__description" :class="{'project__description--fixed': fixed}" ref="description">
+      <div class="project__description" ref="description">
         <div class="project__description-wrapper">
           <p class="project__description-text">{{ project.description }}</p>
         </div>
@@ -78,7 +71,7 @@
 
 <script>
 import { TimelineMax, TweenMax } from 'gsap';
-import { GO_PROJECT, CURRENT_PROJECT, RETURN_HOME } from '@/store/types';
+import { GO_PROJECT, CURRENT_PROJECT, RETURN_HOME, GO_ABOUT } from '@/store/types';
 import { ease } from '@/services/utils'
 
 export default {
@@ -87,9 +80,7 @@ export default {
   data() {
     return {
       observer: null,
-      fromHome: false,
-      illustrationHeight: null,
-      fixed: false
+      fromHome: false
     }
   },
   computed: {
@@ -118,10 +109,6 @@ export default {
     }
   },
   mounted() {
-    this.wheelScroll = event => {
-      this.onScroll(event);
-    };
-
     this.$store.commit(CURRENT_PROJECT, this.project.id);
 
     if (this.goProject === true) {
@@ -129,12 +116,15 @@ export default {
       this.$store.commit(GO_PROJECT, false);
     }
 
-    this.illustrationHeight = this.$refs.illustration.scrollHeight
-
     const config = {
       rootMargin: `100% 0% -75% 0%`,
-      threshold: [0]
+      threshold: []
     }
+
+    for (let i = 0; i <= 1; i += 0.1) {
+      config.threshold.push(Math.round(1000 * i) / 1000);
+    }
+
     this.observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.intersectionRatio > 0) {
@@ -154,46 +144,27 @@ export default {
     this.$refs.elements.querySelectorAll('.project__element').forEach(element => {
       this.observer.observe(element);
     });
-
-    window.addEventListener('scroll', this.wheelScroll);
   },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.wheelScroll);
+  beforeRouteLeave(to, from, next) {
+    if (to.name === 'Home') {
+      this.$store.commit(RETURN_HOME, true);
+      this.exitAnimation(next)
+    } else if (to.name === 'About') {
+      this.$store.commit(GO_ABOUT, true);
+      this.exitAnimation(next)
+    }
   },
   methods: {
-    onScroll(event) {
-      // const percent = Math.abs(window.scrollY / ((window.innerHeight / 1.5) - window.innerHeight)) * 100
-      const percent = Math.round((100 * window.scrollY) / window.innerHeight) * 0.5
-      console.log(percent)
-      if (percent <= 25.5) {
-        TweenMax.to(this.$refs.illustration, 0.3, {
-          webkitClipPath: `inset(0% 0% ${percent}vh 0%)`,
-          clipPath: `inset(0% 0% ${percent}% 0%)`,
-          repeat: -1,
-          yoyo: true,
-          ease: ease
-        });
-      }
-    },
     enterAnimation() {
       const timeline = new TimelineMax();
 
       timeline
-        .to(this.$refs.illustration.querySelector('.project__illustration-source'), 1, {
-          left: '0%',
-          width: '100%',
-          ease: ease
-        })
-        .to(this.$refs.illustration.querySelector('.project__illustration-source img'), 1, {
-          css: { 'filter': 'grayscale(0%)', '-webkit-filter': 'grayscale(0%)' },
-          ease: ease
-        }, '-=1')
         .staggerFromTo([this.$refs.title.querySelector('.project__title-wrapper'), this.$refs.details.querySelector('.project__details-wrapper')], 0.5, {
           width: '0%'
         }, {
           width: '100%',
           ease: ease
-        }, 0.5, '-=1')
+        }, 0.5)
         .to(this.$refs.title.querySelector('.project__title-value'), 0, {
           css: { 'white-space': 'normal' }
         })
@@ -206,54 +177,35 @@ export default {
           ease: ease
         }, '-=1');
     },
-    exitAnimation(routeName) {
+    exitAnimation(next) {
       const timeline = new TimelineMax({
-        onComplete: () => { this.$router.push({name: routeName}) }
+        onComplete: () => { next(); }
       });
 
       timeline
-        .to(this.$refs.title.querySelector('.project__title-value'), 0, {
+        .set(this.$refs.title.querySelector('.project__title-value'), {
           css: { 'white-space': 'nowrap' }
-        })
-        .to(this.$refs.illustration.querySelector('.project__illustration-source'), 1, {
-          left: '100%',
-          width: '00%',
-          ease: ease
         })
         .staggerFromTo([this.$refs.title.querySelector('.project__title-wrapper'), this.$refs.details.querySelector('.project__details-wrapper')], 0.5, {
           width: '100%'
         }, {
           width: '0%',
           ease: ease
-        }, -0.5, '-=1')
-        .staggerTo(this.$refs.elements.querySelectorAll('.project__element'), 1, {
+        }, -0.5)
+        .staggerTo(this.$refs.elements.querySelectorAll('.project__element'), 0.5, {
           x: '-105%',
           ease: ease
-        }, 0.05, '-=1')
-        .to(this.$refs.description.querySelector('.project__description-text'), 1, {
+        }, 0.05, '-=0.5')
+        .to(this.$refs.description.querySelector('.project__description-text'), 0.5, {
           x: '-100%',
           ease: ease
-        }, '-=1');
+        }, '-=0.5');
     }
-  },
-  beforeRouteLeave (to, from, next) {
-    if (to.name === 'Home') this.$store.commit(RETURN_HOME, true)
-    next()
   },
   watch: {
     websiteReady(boolean) {
       if (boolean === true) {
         this.enterAnimation();
-      }
-    },
-    returnHome(boolean) {
-      if (boolean === true) {
-        this.exitAnimation('Home');
-      }
-    },
-    goAbout(boolean) {
-      if (boolean === true) {
-        this.exitAnimation('About');
       }
     }
   }
@@ -272,49 +224,6 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   margin:auto;
-}
-
-.project__illustration-wrapper {
-  margin-top: 25vh;
-  width: 100%;
-  height: 50vh;
-  overflow: hidden;
-  user-select: none;
-}
-
-.project__illustration {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  will-change: transform;
-  z-index: 3;
-}
-
-.project__illustration-source {
-  width: 100%;
-  height: 100%;
-}
-
-.project__illustration-source {
-  position: absolute;
-  width: 0%;
-  right: 0;
-  overflow: hidden;
-
-  &--from-home {
-    left:0%;
-    width: 100%;
-  }
-
-  img {
-    position: absolute;
-    right: 0;
-    height: 50vh;
-    width: 74vw;
-    object-fit: cover;
-    will-change: transform;
-    filter: grayscale(100%);
-  }
 }
 
 .project__sticky {

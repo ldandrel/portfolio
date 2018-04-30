@@ -3,10 +3,11 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import Project from '@/components/Project'
 import About from '@/components/About'
+import VueAnalytics from 'vue-analytics'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -27,3 +28,10 @@ export default new Router({
     }
   ]
 })
+
+Vue.use(VueAnalytics, {
+  id: 'UA-93913497-1',
+  router
+})
+
+export default router;

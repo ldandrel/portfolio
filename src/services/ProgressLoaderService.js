@@ -7,7 +7,6 @@ class ProgressLoader {
     this.progressEvents = [];
     this.completeEvents = [];
     this.totalProgress = 0;
-    this.average = 0;
 
     this.init();
   }
@@ -27,34 +26,19 @@ class ProgressLoader {
             progressEvent.loaded / progressEvent.total * 100
           );
 
-          this.updateProgress(index, percent, request.element);
+          this.updateProgress(index, percent);
         }
       });
     });
   }
 
-  updateProgress(index, progress, element) {
+  updateProgress(index, progress) {
     this.requests[index].progress = progress;
     const total = this.requests.reduce(
       (value, request) => value + request.progress,
       0
     );
     const average = Math.floor(total / this.requests.length);
-
-    /*
-    console.warn(average)
-    console.log(this.average)
-    console.log(average > this.average)
-
-    if (this.average === 0) {
-      this.average = average
-    } else if (average > this.average) {
-      this.average = average
-    }
-    // console.log(this.average)
-    // if (average > this.average || this.average === 0) ;
-
-    */
 
     this.totalProgress = average;
 
