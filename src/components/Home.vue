@@ -63,14 +63,14 @@
     <div class="home__links">
       <div class="home__links-wrapper">
         <div class="home__link" ref="linkProject">
-          <div class="home__link-wrapper">
-            <div :class="{ 'link--hover': hover }"  class="link home__link-value" v-on:click="goToProject()">see the case</div>
+          <div class="home__link-wrapper" :class="{ 'link--hover': hover }">
+            <router-link class="link home__link-value" :to="{ name: 'Project', params: { slug: $store.state.content.projects[currentProject].slug }}" tag="div">see the case</router-link>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="home__project-hover" v-on:click="goToProject()" v-on:mouseover="hover = true" v-on:mouseleave="hover = false"></div>
+    <div class="home__project-hover" v-on:click="$router.push({ name: 'Project', params: { slug: $store.state.content.projects[currentProject].slug }}) " v-on:mouseover="hover = true" v-on:mouseleave="hover = false"></div>
   </div>
 </template>
 
@@ -78,7 +78,7 @@
 import { TimelineMax } from 'gsap';
 import { Lethargy } from 'lethargy';
 import { ease } from '@/services/utils';
-import { RETURN_HOME, GO_PROJECT, CURRENT_PROJECT, PREVIOUS_PROJECT } from '@/store/types';
+import { RETURN_HOME, GO_PROJECT, GO_ABOUT, CURRENT_PROJECT, PREVIOUS_PROJECT } from '@/store/types';
 
 export default {
   name: 'Home',
@@ -163,6 +163,15 @@ export default {
     window.removeEventListener('MozMousePixelScroll', this.wheelHandler);
     window.removeEventListener('keydown', this.keydownHandler);
   },
+  beforeRouteLeave(to, from, next) {
+    if (to.name === 'About') {
+      this.$store.commit(GO_ABOUT, true);
+      this.exitAnimation(next)
+    } else if (to.name === 'Project') {
+      this.$store.commit(GO_PROJECT, true);
+      this.goToProject(next)
+    }
+  },
   methods: {
     onHover() {
       this.hover = !this.hover
@@ -213,10 +222,10 @@ export default {
         }, '-=0.7');
     },
 
-    exitAnimation() {
+    exitAnimation(next) {
       const timeline = new TimelineMax({
         onComplete: () => {
-          this.$router.push({ name: 'About' })
+          next()
         }
       });
 
@@ -427,12 +436,10 @@ export default {
         }, '-=1.3');
     },
 
-    goToProject() {
-      this.$store.commit(GO_PROJECT, true);
-
+    goToProject(next) {
       const timeline = new TimelineMax({
         onComplete: () => {
-          this.$router.push({ name: 'Project', params: { slug: this.$store.state.content.projects[this.currentProject].slug } })
+          next()
         }
       });
 
@@ -471,12 +478,6 @@ export default {
     websiteReady(boolean) {
       if (boolean === true) {
         this.enterAnimation();
-      }
-    },
-
-    goAbout(boolean) {
-      if (boolean === true) {
-        this.exitAnimation();
       }
     }
   }

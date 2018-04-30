@@ -71,7 +71,7 @@ div.link:hover {
 }
 
 .link--hover {
-	&::after{
+	.link::after{
 		transform: scaleX(6);
 	}
 }
