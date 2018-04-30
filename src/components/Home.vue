@@ -615,6 +615,10 @@ export default {
   @include responsive($lg) {
     font-size: 85px;
   }
+
+  @include responsive($height) {
+    font-size: 85px;
+  }
 }
 
 .home__details{
@@ -622,6 +626,10 @@ export default {
   left:$vertical-line-2;
   bottom: calc(25% + 90px);
   z-index: $zindex-home-details;
+
+  @include responsive($height) {
+    bottom: calc(25% + 50px);
+  }
 }
 
 .home__details-content {

@@ -56,7 +56,7 @@
               {{ element.title }}
             </div>
             <div v-if="element.type === 'video'" class="project__element-source project__element-source--video">
-              <video ref="projectVideo" playsinline autoplay muted loop :src="element.source"></video>
+              <video ref="projectVideo" playsinline autoplay muted loop :poster="project.elements[2].source" :src="element.source"></video>
             </div>
 
             <div v-if="element.type === 'image'" class="project__element-source project__element-source--image">
@@ -215,7 +215,6 @@ export default {
 <style lang="scss" scoped>
 .project{
   width: 100vw;
-
 }
 
 .project__container {
