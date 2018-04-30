@@ -36,7 +36,7 @@
 
     <div class="responsive__section">
       <div class="responsive__credits">
-        <p class="responsive__credits-text">{{ about.credits.text }} <a class="responsive__credits-link" :href="about.credits.evie.link" target="_blank">{{ about.credits.evie.title }}</a> {{ about.credits.text2 }} </p>
+        <p class="responsive__credits-text">{{ about.credits.text }} <a class="responsive__credits-link" :href="about.credits.evie.link" target="_blank">{{ about.credits.evie.title }}</a> {{ about.credits.text2 }} <a class="responsive__credits-link" :href="about.credits.louis.link" target="_blank">{{ about.credits.louis.title }}</a> {{ about.credits.text3 }} </p>
         <img class="responsive__credits-gif" :src="about.credits.gif" alt="">
       </div>
     </div>

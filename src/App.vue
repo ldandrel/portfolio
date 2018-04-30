@@ -117,6 +117,7 @@ export default {
   methods: {
     startSound() {
       this.$refs.sound.play()
+      this.$refs.sound.volume = '0.2'
     },
 
     onScroll(event) {

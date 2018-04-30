@@ -34,7 +34,7 @@
               <div class="project__details-detail">
                 <div class="project__details-content-wrapper">
                   <div class="project__details-content-value" ref="roleContent">
-                    <a :href="project.url" target="_blank" class="link">website</a>
+                    <a :href="project.url" target="_blank" class="link">{{ project.textLink }}</a>
                   </div>
                 </div>
               </div>
