@@ -262,7 +262,7 @@ export default {
   position: absolute;
   top: $horizontal-line-1;
   left: calc(13% + 1px);
-  width: calc(74vw - 2px);
+  width: calc(74% - 2px);
   height: 50%;
   overflow: hidden;
   user-select: none;
@@ -301,7 +301,7 @@ export default {
   img {
     position: absolute;
     right: 0;
-    width: 74vw;
+    width: 74%;
     height: 100%;
     object-fit: cover;
     filter: grayscale(100%);
