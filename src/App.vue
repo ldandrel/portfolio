@@ -54,7 +54,7 @@ export default {
   data() {
     return {
       isMobile: false,
-      breakpoint: 900,
+      breakpoint: 950,
       illustrationHeight: null
     }
   },

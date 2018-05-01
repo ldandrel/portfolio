@@ -24,4 +24,8 @@
   @else if $point == $height {
     @media (max-height: $height)  { @content ; }
   }
+
+  @else if $point == $height-2 {
+    @media (max-height: $height-2)  { @content ; }
+  }
 }

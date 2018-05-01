@@ -392,12 +392,25 @@ export default {
   left: $vertical-line-3;
   top: calc(25% + 40px);
   width: $size-description;
+
+  @include responsive($height) {
+  top: calc(25% + 20px);
+  }
+
 }
 
 .about__descriptions-content {
   position: relative;
   width: 80%;
   bottom:-5px;
+
+  @include responsive($height) {
+    width: 100%;
+  }
+
+  @include responsive($lg) {
+    width: 100%;
+  }
 }
 
 .about__description-wrapper {
