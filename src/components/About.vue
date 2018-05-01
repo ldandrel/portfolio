@@ -355,7 +355,8 @@ export default {
   align-items: center;
 
   @include responsive($height) {
-    top: calc(25% + 200px);
+    top: 50%;
+    left: $vertical-line-2;
   }
 }
 
