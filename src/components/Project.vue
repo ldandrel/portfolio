@@ -214,11 +214,11 @@ export default {
 
 <style lang="scss" scoped>
 .project{
-  width: 100vw;
+  width: 100%;
 }
 
 .project__container {
-  width: calc(74vw - 2px);
+  width: calc(74% - 2px);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -273,7 +273,7 @@ export default {
   height: 100%;
   justify-content: space-between;
   z-index: 2;
-  width: 37vw;
+  width: 37%;
 }
 
 .project__details-wrapper {
