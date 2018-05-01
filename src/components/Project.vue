@@ -273,7 +273,7 @@ export default {
   height: 100%;
   justify-content: space-between;
   z-index: 2;
-  width: 37%;
+  width: 37vw;
 }
 
 .project__details-wrapper {
