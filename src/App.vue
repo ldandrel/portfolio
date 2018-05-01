@@ -301,7 +301,7 @@ export default {
   img {
     position: absolute;
     right: 0;
-    width: 74%;
+    width: 74vw;
     height: 100%;
     object-fit: cover;
     filter: grayscale(100%);
