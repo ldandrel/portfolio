@@ -353,6 +353,10 @@ export default {
   height: 110px;
   display: flex;
   align-items: center;
+
+  @include responsive($height) {
+    top: calc(25% + 200px);
+  }
 }
 
 .about__skills-content {
