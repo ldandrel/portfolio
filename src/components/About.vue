@@ -34,7 +34,7 @@
           </div>
         </div>
         <div class="about__social-resume-wrapper">
-          <div class="about__social-value about__social-resume-value">
+          <div class="about__social-value about__social-resume-value" v-if="about.resume.url">
             <a class="link" :href="about.resume.url">{{ about.resume.text }}</a>
           </div>
         </div>

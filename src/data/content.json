@@ -52,7 +52,7 @@
         "job": "developer front & back",
         "illustration": "/static/projects/kygo/illustration.jpg",
         "textLink" : "website",
-        "url": "https://kygo.lucdandrel.com",
+        "url": "http://kygo.lucdandrel.com",
         "description": "Kygo is one of the most well-known DJ of our time. Since Firestone, his success has never stopped growing. For its new album, we created as a school project a brand new website for the artist. This website was built using wordpress with a custom theme. The goal was to promote the artist and create a hub for its community.",
         "elements" : [
           {
@@ -135,7 +135,7 @@
         ],
         "resume": {
           "text" : "my resume",
-          "url": "#"
+          "url": ""
         },
         "skills": {
           "title": "Skills",
