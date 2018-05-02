@@ -10,8 +10,8 @@
         "type": "personal project",
         "job": "developer front & back",
         "illustration": "/static/projects/my-movie-desktop/illustration.jpg",
-        "textLink" : "coming soon",
-        "url": "https://mymoviedesktop.com",
+        "textLink" : "video",
+        "url": "https://vimeo.com/264749973",
         "description": "I am a big fan of movies. How many times have I found myself in the hard situation of finding a movie. So I decided to join my skills to my passion by creating My Movie Desktop. My Movie Desktop provides a nice little app that lets you personalise your Mac with gorgeous hand-picked movie screenshots. Discover or rediscover classic and unknown treasures while finding wallpapers for your desktop.\n\r\n\rI built this little app with Electron. The whole system for wallpaper's administration (the API) is based on Symfony.",
         "elements" : [
           {
