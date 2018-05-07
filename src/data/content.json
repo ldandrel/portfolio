@@ -79,12 +79,12 @@
       },
       {
         "id": 2,
-        "slug": "intership-spin",
+        "slug": "internship-spin",
         "date": 2017,
-        "title1": "Intership",
+        "title1": "Internship",
         "title2": "at Spin",
-        "title": "Intership at Spin",
-        "type": "intership",
+        "title": "Internship at Spin",
+        "type": "internship",
         "job": "developer front & back",
         "illustration": "/static/projects/intership/intership.jpeg",
         "textLink" : "website",
@@ -159,10 +159,10 @@
             "link": "https://dribbble.com/EvieBauland"
           },
           "louis": {
-            "title": "Louis Dandrel", 
+            "title": "Louis Dandrel",
             "link": "https://fr.wikipedia.org/wiki/Louis_Dandrel"
           }
-        
+
         }
       },
     "assets": [
@@ -173,8 +173,8 @@
         "/static/sound.mp3"
     ],
     "sound": {
-      "ogg": "/static/sound.ogg", 
+      "ogg": "/static/sound.ogg",
       "mp3": "/static/sound.mp3"
     }
-  
+
 }
