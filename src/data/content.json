@@ -89,7 +89,7 @@
         "illustration": "/static/projects/intership/intership.jpeg",
         "textLink" : "website",
         "url": "https://lesbonsprofils.fr/",
-        "description": "Spin Interactive is a web agency located in Paris. During my internship, I worked on the development of an internet platform made for professional insertion -Les Bons Profils-. We built this platform using Symfony. The work was complex because the site included 2 accesses (HR access and candidate access). A matching algorithm was intended to match job offesr and compatible candidates for more efficiency.\n\r\n\r I thank all the Spin team for this wonderful internship.",
+        "description": "Spin Interactive is a web agency located in Paris. During my internship, I worked on the development of an internet platform made for professional insertion -Les Bons Profils-. We built this platform using Symfony. The work was complex because the site included 2 accesses (HR access and candidate access). A matching algorithm was intended to match job offers and compatible candidates for more efficiency.\n\r\n\r I thank all the Spin team for this wonderful internship.",
         "elements" : [
           {
             "type": "image",
@@ -135,7 +135,7 @@
         ],
         "resume": {
           "text" : "my resume",
-          "url": ""
+          "url": "/static/resume-dandrel-luc.pdf"
         },
         "skills": {
           "title": "Skills",
