@@ -1,0 +1,180 @@
+{
+    "projects": [
+      {
+        "id": 0,
+        "slug": "my-movie-desktop",
+        "date": 2018,
+        "title1": "My Movie",
+        "title2": "Desktop",
+        "title": "My Movie Desktop",
+        "type": "personal project",
+        "job": "developer front & back",
+        "illustration": "/static/projects/my-movie-desktop/illustration.jpg",
+        "textLink" : "video",
+        "url": "https://vimeo.com/264749973",
+        "description": "I am a big fan of movies. How many times have I found myself in the hard situation of finding a movie. So I decided to join my skills to my passion by creating My Movie Desktop. My Movie Desktop provides a nice little app that lets you personalise your Mac with gorgeous hand-picked movie screenshots. Discover or rediscover classic and unknown treasures while finding wallpapers for your desktop.\n\r\n\rI built this little app with Electron. The whole system for wallpaper's administration (the API) is based on Symfony.",
+        "elements" : [
+          {
+            "type": "video",
+            "source": "/static/projects/my-movie-desktop/my-movie-desktop.mp4",
+            "title": "Demonstration"
+          },
+          {
+            "type": "image",
+            "source": "/static/projects/my-movie-desktop/discover.png",
+            "title": "Discover a movie"
+          },
+          {
+            "type": "image",
+            "source": "/static/projects/my-movie-desktop/informations.png",
+            "title": "Details"
+          },
+          {
+            "type": "image",
+            "source": "/static/projects/my-movie-desktop/favorites.png",
+            "title": "Favorites"
+          },
+          {
+            "type": "image",
+            "source": "/static/projects/my-movie-desktop/landing-beta.png",
+            "title": "Landing website - BETA"
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "slug": "kygo",
+        "date": 2017,
+        "title1": "Kygo's",
+        "title2": "Website",
+        "title": "Kygo's website",
+        "type": "school project",
+        "job": "developer front & back",
+        "illustration": "/static/projects/kygo/illustration.jpg",
+        "textLink" : "website",
+        "url": "http://kygo.lucdandrel.com",
+        "description": "Kygo is one of the most well-known DJ of our time. Since Firestone, his success has never stopped growing. For its new album, we created as a school project a brand new website for the artist. This website was built using wordpress with a custom theme. The goal was to promote the artist and create a hub for its community.",
+        "elements" : [
+          {
+            "type": "image",
+            "source": "/static/projects/kygo/kygo_landing.jpg",
+            "title": "Landing"
+          },
+          {
+            "type": "image",
+            "source": "/static/projects/kygo/home.gif",
+            "title": "Home"
+          },
+          {
+            "type": "image",
+            "source": "/static/projects/kygo/tour.png",
+            "title": "Tour"
+          },
+          {
+            "type": "image",
+            "source": "/static/projects/kygo/tour-2.png",
+            "title": "Tour - 2"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "slug": "internship-spin",
+        "date": 2017,
+        "title1": "Internship",
+        "title2": "at Spin",
+        "title": "Internship at Spin",
+        "type": "internship",
+        "job": "developer front & back",
+        "illustration": "/static/projects/intership/intership.jpeg",
+        "textLink" : "website",
+        "url": "https://lesbonsprofils.fr/",
+        "description": "Spin Interactive is a web agency located in Paris. During my internship, I worked on the development of an internet platform made for professional insertion -Les Bons Profils-. We built this platform using Symfony. The work was complex because the site included 2 accesses (HR access and candidate access). A matching algorithm was intended to match job offers and compatible candidates for more efficiency.\n\r\n\r I thank all the Spin team for this wonderful internship.",
+        "elements" : [
+          {
+            "type": "image",
+            "source": "/static/projects/intership/home.png",
+            "title": "Home - CIP"
+          },
+          {
+            "type": "image",
+            "source": "/static/projects/intership/dashboard-hr.png",
+            "title": "Dashboard - HR"
+          },
+          {
+            "type": "image",
+            "source": "/static/projects/intership/dashboard-cip.png",
+            "title": "Dashboard - CIP"
+          },
+          {
+            "type": "image",
+            "source": "/static/projects/intership/profils-candidates.png",
+            "title": "Profils candidates - HR"
+          }
+        ]
+      }
+    ],
+    "about": {
+        "subhead": "Hello,",
+        "head": "I'm Luc",
+        "description": "My name is Luc Dandrel and I am a web developer based in Paris. Currently in third year at HETIC, I am passionate about web development and more particularly in back-end development. I like to create and that's what HETIC teaches me. I improve my skills every day in web development, project management, communication, UX-UI design ...",
+        "description2": "I’m currently looking for a 4 months internship between July and October 2018",
+        "socials": [
+          {
+            "icon": "fa-github",
+            "link": "https://github.com/lucdandrel"
+          },
+          {
+            "icon": "fa-twitter",
+            "link": "https://twitter.com/lucdandrel"
+          },
+          {
+            "icon": "fa-linkedin-in",
+            "link": "https://www.linkedin.com/in/luc-dandrel"
+          }
+        ],
+        "resume": {
+          "text" : "my resume",
+          "url": "/static/resume-dandrel-luc.pdf"
+        },
+        "skills": {
+          "title": "Skills",
+          "items": [
+            "Node.js",
+            "Vue.js",
+            "Symfony",
+            "Electron"
+          ]
+        },
+        "contact": {
+          "email": "luc.dandrel@gmail.com"
+        },
+        "credits": {
+          "text": "Thanks to my dolphin friend",
+          "text2": "for designing this beautiful portfolio and my dad",
+          "text3": "for the sound design",
+          "gif": "https://media.giphy.com/media/dpSrm4cwUmCeQ/giphy.gif",
+          "evie": {
+            "title": "Evie Bauland",
+            "link": "https://dribbble.com/EvieBauland"
+          },
+          "louis": {
+            "title": "Louis Dandrel",
+            "link": "https://fr.wikipedia.org/wiki/Louis_Dandrel"
+          }
+
+        }
+      },
+    "assets": [
+        "/static/projects/my-movie-desktop/illustration.jpg",
+        "/static/projects/kygo/illustration.jpg",
+        "/static/projects/intership/intership.jpeg",
+        "/static/sound.ogg",
+        "/static/sound.mp3"
+    ],
+    "sound": {
+      "ogg": "/static/sound.ogg",
+      "mp3": "/static/sound.mp3"
+    }
+
+}
