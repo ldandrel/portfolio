@@ -1,7 +1,5 @@
 <template>
     <div class="background">
-        <canvas id="js-background-noise" ref="backgroundCanvas" class="noise"></canvas>
-
         <div class="background-grid">
             <div class="background-grid-vertical" ref="linesVertical">
                 <div class="background-line background-line-vertical background-line-vertical-1"></div>
@@ -35,30 +33,6 @@ export default {
     }
   },
   methods: {
-    noise () {
-      let ctx = this.$refs.backgroundCanvas.getContext('2d')
-      let w = ctx.canvas.width
-      let h = ctx.canvas.height
-      let idata = ctx.createImageData(w, h)
-      let buffer32 = new Uint32Array(idata.data.buffer)
-      let len = buffer32.length
-      let i = 0
-
-      for (; i < len;) {
-        buffer32[i++] = ((255 * Math.random()) | 0) << 24
-      }
-
-      ctx.putImageData(idata, 0, 0)
-    },
-    loop () {
-      this.backgroundToggle = !this.backgroundToggle
-      if (this.backgroundToggle) {
-        requestAnimationFrame(this.loop)
-        return
-      }
-      this.noise()
-      requestAnimationFrame(this.loop)
-    },
     enterAnimation() {
       const timeline = new TimelineMax();
 
@@ -111,15 +85,6 @@ export default {
     if (this.websiteReady === true) {
       this.enterAnimation();
     }
-    this.$refs.backgroundCanvas.width = window.innerWidth
-    this.$refs.backgroundCanvas.height = window.innerHeight
-
-    window.addEventListener('resize', () => {
-      this.$refs.backgroundCanvas.width = window.innerWidth
-      this.$refs.backgroundCanvas.height = window.innerHeight
-    });
-
-    this.loop()
   },
   watch: {
     websiteReady(boolean) {
@@ -138,17 +103,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#js-background-noise {
-    position:fixed;
-    background:#222224;
-    width: 100vw;
-    height: 100vh;
-}
-
 .background-grid {
   position: fixed;
   width: 100vw;
   height: 100vh;
+  background:$background;
 
   .background-grid-vertical,
   .background-grid-horizontal {

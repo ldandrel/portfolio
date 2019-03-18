@@ -43,17 +43,17 @@
       },
       {
         "id": 1,
-        "slug": "kygo",
-        "date": 2017,
-        "title1": "Kygo's",
-        "title2": "Website",
-        "title": "Kygo's website",
-        "type": "school project",
-        "job": "developer front & back",
-        "illustration": "/static/projects/kygo/illustration.jpg",
+        "slug": "tpa",
+        "date": 2018,
+        "title1": "Technology",
+        "title2": "Playmaker",
+        "title": "Women in tech",
+        "type": "Booking.com",
+        "job": "developer front",
+        "illustration": "/static/projects/tpa/illustration.jpg",
         "textLink" : "website",
-        "url": "http://kygo.lucdandrel.com",
-        "description": "Kygo is one of the most well-known DJ of our time. Since Firestone, his success has never stopped growing. For its new album, we created as a school project a brand new website for the artist. This website was built using wordpress with a custom theme. The goal was to promote the artist and create a hub for its community.",
+        "url": "http://techplaymakerawards.com/",
+        "description": "Created by booking.com in 2018, Technology Playmaker Awards aims at celebrating and recognising women who disrupt companies, industries or communities and who continue to transform them, thanks to the use of technology. Ten categories celebrate several technology aspects including company spirit, innovation, community impact and technology leadership.",
         "elements" : [
           {
             "type": "image",
@@ -61,19 +61,19 @@
             "title": "Landing"
           },
           {
-            "type": "image",
-            "source": "/static/projects/kygo/home.gif",
+            "type": "video",
+            "source": "/static/projects/tpa/home.mp4",
             "title": "Home"
           },
           {
-            "type": "image",
-            "source": "/static/projects/kygo/tour.png",
-            "title": "Tour"
+            "type": "video",
+            "source": "/static/projects/tpa/nominate.mp4",
+            "title": "Nominate a woman - Desktop"
           },
           {
-            "type": "image",
-            "source": "/static/projects/kygo/tour-2.png",
-            "title": "Tour - 2"
+            "type": "video",
+            "source": "/static/projects/tpa/nominate-mobile.mp4",
+            "title": "Nominate a woman - Mobile"
           }
         ]
       },
@@ -117,7 +117,7 @@
     "about": {
         "subhead": "Hello,",
         "head": "I'm Luc",
-        "description": "My name is Luc Dandrel and I am a web developer based in Paris. Currently in third year at HETIC, I am passionate about web development and more particularly in back-end development. I like to create and that's what HETIC teaches me. I improve my skills every day in web development, project management, communication, UX-UI design ...",
+        "description": "My name is Luc Dandrel and I am a web developer based in Paris. Currently in fourth year at HETIC, I am passionate about web development and more particularly in back-end development. I like to create and that's what HETIC teaches me. I improve my skills every day in web development, project management, communication, UX-UI design ...",
         "description2": "I’m currently Junior Developer at Neverbland, London",
         "socials": [
           {

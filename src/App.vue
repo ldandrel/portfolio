@@ -14,6 +14,7 @@
             <div class="illustration-source">
               <img :src="project.illustration">
             </div>
+            <div class="illustration-background"></div>
           </div>
         </div>
       </div>
@@ -119,18 +120,14 @@ export default {
       this.$refs.sound.play()
       this.$refs.sound.volume = '0.2'
     },
-
     onScroll(event) {
       if (this.$route.name === 'Project') {
-        const reduction = this.illustrationHeight - window.scrollY / 3
-
-        if (reduction < this.illustrationHeight) {
-          TweenMax.set(this.$refs.illustrationValue[this.currentProject].querySelector('.illustration-source'), {
-            height: `${reduction}px`,
-            yoyo: true,
-            ease: ease
-          });
-        }
+        const reduction = window.scrollY / 3
+        TweenMax.set(this.$refs.illustrationValue[this.currentProject].querySelector('.illustration-background'), {
+          y: `-${reduction}px`,
+          yoyo: true,
+          ease: ease
+        });
       }
     },
 
@@ -306,6 +303,14 @@ export default {
     object-fit: cover;
     filter: grayscale(100%);
   }
+}
+
+.illustration-background {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  height: 100%;
+  background-color:$background;
 }
 
 .scroll__fill {

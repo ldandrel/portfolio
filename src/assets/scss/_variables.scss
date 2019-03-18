@@ -9,6 +9,8 @@ $white: #ffffff;
 
 $black: #36383E;
 
+$background: #000;
+
 $main-color: #FF6600;
 $main-color-hover: #EF5F00;
 
@@ -46,7 +48,7 @@ $horizontal-line-1: 25%;
 
 $project-info: calc(75vh + 35px);
 
-//Sizes 
+//Sizes
 $size-illustration : ($vertical-line-3 - $vertical-line-2) * 2;
 $size-description : $vertical-line-3 - $vertical-line-2;
 
