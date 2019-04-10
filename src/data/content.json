@@ -2,6 +2,68 @@
     "projects": [
       {
         "id": 0,
+        "slug": "tpa",
+        "date": 2018,
+        "title1": "Technology",
+        "title2": "Playmaker",
+        "title": "Women in tech",
+        "type": "Booking.com",
+        "job": "developer front",
+        "illustration": "/static/projects/tpa/illustration.jpg",
+        "textLink" : "website",
+        "url": "http://techplaymakerawards.com/",
+        "description": "Created by booking.com in 2018, Technology Playmaker Awards aims at celebrating and recognising women who disrupt companies, industries or communities and who continue to transform them, thanks to the use of technology. Ten categories celebrate several technology aspects including company spirit, innovation, community impact and technology leadership.",
+        "elements" : [
+          {
+            "type": "video",
+            "source": "/static/projects/tpa/home.mp4",
+            "title": "Home"
+          },
+          {
+            "type": "video",
+            "source": "/static/projects/tpa/nominate.mp4",
+            "title": "Nominate a woman - Desktop"
+          },
+          {
+            "type": "video",
+            "source": "/static/projects/tpa/nominate-mobile.mp4",
+            "title": "Nominate a woman - Mobile"
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "slug": "somedia",
+        "date": 2018,
+        "title1": "Somedia",
+        "title2": "",
+        "title": "Somedia",
+        "type": "Ecommmerce",
+        "job": "developer front & back",
+        "illustration": "/static/projects/somedia/illustration.jpg",
+        "textLink" : "website",
+        "url": "https://somedia.tv",
+        "description": "",
+        "elements" : [
+          {
+            "type": "image",
+            "source": "/static/projects/somedia/home.png",
+            "title": "Home - CIP"
+          },
+          {
+            "type": "image",
+            "source": "/static/projects/somedia/equipement.png",
+            "title": "Equipement"
+          },
+          {
+            "type": "image",
+            "source": "/static/projects/somedia/blog.png",
+            "title": "Blog"
+          }
+        ]
+      },
+      {
+        "id": 2,
         "slug": "my-movie-desktop",
         "date": 2018,
         "title1": "My Movie",
@@ -40,85 +102,13 @@
             "title": "Landing website - BETA"
           }
         ]
-      },
-      {
-        "id": 1,
-        "slug": "tpa",
-        "date": 2018,
-        "title1": "Technology",
-        "title2": "Playmaker",
-        "title": "Women in tech",
-        "type": "Booking.com",
-        "job": "developer front",
-        "illustration": "/static/projects/tpa/illustration.jpg",
-        "textLink" : "website",
-        "url": "http://techplaymakerawards.com/",
-        "description": "Created by booking.com in 2018, Technology Playmaker Awards aims at celebrating and recognising women who disrupt companies, industries or communities and who continue to transform them, thanks to the use of technology. Ten categories celebrate several technology aspects including company spirit, innovation, community impact and technology leadership.",
-        "elements" : [
-          {
-            "type": "image",
-            "source": "/static/projects/kygo/kygo_landing.jpg",
-            "title": "Landing"
-          },
-          {
-            "type": "video",
-            "source": "/static/projects/tpa/home.mp4",
-            "title": "Home"
-          },
-          {
-            "type": "video",
-            "source": "/static/projects/tpa/nominate.mp4",
-            "title": "Nominate a woman - Desktop"
-          },
-          {
-            "type": "video",
-            "source": "/static/projects/tpa/nominate-mobile.mp4",
-            "title": "Nominate a woman - Mobile"
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "slug": "internship-spin",
-        "date": 2017,
-        "title1": "Internship",
-        "title2": "at Spin",
-        "title": "Internship at Spin",
-        "type": "internship",
-        "job": "developer front & back",
-        "illustration": "/static/projects/intership/intership.jpeg",
-        "textLink" : "website",
-        "url": "https://lesbonsprofils.fr/",
-        "description": "Spin Interactive is a web agency located in Paris. During my internship, I worked on the development of an internet platform made for professional insertion -Les Bons Profils-. We built this platform using Symfony. The work was complex because the site included 2 accesses (HR access and candidate access). A matching algorithm was intended to match job offers and compatible candidates for more efficiency.\n\r\n\r I thank all the Spin team for this wonderful internship.",
-        "elements" : [
-          {
-            "type": "image",
-            "source": "/static/projects/intership/home.png",
-            "title": "Home - CIP"
-          },
-          {
-            "type": "image",
-            "source": "/static/projects/intership/dashboard-hr.png",
-            "title": "Dashboard - HR"
-          },
-          {
-            "type": "image",
-            "source": "/static/projects/intership/dashboard-cip.png",
-            "title": "Dashboard - CIP"
-          },
-          {
-            "type": "image",
-            "source": "/static/projects/intership/profils-candidates.png",
-            "title": "Profils candidates - HR"
-          }
-        ]
       }
     ],
     "about": {
         "subhead": "Hello,",
         "head": "I'm Luc",
-        "description": "My name is Luc Dandrel and I am a web developer based in Paris. Currently in fourth year at HETIC, I am passionate about web development and more particularly in back-end development. I like to create and that's what HETIC teaches me. I improve my skills every day in web development, project management, communication, UX-UI design ...",
-        "description2": "I’m currently Junior Developer at Neverbland, London",
+        "description": "My name is Luc Dandrel and I am a web developer based in Paris. Currently in fourth year at HETIC, I am passionate about web development. I like to create and that's what HETIC teaches me. I improve my skills every day in web development, project management, communication, UX-UI design ...",
+        "description2": "",
         "socials": [
           {
             "icon": "fa-github",
@@ -140,7 +130,8 @@
         "skills": {
           "title": "Skills",
           "items": [
-            "Node.js",
+            "React",
+            "React-native",
             "Vue.js",
             "Symfony",
             "Electron"
